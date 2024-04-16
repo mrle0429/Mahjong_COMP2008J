@@ -5,7 +5,9 @@ import Model.Tile;
 import Model.TileType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CheckTile {
     public static boolean isNumberType(TileType tileType){
@@ -74,7 +76,7 @@ public class CheckTile {
     }
 
     public static boolean isHu(List<Tile> tiles){
-        return routineWay(tiles, false);
+        return routineWay(tiles, false) || duiziHu(tiles);
         // TODO add more methods as Hu
     }
 
@@ -82,6 +84,7 @@ public class CheckTile {
         if (tiles.isEmpty()){
             return true;
         }
+
 
         // Test if it has pair
         if (!findPair){
@@ -135,4 +138,16 @@ public class CheckTile {
     }
 
     // TODO more ways of Hu
+    private static boolean duiziHu(List<Tile> tiles) {   // 新增对子胡
+        Map<Tile, Integer> tileCount = new HashMap<>();
+        for (Tile tile : tiles) {
+            tileCount.put(tile, tileCount.getOrDefault(tile, 0) + 1);
+        }
+        for(int count : tileCount.values()) {
+            if (count % 2 != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

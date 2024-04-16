@@ -3,6 +3,7 @@ package Controller;
 import Model.Player;
 import Model.Tile;
 import Model.TileStack;
+import Util.CheckPlayer;
 import Util.CheckTile;
 
 import java.util.ArrayList;
@@ -22,20 +23,27 @@ public class Game {
         hasWinner = false;
     }
 
-    public void initializeGame(){
-        //TODO CheckPlayer class to replace this.
+    public void initializeGame(){    // 重构初始化函数
+        addPlayer();                 // 添加四名玩家
+        CheckPlayer.isZhuang(players.get(0));  // 确定庄家
+        distributeTile();            // 发牌，同时为庄家多发一张
+    }
+    public void addPlayer() {
         players.add(new Player("Player 1"));
         players.add(new Player("Player 2"));
         players.add(new Player("Player 3"));
         players.add(new Player("Player 4"));
+    }
 
-        for (Player player : players) {
-            for (int i = 0; i != 13; i++) {
-                ;player.getHand().addTile(tileStack.takeTile());
+    public void distributeTile(){
+        for (Player player : players){
+            for (int i = 0; i != 13; i++){
+                player.getHand().addTile(tileStack.takeTile());
+            }
+            if (player.isZhuang()){
+                player.getHand().addTile(tileStack.takeTile());
             }
         }
-        //TODO TouZi to solve who is 庄家, 这里假设第一名是庄家
-//        players.get(0).getHand().addTile(tileStack.takeTile());
     }
 
     public void startGame(){

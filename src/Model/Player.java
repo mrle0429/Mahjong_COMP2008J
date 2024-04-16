@@ -8,6 +8,7 @@ public class Player {
     private String name;
     private Hand hand;
     private boolean isWinner;
+    private boolean isZhuang;
 
     public Player(String name) {
         this.name = name;
@@ -67,5 +68,13 @@ public class Player {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public void setZhuang(boolean zhuang) {
+        isZhuang = zhuang;
+    }
+
+    public boolean isZhuang() {
+        return isZhuang;
     }
 }
