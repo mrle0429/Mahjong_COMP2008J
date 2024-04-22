@@ -45,8 +45,42 @@ public class CheckTile {
         }
     }
 
+    /**
+     * 手牌中找到能执行碰或杠的牌
+     * 把他们加入result中
+     *
+     * @param tiles
+     * @param meldType
+     * @param tile
+     * @return
+     */
+    public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile){
+        List<Tile> result = new ArrayList<>();
+        // 只写碰和杠
+        if(meldType == MeldType.PENG) {
+            for(int i = 0; i != tiles.size() - 2; i++) {
+                if(tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1))) {
+                    result.add(tiles.get(i));
+                    result.add(tiles.get(i + 1));
+                    result.add(tile);
+                }
+            }
+        } else if(meldType == MeldType.GANG) {
+            for(int i = 0; i != tiles.size() - 3; i++) {
+                if(tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1)) && tile.equals(tiles.get(i + 2))) {
+                    result.add(tiles.get(i));
+                    result.add(tiles.get(i + 1));
+                    result.add(tiles.get(i + 2));
+                    result.add(tile);
+                }
+            }
+        }
+        return result;
+    }
+
     public static List<Tile> findMeld(List<Tile> tiles, MeldType meldType){
         List<Tile> result = new ArrayList<>();
+
         if (meldType == MeldType.EAT){
             for (int i = 0; i != tiles.size() - 2; i++) {
                 if (tiles.get(i).getTileType() == tiles.get(i + 1).getTileType() && tiles.get(i).getTileType() == tiles.get(i + 2).getTileType()

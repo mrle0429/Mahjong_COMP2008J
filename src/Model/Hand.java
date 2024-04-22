@@ -69,7 +69,7 @@ public class Hand {
                 System.out.print(tiles.get(i) + "\t");
             }
         }
-        System.out.println("\n");
+        System.out.println();
     }
 
     public boolean meldTiles(MeldType meldType){
@@ -77,7 +77,16 @@ public class Hand {
         if (result.isEmpty()){
             return false;
         }
-        return tiles.removeAll(result);
+        tiles.removeAll(result);     // 移除碰或杠的牌
+        return tiles.addAll(result);  // 将碰和杠的牌加入到手牌中，包括其他人弃的那一张
+
+    }
+
+    // 对手牌执行操作，碰或杠
+    public void operation(MeldType meldType, Tile tile) {
+        List<Tile> pair = CheckTile.findPair(tiles, meldType, tile);
+        tiles.removeAll(pair);    // 先把手牌中的对删除
+        tiles.addAll(pair);       // 再把对加入到手牌中
     }
 
     public boolean canPeng(){

@@ -1,6 +1,7 @@
 package Model;
 
 import Util.CheckTile;
+import java.util.Scanner;
 
 import java.util.List;
 
@@ -9,11 +10,15 @@ public class Player {
     private Hand hand;
     private boolean isWinner;
     private boolean isZhuang;
+    private Scanner scanner;
+
 
     public Player(String name) {
         this.name = name;
         hand = new Hand();
         isWinner = false;
+        scanner = new Scanner(System.in);
+
     }
 
     public void catchTileFromStack(TileStack tileStack){
