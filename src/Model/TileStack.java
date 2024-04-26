@@ -1,9 +1,7 @@
 package Model;
 
-import Util.CheckTile;
-import Util.ResetTiles;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TileStack {
@@ -17,12 +15,18 @@ public class TileStack {
         shuffle();
     }
 
+/*    public static void main(String[] args) {
+        TileStack tileStack = new TileStack();
+        System.out.println(tileStack.size());
+        tileStack.showTiles();
+    }*/
+
     private void initializeTiles(){
         TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
-        String[] seasonCharacters = new String[]{"Spring", "Summer", "Autumn", "Winter"};
-        String[] flowerCharacters = new String[]{"Plum", "Orchid", "Chrysan_themum", "Bamboo"};
+        String[] jokerCharacters = new String[]{"Joker1", "Joker2", "Joker3", "Joker4"};
+
 
         // For number tiles
         for (TileType tileType : numberTileTypes) {
@@ -47,24 +51,15 @@ public class TileStack {
             }
         }
 
-        // For season tiles
-        for (String season : seasonCharacters) {
-            for (int i = 0; i != 4; i++) {
-                tiles.add(new Tile(TileType.Season, season));
-            }
-        }
-
-        // For flower tiles
-        for (String flower : flowerCharacters) {
-            for (int i = 0; i != 4; i++) {
-                tiles.add(new Tile(TileType.Flower, flower));
-            }
+        // For Joker tiles
+        for (String joker: jokerCharacters){
+            tiles.add(new Tile(TileType.Joker, joker));
         }
 
     }
 
     private void shuffle(){
-        ResetTiles.randomSort(tiles);
+        Collections.shuffle(tiles);
     }
 
     public void playerDiscard(Tile tile){
@@ -92,6 +87,17 @@ public class TileStack {
         shuffle();
     }
 
+    public void showTiles(){
+        for (int i = 0; i != tiles.size(); i++) {
+            if ((i + 1) % 5 == 0){
+                System.out.println(tiles.get(i));
+            }else{
+                System.out.print(tiles.get(i) + "\t");
+            }
+        }
+        System.out.println();
+    }
+
     public int size(){
         return tiles.size();
     }
@@ -99,4 +105,6 @@ public class TileStack {
     public boolean isEmpty(){
         return size() == 0;
     }
+
+
 }

@@ -57,8 +57,8 @@ public class Hand {
         if (tile == null){
             return false;
         }
-        tileStack.playerDiscard(tile);
-        return tiles.remove(tile);
+        tileStack.playerDiscard(tile);  // 加入弃牌堆
+        return tiles.remove(tile);      // 从手牌中删除
     }
 
     public void showHandTiles(){
@@ -72,15 +72,7 @@ public class Hand {
         System.out.println();
     }
 
-    public boolean meldTiles(MeldType meldType){
-        List<Tile> result = CheckTile.findMeld(tiles, meldType);
-        if (result.isEmpty()){
-            return false;
-        }
-        tiles.removeAll(result);     // 移除碰或杠的牌
-        return tiles.addAll(result);  // 将碰和杠的牌加入到手牌中，包括其他人弃的那一张
 
-    }
 
     // 对手牌执行操作，碰或杠
     public void operation(MeldType meldType, Tile tile) {
@@ -89,12 +81,18 @@ public class Hand {
         tiles.addAll(pair);       // 再把对加入到手牌中
     }
 
-    public boolean canPeng(){
-        return meldTiles(MeldType.PENG);
+    /**
+     * 判断是否可以碰
+     * 需要依据上一张弃牌
+     * @param tile
+     * @return
+     */
+    public boolean canPeng(Tile tile){
+        return CheckTile.canPeng(tiles, tile);
     }
 
-    public boolean canGang(){
-        return meldTiles(MeldType.GANG);
+    public boolean canGang(Tile tile){
+        return CheckTile.canGang(tiles, tile);
     }
 
     public List<Tile> getTiles() {

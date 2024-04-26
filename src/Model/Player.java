@@ -1,61 +1,35 @@
 package Model;
 
-import Util.CheckTile;
-import java.util.Scanner;
-
-import java.util.List;
-
 public class Player {
-    private String name;
+    private PlayerType location;
     private Hand hand;
     private boolean isWinner;
     private boolean isZhuang;
-    private Scanner scanner;
 
 
-    public Player(String name) {
-        this.name = name;
+    public Player(PlayerType location) {
+        this.location = location;
         hand = new Hand();
         isWinner = false;
-        scanner = new Scanner(System.in);
+        isZhuang = false;
 
     }
 
-    public void catchTileFromStack(TileStack tileStack){
+    public void drawTile(TileStack tileStack){
         Tile tile = tileStack.takeTile();
         if (tile != null){
             hand.addTile(tile);
-            System.out.println(name + " catches a new tile: " + tile);
+            System.out.println(location + " catches a new tile: " + tile);
 
             if (hand.checkIsWin()){
                 isWinner = true;
             }
         }else{
-            System.out.println("There are not enough tiles for this game");
+            System.out.println("There are not enough tiles for this game. Game is over. No winner.");
         }
     }
 
-    public boolean catchTileFromTable(TileStack tileStack){
-        List<Tile> discardTiles = tileStack.getDiscardTiles();
-        if (discardTiles.isEmpty()){
-            return false;
-        }
-        Tile tile = discardTiles.get(discardTiles.size() - 1);
-        hand.addTile(tile);
-        if (hand.checkIsWin()){
-            isWinner = true;
-            return true;
-        } else if (hand.canGang()) {
-            return true;
-        } else if (hand.canPeng()) {
-            return true;
-        }else{
-            hand.removeTile(tile);
-        }
-        return false;
-    }
-
-    public boolean discard(TileStack tileStack, String tileName){
+    public boolean discardTile(TileStack tileStack, String tileName){
         if(!hand.discardTile(tileStack, tileName)){
             System.out.println("You just can discard tile that on your hand");
             return false;
@@ -63,16 +37,30 @@ public class Player {
         return true;
     }
 
+    public void showHandTiles(){
+        hand.showHandTiles();
+    }
+
+    public void peng(Tile tile) {
+        hand.operation(MeldType.PENG, tile);
+
+
+    }
+
+    public void gang(Tile tile) {
+        hand.operation(MeldType.GANG, tile);
+    }
+
     public boolean isWinner() {
         return isWinner;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Hand getHand() {
         return hand;
+    }
+
+    public PlayerType getLocation() {
+        return location;
     }
 
     public void setZhuang(boolean zhuang) {

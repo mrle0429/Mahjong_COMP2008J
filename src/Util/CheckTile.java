@@ -78,35 +78,14 @@ public class CheckTile {
         return result;
     }
 
-    public static List<Tile> findMeld(List<Tile> tiles, MeldType meldType){
-        List<Tile> result = new ArrayList<>();
+    public static boolean canPeng(List<Tile> tiles, Tile tile) {
+        List<Tile> result = findPair(tiles, MeldType.PENG, tile);
+        return !result.isEmpty();
+    }
 
-        if (meldType == MeldType.EAT){
-            for (int i = 0; i != tiles.size() - 2; i++) {
-                if (tiles.get(i).getTileType() == tiles.get(i + 1).getTileType() && tiles.get(i).getTileType() == tiles.get(i + 2).getTileType()
-                && tiles.get(i).getValue() + 1 == tiles.get(i + 1).getValue() && tiles.get(i).getValue() + 2 == tiles.get(i + 2).getValue()){
-                    result.add(tiles.get(i));
-                    result.add(tiles.get(i + 1));
-                    result.add(tiles.get(i + 2));
-                }
-            }
-        }else{
-            for (int i = 0; i != tiles.size() - 2; i++) {
-                if (meldType == MeldType.PENG && tiles.get(i).equals(tiles.get(i + 1)) &&
-                tiles.get(i).equals(tiles.get(i + 2))){
-                    result.add(tiles.get(i));
-                    result.add(tiles.get(i + 1));
-                    result.add(tiles.get(i + 2));
-                } else if (i + 3 < tiles.size() && tiles.get(i).equals(tiles.get(i + 1)) &&
-                tiles.get(i).equals(tiles.get(i + 2)) && tiles.get(i).equals(tiles.get(i + 3))) {
-                    result.add(tiles.get(i));
-                    result.add(tiles.get(i + 1));
-                    result.add(tiles.get(i + 2));
-                    result.add(tiles.get(i + 3));
-                }
-            }
-        }
-        return result;
+    public static boolean canGang(List<Tile> tiles, Tile tile) {
+        List<Tile> result = findPair(tiles, MeldType.GANG, tile);
+        return !result.isEmpty();
     }
 
     public static boolean isHu(List<Tile> tiles){
