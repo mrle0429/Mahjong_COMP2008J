@@ -12,7 +12,6 @@ public class Player {
         hand = new Hand();
         isWinner = false;
         isZhuang = false;
-
     }
 
     public void drawTile(TileStack tileStack){
@@ -43,8 +42,6 @@ public class Player {
 
     public void peng(Tile tile) {
         hand.operation(MeldType.PENG, tile);
-
-
     }
 
     public void gang(Tile tile) {

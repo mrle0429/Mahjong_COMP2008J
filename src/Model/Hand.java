@@ -9,12 +9,20 @@ import java.util.List;
 public class Hand {
     private List<Tile> tiles;
 
+    private List<Tile> meldTiles;
+
     public Hand() {
         this.tiles = new ArrayList<>();
+        this.meldTiles = new ArrayList<>();
     }
 
     public void addTile(Tile tile){
         tiles.add(tile);
+        sortTiles();
+    }
+
+    public void addMeldTile(Tile tile){
+        meldTiles.add(tile);
         sortTiles();
     }
 
@@ -76,9 +84,22 @@ public class Hand {
 
     // 对手牌执行操作，碰或杠
     public void operation(MeldType meldType, Tile tile) {
-        List<Tile> pair = CheckTile.findPair(tiles, meldType, tile);
-        tiles.removeAll(pair);    // 先把手牌中的对删除
-        tiles.addAll(pair);       // 再把对加入到手牌中
+        List<Tile> pair;
+
+        if (meldType == MeldType.PENG || meldType == MeldType.GANG){
+            pair = CheckTile.findPair(tiles, meldType, tile);
+        } else {
+            pair = CheckTile.findSequence(tiles, tile);
+            addMeldTile(tile); // 吃操作特有，因为吃操作返回的pair只是顺子的其他两个，因此需要把原先的牌加进去
+        }
+
+        for (Tile t : pair) {
+            removeTile(t);
+        }
+
+        for (Tile t: pair) {
+            addMeldTile(t);
+        }
     }
 
     /**
@@ -95,7 +116,18 @@ public class Hand {
         return CheckTile.canGang(tiles, tile);
     }
 
+    public boolean canEat(Tile tile){
+        if (!CheckTile.isNumberType(tile)){
+            return false;
+        }
+        return CheckTile.canEat(tiles, tile);
+    }
+
     public List<Tile> getTiles() {
         return tiles;
+    }
+
+    public List<Tile> getMeldTiles() {
+        return meldTiles;
     }
 }

@@ -11,6 +11,7 @@ public class Game {
     private List<Player> players;
     private TileStack tileStack;
     private boolean hasWinner;
+    private Player currentPlayer;
     private Scanner scanner;
 
     public Game() {
@@ -53,20 +54,15 @@ public class Game {
         showAllTiles();    // 打印所有玩家的牌
         System.out.println();
 
-        int currentPlayerIndex = 0;
-        takeTurn(players.get(currentPlayerIndex), true);
-        currentPlayerIndex++;
+        currentPlayer = findZhuang();
+        takeTurn(currentPlayer, true);
 
         while (!hasWinner) {
-            Player currentPlayer = players.get(currentPlayerIndex);
             takeTurn(currentPlayer, false);
 
             if (tileStack.isEmpty() || currentPlayer.isWinner()) {
                 hasWinner = true;
-            } else {
-                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             }
-
         }
     }
 
@@ -75,6 +71,24 @@ public class Game {
             System.out.println(player.getLocation() + " 's tiles: ");
             player.getHand().showHandTiles();
         }
+    }
+
+    public void moveToNext(Player player){
+        for (Player p : players) {
+            if (p.getLocation() == player.getLocation().next()){
+                currentPlayer = p;
+                return;
+            }
+        }
+    }
+
+    public Player findZhuang(){
+        for (Player player : players) {
+            if (player.isZhuang()){
+                return player;
+            }
+        }
+        return null;
     }
 
     /**
@@ -93,6 +107,10 @@ public class Game {
 
         if(!isFirstTurn) {
             player.drawTile(tileStack);  // 玩家摸牌
+        }
+
+        if (player.isWinner()){
+            return;
         }
 
         boolean isDiscard = false;
@@ -117,7 +135,11 @@ public class Game {
 
                 for (Player p : players) {  // 检测玩家操作
                     if (p != player) {
-                        playerOperations(p, tileStack.getDiscardTiles().get(tileStack.getDiscardTiles().size() - 1));
+                        boolean canEat = false;
+                        if (p.getLocation() == player.getLocation().next()){
+                            canEat = true;
+                        }
+                        playerOperations(p, tileStack.getDiscardTiles().get(tileStack.getDiscardTiles().size() - 1), canEat);
                     }
                 }
                 isDiscard = true;
@@ -132,6 +154,7 @@ public class Game {
         String tileName = scanner.next();
         if (player.discardTile(tileStack, tileName)) {
             //System.out.println(player.getName() + " discard: "+ tileName);
+            moveToNext(player);
             return true;
         }
         return false;
@@ -139,9 +162,13 @@ public class Game {
 
     // 自动检测玩家是否有碰或杠
     // 询问玩家是否要进行操作
-    public void playerOperations(Player player, Tile operationCard) {
-        Boolean isPeng = player.getHand().canPeng(operationCard);
+    public void playerOperations(Player player, Tile operationCard, boolean canEat) {
         Boolean isGang = player.getHand().canGang(operationCard);
+        Boolean isPeng = player.getHand().canPeng(operationCard);
+        boolean isEat = false;
+        if (canEat){
+            isEat = player.getHand().canEat(operationCard);
+        }
 
         if (isPeng && isGang) {
             System.out.println(player.getLocation() + " 's tiles: ");
@@ -164,6 +191,7 @@ public class Game {
                     player.getHand().operation(MeldType.GANG, operationCard);
                     player.getHand().showHandTiles();
                     tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌
+                    player.getHand().addTile(tileStack.takeTile()); // 为了保证牌的总量 杠完需要额外获得牌
                     playerDiscard(player);
                     break;
                 case "3":
@@ -189,7 +217,7 @@ public class Game {
                     break;
                 case "2":
                     scanner.nextLine(); // Clear scanner
-                    return;
+                    break;
                 default:
                     System.out.println("Please enter correct number");
             }
@@ -206,16 +234,37 @@ public class Game {
                     player.getHand().operation(MeldType.GANG, operationCard);
                     player.getHand().showHandTiles();
                     tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌
+                    player.getHand().addTile(tileStack.takeTile()); // 为了保证牌的总量 杠完需要额外获得牌
                     playerDiscard(player);
-                    return;
+                    break;
                 case "2":
                     scanner.nextLine(); // Clear scanner
-                    return;
+                    break;
                 default:
                     System.out.println("Please enter correct number");
             }
-        } else {
-
+        }
+        if (isEat) {
+            System.out.println(player.getLocation() + " 's tiles: ");
+            player.getHand().showHandTiles();
+            System.out.println(player.getLocation()+ " can Eat tiles. Please choice options\n" +
+                    "1. Eat\n" +
+                    "2. Not Eat");
+            String option = scanner.next();
+            switch (option){
+                case "1":
+                    scanner.nextLine();
+                    player.getHand().operation(MeldType.EAT, operationCard);
+                    player.getHand().showHandTiles();
+                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌
+                    playerDiscard(player);
+                    break;
+                case "2":
+                    scanner.nextLine();
+                    break;
+                default:
+                    System.out.println("Please enter correct number");
+            }
         }
     }
 }

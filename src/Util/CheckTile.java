@@ -78,6 +78,25 @@ public class CheckTile {
         return result;
     }
 
+    public static List<Tile> findSequence(List<Tile> tiles, Tile tile){
+        List<Tile> result = new ArrayList<>();
+        TileType tileType = tile.getTileType();
+        int tileValue = tile.getValue();
+
+        int[][] possibleValues = {{tileValue + 1, tileValue + 2}, {tileValue - 1, tileValue + 1}, {tileValue - 2, tileValue - 1}};
+
+        for (int[] values : possibleValues) {
+            Tile seqTile = new Tile(tileType, values[0]);
+            Tile seqTile_ = new Tile(tileType, values[1]);
+
+            if (tiles.contains(seqTile_) && tiles.contains(seqTile)){
+                result.add(seqTile);
+                result.add(seqTile_);
+            }
+        }
+        return result;
+    }
+
     public static boolean canPeng(List<Tile> tiles, Tile tile) {
         List<Tile> result = findPair(tiles, MeldType.PENG, tile);
         return !result.isEmpty();
@@ -85,6 +104,11 @@ public class CheckTile {
 
     public static boolean canGang(List<Tile> tiles, Tile tile) {
         List<Tile> result = findPair(tiles, MeldType.GANG, tile);
+        return !result.isEmpty();
+    }
+
+    public static boolean canEat(List<Tile> tiles, Tile tile){
+        List<Tile> result = findSequence(tiles, tile);
         return !result.isEmpty();
     }
 

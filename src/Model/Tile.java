@@ -6,6 +6,7 @@ public class Tile {
     private TileType tileType;
     private int value; // For WAN, TONG and TIAO
     private String character; // For FENG and JIAN
+    private boolean isLaiZi;
 
     public Tile(TileType tileType, int value) {
         this.tileType = tileType;
@@ -36,6 +37,14 @@ public class Tile {
 
     public String getCharacter() {
         return character;
+    }
+
+    public boolean isLaiZi() {
+        return isLaiZi;
+    }
+
+    public void setLaiZi(boolean laiZi) {
+        isLaiZi = laiZi;
     }
 
     @Override

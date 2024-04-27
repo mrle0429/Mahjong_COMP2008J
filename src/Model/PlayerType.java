@@ -8,5 +8,20 @@ public enum PlayerType {
     East,
     South,
     West,
-    North
+    North;
+
+    public PlayerType next(){
+        switch (this) {
+            case East:
+                return North;
+            case South:
+                return East;
+            case West:
+                return South;
+            case North:
+                return West;
+            default:
+                return null;
+        }
+    }
 }

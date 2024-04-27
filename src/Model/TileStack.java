@@ -25,7 +25,6 @@ public class TileStack {
         TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
-        String[] jokerCharacters = new String[]{"Joker1", "Joker2", "Joker3", "Joker4"};
 
 
         // For number tiles
@@ -52,14 +51,21 @@ public class TileStack {
         }
 
         // For Joker tiles
-        for (String joker: jokerCharacters){
-            tiles.add(new Tile(TileType.Joker, joker));
-        }
+        setLaiZiTile();
 
     }
 
     private void shuffle(){
         Collections.shuffle(tiles);
+    }
+
+    public void setLaiZiTile(){
+        Tile tile = tiles.get((int) (Math.random() * 136));
+        for (Tile t : tiles) {
+            if (t.equals(tile)){
+                t.setLaiZi(true);
+            }
+        }
     }
 
     public void playerDiscard(Tile tile){
