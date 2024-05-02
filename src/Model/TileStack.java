@@ -7,6 +7,7 @@ import java.util.List;
 public class TileStack {
     private List<Tile> tiles;
     private List<Tile> discardTiles;
+    private Tile laiZi;
 
     public TileStack() {
         tiles = new ArrayList<>();
@@ -66,6 +67,7 @@ public class TileStack {
                 t.setLaiZi(true);
             }
         }
+        laiZi = tile;
     }
 
     public void playerDiscard(Tile tile){
@@ -112,5 +114,7 @@ public class TileStack {
         return size() == 0;
     }
 
-
+    public Tile getLaiZi() {
+        return laiZi;
+    }
 }

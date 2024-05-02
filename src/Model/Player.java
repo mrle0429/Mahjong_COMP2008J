@@ -16,16 +16,17 @@ public class Player {
 
     public void drawTile(TileStack tileStack){
         Tile tile = tileStack.takeTile();
-        if (tile != null){
+        if (tile != null) {
             hand.addTile(tile);
-            System.out.println(location + " catches a new tile: " + tile);
+//            System.out.println(location + " catches a new tile: " + tile);
 
-            if (hand.checkIsWin()){
+            if (hand.checkIsWin()) {
                 isWinner = true;
             }
-        }else{
-            System.out.println("There are not enough tiles for this game. Game is over. No winner.");
         }
+//        else{
+////            System.out.println("There are not enough tiles for this game. Game is over. No winner.");
+//        }
     }
 
     public boolean discardTile(TileStack tileStack, String tileName){
@@ -34,6 +35,10 @@ public class Player {
             return false;
         }
         return true;
+    }
+
+    public boolean discardTile(TileStack tileStack, Tile tile){
+        return hand.discardTile(tileStack, tile);
     }
 
     public void showHandTiles(){
@@ -66,5 +71,10 @@ public class Player {
 
     public boolean isZhuang() {
         return isZhuang;
+    }
+
+    @Override
+    public String toString() {
+        return this.location.toString();
     }
 }

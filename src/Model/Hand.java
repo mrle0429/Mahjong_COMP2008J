@@ -54,9 +54,6 @@ public class Hand {
     }
 
     public boolean checkIsWin(){
-        if (tiles.size() != 14){
-            return false;
-        }
         return CheckTile.isHu(tiles);
     }
 
@@ -67,6 +64,11 @@ public class Hand {
         }
         tileStack.playerDiscard(tile);  // 加入弃牌堆
         return tiles.remove(tile);      // 从手牌中删除
+    }
+
+    public boolean discardTile(TileStack tileStack, Tile tile){
+        tileStack.playerDiscard(tile);
+        return tiles.remove(tile);
     }
 
     public void showHandTiles(){

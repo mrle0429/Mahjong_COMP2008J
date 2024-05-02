@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Util.CheckTile;
+import View.GameUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,14 @@ public class Game {
     private boolean hasWinner;
     private Player currentPlayer;
     private Scanner scanner;
+    private GameUI gameUI;
 
     public Game() {
         players = new ArrayList<>();
         tileStack = new TileStack();
         scanner = new Scanner(System.in);
         hasWinner = false;
+        gameUI = new GameUI(this);
     }
 
     public void initializeGame() {    // 重构初始化函数
@@ -48,22 +51,24 @@ public class Game {
     * 1. 庄家第一轮直接打出一张
     * 2. 之后进入正常循环*/
     public void startGame() {
-        System.out.println("Game start!");
+//        System.out.println("Game start!");
         initializeGame();
-
-        showAllTiles();    // 打印所有玩家的牌
-        System.out.println();
-
         currentPlayer = findZhuang();
-        takeTurn(currentPlayer, true);
-
-        while (!hasWinner) {
-            takeTurn(currentPlayer, false);
-
-            if (tileStack.isEmpty() || currentPlayer.isWinner()) {
-                hasWinner = true;
-            }
-        }
+        gameUI.initializeUI();
+//
+//        showAllTiles();    // 打印所有玩家的牌
+//        System.out.println();
+//
+//        currentPlayer = findZhuang();
+//        takeTurn(currentPlayer, true);
+//
+//        while (!hasWinner) {
+//            takeTurn(currentPlayer, false);
+//
+//            if (tileStack.isEmpty() || currentPlayer.isWinner()) {
+//                hasWinner = true;
+//            }
+//        }
     }
 
     public void showAllTiles() {
@@ -158,6 +163,14 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    public void playerDiscardTile(Player player, Tile tile){
+        if (player.discardTile(tileStack, tile)){
+            moveToNext(player);
+//            return true;
+        }
+//        return false;
     }
 
     // 自动检测玩家是否有碰或杠
@@ -266,5 +279,24 @@ public class Game {
                     System.out.println("Please enter correct number");
             }
         }
+    }
+
+    public void updateGame(){
+        currentPlayer.drawTile(tileStack);
+        if (currentPlayer.isWinner()){
+            hasWinner = true;
+        }
+    }
+
+    public TileStack getTileStack() {
+        return tileStack;
+    }
+
+    public boolean isHasWinner() {
+        return hasWinner;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 }
