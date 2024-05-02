@@ -24,6 +24,9 @@ public class GameUI extends JFrame implements MouseListener {
     private Tile laiZi;
     private Tile selectTile = null;
     private boolean failDiscard = false;
+    private boolean failPung = false;
+    private boolean failChow = false;
+    private boolean failKong = false;
     private boolean hasWinner = false;
     private boolean noTiles = false;
     Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src\\Resources\\background.png");
@@ -42,7 +45,18 @@ public class GameUI extends JFrame implements MouseListener {
 
         Button button = new Button("Discard");
         button.setBounds(350, 555, 90, 40);
-        button.setBackground(Color.WHITE);
+        buttons.add(button);
+
+        button = new Button("Pung");
+        button.setBounds(465, 555, 55, 40);
+        buttons.add(button);
+
+        button = new Button("Chow");
+        button.setBounds(545, 555, 55, 40);
+        buttons.add(button);
+
+        button = new Button("Kong");
+        button.setBounds(625, 555, 55, 40);
         buttons.add(button);
 
         this.setSize(width, height);
@@ -77,9 +91,6 @@ public class GameUI extends JFrame implements MouseListener {
 
         paintMessages();
 
-        gf.setColor(Color.BLACK);
-        gf.drawString(currentPlayer + "'s turn", 240, 780);
-
         List<Tile> tileList = currentPlayer.getHand().getTiles();
         for (int i = 0; i != tileList.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + tileList.get(i) + ".png");
@@ -104,7 +115,6 @@ public class GameUI extends JFrame implements MouseListener {
             gf.setColor(Color.BLACK);
             gf.drawString(button.getLabel(), button.getX(), button.getY() + 36);
         }
-
 
         g.drawImage(image, 0, 0, null);
     }
@@ -135,6 +145,12 @@ public class GameUI extends JFrame implements MouseListener {
                 }else{
                     game.playerDiscardTile(currentPlayer, selectTile);
                     updateGame();
+                }
+                return;
+            } else if ("Pung".equals(name)) {
+                if (!currentPlayer.getHand().canPneg()){
+                    failPung = true;
+                    repaint();
                 }
                 return;
             }
@@ -181,12 +197,24 @@ public class GameUI extends JFrame implements MouseListener {
         gf.drawString("LaiZi is: ", 550, 100);
         Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + laiZi + ".png");
         gf.drawImage(tile, 700, 65, null);
+
+        gf.setColor(Color.BLACK);
+        gf.drawString(currentPlayer + "'s turn", 240, 780);
     }
 
     public void paintMessages(){
         if (failDiscard){
             gf.setColor(Color.RED);
             gf.drawString("You must select a tile to discard", 350, 500);
+        } else if (failPung) {
+            gf.setColor(Color.RED);
+            gf.drawString("You do not have enough to Pung", 350, 500);
+        } else if (failChow) {
+            gf.setColor(Color.RED);
+            gf.drawString("You do not have enough to Chow", 350, 500);
+        } else if (failKong) {
+            gf.setColor(Color.RED);
+            gf.drawString("You do not have enough to Kong", 350, 500);
         } else if (hasWinner) {
             gf.setColor(Color.YELLOW);
             gf.drawString(currentPlayer + " wins the Game!", 350, 500);
@@ -213,5 +241,8 @@ public class GameUI extends JFrame implements MouseListener {
 
     public void resetMessage(){
         failDiscard = false;
+        failPung = false;
+        failChow = false;
+        failKong = false;
     }
 }

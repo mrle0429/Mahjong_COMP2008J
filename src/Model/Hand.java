@@ -97,9 +97,6 @@ public class Hand {
 
         for (Tile t : pair) {
             removeTile(t);
-        }
-
-        for (Tile t: pair) {
             addMeldTile(t);
         }
     }
@@ -112,6 +109,18 @@ public class Hand {
      */
     public boolean canPeng(Tile tile){
         return CheckTile.canPeng(tiles, tile);
+    }
+
+    public boolean canPneg(){
+        List<Tile> result = CheckTile.canPeng(tiles);
+        if (result.isEmpty()){
+            return false;
+        }
+        for (Tile tile : result) {
+            removeTile(tile);
+            addMeldTile(tile);
+        }
+        return true;
     }
 
     public boolean canGang(Tile tile){

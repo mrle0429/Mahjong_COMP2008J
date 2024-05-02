@@ -112,6 +112,19 @@ public class CheckTile {
         return !result.isEmpty();
     }
 
+    public static List<Tile> canPeng(List<Tile> tiles){
+        List<Tile> result = new ArrayList<>();
+        for (int i = 0; i != tiles.size() - 2; i++) {
+            if (tiles.get(i).equals(tiles.get(i + 1)) &&
+                    tiles.get(i).equals(tiles.get(i + 2))){
+                result.add(tiles.get(i));
+                result.add(tiles.get(i + 1));
+                result.add(tiles.get(i + 2));
+            }
+        }
+        return result;
+    }
+
     public static boolean isHu(List<Tile> tiles){
         return routineWay(tiles, false) || duiziHu(tiles);
         // TODO add more methods as Hu
