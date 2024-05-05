@@ -78,13 +78,17 @@ public class Game {
         }
     }
 
-    public void moveToNext(Player player){
+    public Player getNextPlayer(Player player){
         for (Player p : players) {
             if (p.getLocation() == player.getLocation().next()){
-                currentPlayer = p;
-                return;
+                return p;
             }
         }
+        return null;
+    }
+
+    public void moveToNext(Player player){
+        currentPlayer = getNextPlayer(player);
     }
 
     public Player findZhuang(){
@@ -167,7 +171,7 @@ public class Game {
 
     public void playerDiscardTile(Player player, Tile tile){
         if (player.discardTile(tileStack, tile)){
-            moveToNext(player);
+//            moveToNext(player);
 //            return true;
         }
 //        return false;
@@ -282,6 +286,7 @@ public class Game {
     }
 
     public void updateGame(){
+        moveToNext(currentPlayer);
         currentPlayer.drawTile(tileStack);
         if (currentPlayer.isWinner()){
             hasWinner = true;

@@ -68,7 +68,7 @@ public class Hand {
 
     public boolean discardTile(TileStack tileStack, Tile tile){
         tileStack.playerDiscard(tile);
-        return tiles.remove(tile);
+        return removeTile(tile);
     }
 
     public void showHandTiles(){
@@ -111,8 +111,20 @@ public class Hand {
         return CheckTile.canPeng(tiles, tile);
     }
 
-    public boolean canPneg(){
+    public boolean canPeng(){
         List<Tile> result = CheckTile.canPeng(tiles);
+        if (result.isEmpty()){
+            return false;
+        }
+        for (Tile tile : result) {
+            removeTile(tile);
+            addMeldTile(tile);
+        }
+        return true;
+    }
+
+    public boolean canGang(){
+        List<Tile> result = CheckTile.canGang(tiles);
         if (result.isEmpty()){
             return false;
         }

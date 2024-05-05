@@ -125,6 +125,21 @@ public class CheckTile {
         return result;
     }
 
+    public static List<Tile> canGang(List<Tile> tiles){
+        List<Tile> result = new ArrayList<>();
+        for (int i = 0; i != tiles.size() - 3; i++) {
+            if (tiles.get(i).equals(tiles.get(i + 1)) &&
+                    tiles.get(i).equals(tiles.get(i + 2)) &&
+                    tiles.get(i).equals(tiles.get(i + 3))){
+                result.add(tiles.get(i));
+                result.add(tiles.get(i + 1));
+                result.add(tiles.get(i + 2));
+                result.add(tiles.get(i + 3));
+            }
+        }
+        return result;
+    }
+
     public static boolean isHu(List<Tile> tiles){
         return routineWay(tiles, false) || duiziHu(tiles);
         // TODO add more methods as Hu
