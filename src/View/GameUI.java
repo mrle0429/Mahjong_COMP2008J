@@ -17,10 +17,12 @@ public class GameUI extends JFrame implements MouseListener {
     private Game game;
     private Player currentPlayer;
     private Player banker;
+    private List<Player> optionPlayers;
     public static int height = 800;
     public static int width = 1200;
     List<Button> buttons = new ArrayList<>();
     List<Button> otherButtons = new ArrayList<>();
+    List<Button> showButtons;
     private Image image = null;
     private Graphics gf = null;
     private Tile laiZi;
@@ -45,6 +47,7 @@ public class GameUI extends JFrame implements MouseListener {
         currentPlayer = game.getCurrentPlayer();
         banker = game.findZhuang();
         laiZi = game.getTileStack().getLaiZi();
+        optionPlayers = new ArrayList<>();
 
         Button button = new Button("Discard");
         button.setBounds(350, 555, 90, 40);
@@ -116,15 +119,20 @@ public class GameUI extends JFrame implements MouseListener {
             gf.drawImage(tile, 220 + (53 * ((i + 15) % 15)), 300 + (i / 15) * 35, null);
         }
 
-        if (selfTurn) {
-            for (Button button : buttons) {
-                gf.setColor(Color.GRAY);
-                gf.fillRect(button.getX(), button.getY(), button.getWidth(), button.getHeight());
+        // 对于不同的界面绘制不同的按钮
+        if (selfTurn){
+            showButtons = buttons;
+        }else{
+            showButtons = otherButtons;
+        }
 
-                gf.setFont(new Font("宋体", Font.BOLD, 24));
-                gf.setColor(Color.BLACK);
-                gf.drawString(button.getLabel(), button.getX(), button.getY() + 36);
-            }
+        for (Button button : showButtons) {
+            gf.setColor(Color.GRAY);
+            gf.fillRect(button.getX(), button.getY(), button.getWidth(), button.getHeight());
+
+            gf.setFont(new Font("宋体", Font.BOLD, 24));
+            gf.setColor(Color.BLACK);
+            gf.drawString(button.getLabel(), button.getX(), button.getY() + 36);
         }
 
         g.drawImage(image, 0, 0, null);
@@ -143,13 +151,13 @@ public class GameUI extends JFrame implements MouseListener {
 
             String name = "";
 
-            for (Button button : buttons) {
+            for (Button button : showButtons) {
                 if (button.getBounds().contains(xPos, yPos)) {
                     name = button.getLabel();
                 }
             }
 
-            if ("Discard".equals(name)){
+            if (selfTurn && "Discard".equals(name)){
                 if (selectTile == null){
                     failDiscard = true;
                     repaint();
@@ -181,19 +189,39 @@ public class GameUI extends JFrame implements MouseListener {
                 }
                 repaint();
                 return;
+            } else if (!selfTurn && "Pass".equals(name)) {
+                updateGame();
+                return;
+            } else if (!selfTurn && "Pung".equals(name)) {
+                // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清楚
+                optionPlayers.clear();
+
+                currentPlayer.getHand().operation(MeldType.PENG, selectTile);
+                game.getTileStack().getDiscardTiles().remove(selectTile);
+
+                selfTurn = true;
+                game.setCurrentPlayer(currentPlayer);
+                selectTile = null;
+
+                repaint();
+//                game.setCurrentPlayer(game.getLastPlayer(currentPlayer));
+//                updateGame();
+                return;
             }
 
-            List<Tile> tiles = currentPlayer.getHand().getTiles();
+            if (selfTurn) {
+                List<Tile> tiles = currentPlayer.getHand().getTiles();
 
-            int widthArea = tiles.size() * 53;
-            if (xPos < 240 || xPos > 239 + widthArea || yPos < 630 || yPos > 700) {
-                selectTile = null;
-            } else {
-                if (selectTile == null) {
-                    int tilePos = (xPos - 240) / 53;
-                    selectTile = tiles.get(tilePos);
-                } else {
+                int widthArea = tiles.size() * 53;
+                if (xPos < 240 || xPos > 239 + widthArea || yPos < 630 || yPos > 700) {
                     selectTile = null;
+                } else {
+                    if (selectTile == null) {
+                        int tilePos = (xPos - 240) / 53;
+                        selectTile = tiles.get(tilePos);
+                    } else {
+                        selectTile = null;
+                    }
                 }
             }
         }
@@ -202,21 +230,46 @@ public class GameUI extends JFrame implements MouseListener {
         repaint();
     }
 
-    public List<MeldType> playerOperations(Player player, Tile tile, boolean canEat) {
-        List<MeldType> result = new ArrayList<>();
-
+    public void playerOperations(Player player, Tile tile, boolean canEat) {
         boolean isPeng = player.getHand().canPeng(tile);
         if (isPeng){
-            result.add(MeldType.PENG);
-            Button button = new Button("Pung");
-            button.setBounds(465, 555, 55, 40);
-            otherButtons.add(button);
+//            Button button = new Button("Pung");
+//            button.setBounds(465, 555, 55, 40);
+//            otherButtons.add(button);
+            optionPlayers.add(player);
         }
 
-        return result;
     }
 
     public void updateGame(){
+        // 如果当前玩家出的牌可以被其他玩家碰 吃 杠操作的时候 的逻辑
+        if (!optionPlayers.isEmpty()){
+            Player optionsPlayer = optionPlayers.get(0);
+            currentPlayer = optionsPlayer;
+            selfTurn = false;
+
+            optionPlayers.remove(optionsPlayer);
+            // 对于这名玩家的专属按钮进行重置
+            otherButtons = new ArrayList<>();
+
+            Button button;
+
+            if (optionsPlayer.getHand().canPeng(selectTile)){
+                button = new Button("Pung");
+                button.setBounds(465, 555, 55, 40);
+                otherButtons.add(button);
+            }
+
+            button = new Button("Pass");
+            button.setBounds(350, 555, 75, 40);
+            otherButtons.add(button);
+
+            repaint();
+            return;
+        }
+
+        //正常情况下，下一名玩家的逻辑
+        selfTurn = true;
         if (game.getTileStack().isEmpty()){
             noTiles = true;
             repaint();
@@ -257,6 +310,9 @@ public class GameUI extends JFrame implements MouseListener {
         } else if (failKong) {
             gf.setColor(Color.RED);
             gf.drawString("You do not have enough to Kong", 350, 500);
+        } else if (!selfTurn) {
+            gf.setColor(Color.YELLOW);
+            gf.drawString("You can do options with last tile are as follow.", 350, 500);
         } else if (hasWinner) {
             gf.setColor(Color.YELLOW);
             gf.drawString(currentPlayer + " wins the Game!", 350, 500);

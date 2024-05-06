@@ -87,6 +87,15 @@ public class Game {
         return null;
     }
 
+    public Player getLastPlayer(Player player){
+        for (Player p : players) {
+            if (player.getLocation() == p.getLocation().next()){
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void moveToNext(Player player){
         currentPlayer = getNextPlayer(player);
     }
@@ -299,6 +308,10 @@ public class Game {
 
     public boolean isHasWinner() {
         return hasWinner;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public Player getCurrentPlayer() {

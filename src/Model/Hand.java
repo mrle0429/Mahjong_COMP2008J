@@ -123,6 +123,8 @@ public class Hand {
         return true;
     }
 
+
+
     public boolean canGang(){
         List<Tile> result = CheckTile.canGang(tiles);
         if (result.isEmpty()){
