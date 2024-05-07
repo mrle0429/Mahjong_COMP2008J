@@ -18,23 +18,23 @@ public class Hand {
 
     public void addTile(Tile tile){
         tiles.add(tile);
-        sortTiles();
+        sortTiles(tiles);
     }
 
     public void addMeldTile(Tile tile){
         meldTiles.add(tile);
-        sortTiles();
+        sortTiles(meldTiles);
     }
 
     public boolean removeTile(Tile tile){
         boolean hasRemoved = tiles.remove(tile);
         if (hasRemoved){
-            sortTiles();
+            sortTiles(tiles);
         }
         return hasRemoved;
     }
 
-    public void sortTiles(){
+    public void sortTiles(List<Tile> tiles){
         tiles.sort(new Comparator<Tile>() {
             @Override
             public int compare(Tile t1, Tile t2) {

@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import Util.CheckTile;
 import View.GameUI;
+import View.PreparationUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +16,22 @@ public class Game {
     private Player currentPlayer;
     private Scanner scanner;
     private GameUI gameUI;
+    private PreparationUI preparationUI;
+    private boolean isStart;
 
     public Game() {
         players = new ArrayList<>();
         tileStack = new TileStack();
         scanner = new Scanner(System.in);
         hasWinner = false;
+        isStart = false;
         gameUI = new GameUI(this);
+
+        preparationUI = new PreparationUI(this);
     }
 
     public void initializeGame() {    // 重构初始化函数
         addPlayer();                 // 添加四名玩家
-        players.get(0).setZhuang(true);  // 确定庄家
         distributeTile();            // 发牌，同时为庄家多发一张
     }
 
@@ -42,9 +47,9 @@ public class Game {
             for (int i = 0; i != 13; i++) {
                 player.getHand().addTile(tileStack.takeTile());
             }
-            if (player.isZhuang()) {
-                player.getHand().addTile(tileStack.takeTile());
-            }
+//            if (player.isZhuang()) {
+//                player.getHand().addTile(tileStack.takeTile());
+//            }
         }
     }
     /*逻辑更新
@@ -52,8 +57,14 @@ public class Game {
     * 2. 之后进入正常循环*/
     public void startGame() {
 //        System.out.println("Game start!");
-        initializeGame();
+        if (!isStart){
+            initializeGame();
+            preparationUI.initializeUI();
+            return;
+        }
         currentPlayer = findZhuang();
+        // 地主额外获得一张牌
+        currentPlayer.getHand().addTile(tileStack.takeTile());
         gameUI.initializeUI();
 //
 //        showAllTiles();    // 打印所有玩家的牌
@@ -314,7 +325,19 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
+    public void setStart(){
+        isStart = true;
+    }
+
+    public void setZhuang(int index){
+        players.get(index).setZhuang(true);
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }

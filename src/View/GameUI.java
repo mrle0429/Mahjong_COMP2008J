@@ -67,7 +67,7 @@ public class GameUI extends JFrame implements MouseListener {
 
         this.setSize(width, height);
 
-        this.setTitle("Mahjong");
+        this.setTitle("Mahjong Game");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -80,6 +80,7 @@ public class GameUI extends JFrame implements MouseListener {
 
     @Override
     public void paint(Graphics g) {
+        // 添加临时图片 解决屏幕闪烁问题
         if (image == null) {
             image = this.createImage(1200, 800);
         }
@@ -207,6 +208,33 @@ public class GameUI extends JFrame implements MouseListener {
 //                game.setCurrentPlayer(game.getLastPlayer(currentPlayer));
 //                updateGame();
                 return;
+            } else if (!selfTurn && "Kong".equals(name)) {
+                optionPlayers.clear();
+
+                currentPlayer.getHand().operation(MeldType.GANG, selectTile);
+                game.getTileStack().getDiscardTiles().remove(selectTile);
+
+                // 因为杠牌是需要一下出4张，这个时候需要让这名玩家取一张牌的同时，还要出一张牌，为了保持游戏特性的同时维持手牌稳定
+                currentPlayer.getHand().addTile(game.getTileStack().takeTile());
+
+                selfTurn = true;
+                game.setCurrentPlayer(currentPlayer);
+                selectTile = null;
+
+                repaint();
+                return;
+            } else if (!selfTurn && "Chow".equals(name)) {
+                optionPlayers.clear();
+
+                currentPlayer.getHand().operation(MeldType.EAT, selectTile);
+                game.getTileStack().getDiscardTiles().remove(selectTile);
+
+                selfTurn = true;
+                game.setCurrentPlayer(currentPlayer);
+                selectTile = null;
+
+                repaint();
+                return;
             }
 
             if (selfTurn) {
@@ -232,18 +260,26 @@ public class GameUI extends JFrame implements MouseListener {
 
     public void playerOperations(Player player, Tile tile, boolean canEat) {
         boolean isPeng = player.getHand().canPeng(tile);
-        if (isPeng){
+        boolean isGang = player.getHand().canGang(tile);
+        boolean isEat = false;
+        if (canEat){
+            isEat = player.getHand().canEat(tile);
+        }
+
+        if (isPeng || isGang || isEat){
 //            Button button = new Button("Pung");
 //            button.setBounds(465, 555, 55, 40);
 //            otherButtons.add(button);
             optionPlayers.add(player);
         }
-
     }
 
     public void updateGame(){
         // 如果当前玩家出的牌可以被其他玩家碰 吃 杠操作的时候 的逻辑
         if (!optionPlayers.isEmpty()){
+            // 设置出这张牌的玩家，这样方便检测吃的操作
+            Player originalPlayer = game.getCurrentPlayer();
+
             Player optionsPlayer = optionPlayers.get(0);
             currentPlayer = optionsPlayer;
             selfTurn = false;
@@ -258,6 +294,20 @@ public class GameUI extends JFrame implements MouseListener {
                 button = new Button("Pung");
                 button.setBounds(465, 555, 55, 40);
                 otherButtons.add(button);
+            }
+
+            if (optionsPlayer.getHand().canGang(selectTile)){
+                button = new Button("Kong");
+                button.setBounds(545, 555, 55, 40);
+                otherButtons.add(button);
+            }
+
+            if (optionsPlayer.getLocation() == originalPlayer.getLocation().next()){
+                if (optionsPlayer.getHand().canEat(selectTile)){
+                    button = new Button("Chow");
+                    button.setBounds(625, 555, 55, 40);
+                    otherButtons.add(button);
+                }
             }
 
             button = new Button("Pass");
