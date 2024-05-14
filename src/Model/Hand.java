@@ -8,12 +8,11 @@ import java.util.List;
 
 public class Hand {
     private List<Tile> tiles;
-
     private List<Tile> meldTiles;
 
     public Hand() {
         this.tiles = new ArrayList<>();
-        this.meldTiles = new ArrayList<>();
+        this.meldTiles = new ArrayList<>();   // 吃操作特有牌堆
     }
 
     public void addTile(Tile tile){
@@ -84,15 +83,16 @@ public class Hand {
 
 
 
-    // 对手牌执行操作，碰或杠
+    // 对手牌执行操作，碰或杠或吃
     public void operation(MeldType meldType, Tile tile) {
         List<Tile> pair;
-
-        if (meldType == MeldType.PENG || meldType == MeldType.GANG){
+        if(meldType == MeldType.PENG) {
+            pair = CheckTile.findPair(tiles, meldType, tile);
+        } else if(meldType == MeldType.GANG) {
             pair = CheckTile.findPair(tiles, meldType, tile);
         } else {
             pair = CheckTile.findSequence(tiles, tile);
-            addMeldTile(tile); // 吃操作特有，因为吃操作返回的pair只是顺子的其他两个，因此需要把原先的牌加进去
+            addMeldTile(tile);
         }
 
         for (Tile t : pair) {

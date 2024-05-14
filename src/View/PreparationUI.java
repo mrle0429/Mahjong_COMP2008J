@@ -137,8 +137,6 @@ public class PreparationUI extends JFrame implements MouseListener {
 
                 dispose();
             }
-
-
         }
 
         repaint();
