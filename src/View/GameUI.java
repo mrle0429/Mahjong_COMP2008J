@@ -1,13 +1,12 @@
 package View;
 
 import Controller.Game;
-import Model.MeldType;
-import Model.Player;
-import Model.Tile;
-import Model.TileStack;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -34,10 +33,16 @@ public class GameUI extends JFrame implements MouseListener {
     private boolean hasWinner = false;
     private boolean noTiles = false;
     private boolean selfTurn = true;
-    Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src\\Resources\\background.png");
-    Image leftPlayerTile = Toolkit.getDefaultToolkit().getImage("src\\Resources\\leftP.png");
-    Image rightPlayerTile = Toolkit.getDefaultToolkit().getImage("src\\Resources\\rightP.png");
-    Image topPlayerTile = Toolkit.getDefaultToolkit().getImage("src\\Resources\\topP.png");
+    private MediaTracker tracker;
+    private int loadTimes;
+
+    private Image backgroundImage;
+    private Image leftPlayerTile;
+    private Image rightPlayerTile;
+    private Image topPlayerTile;
+
+    private int currentTileIndex;
+    private Timer timer;
 
     public GameUI(Game game) {
         this.game = game;
@@ -48,6 +53,24 @@ public class GameUI extends JFrame implements MouseListener {
         banker = game.findZhuang();
         laiZi = game.getTileStack().getLaiZi();
         optionPlayers = new ArrayList<>();
+        loadTimes = 0;
+        tracker = new MediaTracker(this);
+
+        backgroundImage = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/background.png"));
+        leftPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/leftP.png"));
+        rightPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/rightP.png"));
+        topPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/topP.png"));
+
+        tracker.addImage(backgroundImage, loadTimes++);
+        tracker.addImage(leftPlayerTile, loadTimes++);
+        tracker.addImage(rightPlayerTile, loadTimes++);
+        tracker.addImage(topPlayerTile, loadTimes++);
+
+        try {
+            tracker.waitForAll();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         Button button = new Button("Discard");
         button.setBounds(350, 555, 90, 40);
@@ -59,6 +82,10 @@ public class GameUI extends JFrame implements MouseListener {
 
         button = new Button("Kong");
         button.setBounds(545, 555, 55, 40);
+        buttons.add(button);
+
+        button = new Button("Change tile order");
+        button.setBounds(500, 740, 230, 40);
         buttons.add(button);
 
 //        button = new Button("Chow");
@@ -76,6 +103,8 @@ public class GameUI extends JFrame implements MouseListener {
         this.addMouseListener(this);
 
         this.setVisible(true);
+
+        startDealing();
     }
 
     @Override
@@ -94,13 +123,27 @@ public class GameUI extends JFrame implements MouseListener {
         gf.drawImage(topPlayerTile, 220, 180, null);
         gf.setFont(new Font("宋体", Font.BOLD, 24));
 
+
         paintBankerInfo();
+
+        if (!currentPlayer.getHand().isDealingFinished()){
+            List<Tile> tileList = currentPlayer.getHand().getTiles();
+            for (int i = 0; i != currentTileIndex - 1; i++) {
+                Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + tileList.get(i) + ".png"));
+                loadSingleImage(tile);
+                gf.drawImage(tile, 240 + (53 * i), 630, null);
+            }
+
+            g.drawImage(image, 0, 0, null);
+            return;
+        }
 
         paintMessages();
 
         List<Tile> tileList = currentPlayer.getHand().getTiles();
         for (int i = 0; i != tileList.size(); i++) {
-            Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + tileList.get(i) + ".png");
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + tileList.get(i) + ".png"));
+            loadSingleImage(tile);
             if (tileList.get(i) != selectTile) {
                 gf.drawImage(tile, 240 + (53 * i), 650, null);
             } else {
@@ -110,13 +153,15 @@ public class GameUI extends JFrame implements MouseListener {
 
         List<Tile> meldTiles = currentPlayer.getHand().getMeldTiles();
         for (int i = 0; i != meldTiles.size(); i++) {
-            Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + meldTiles.get(i) + ".png");
-            gf.drawImage(tile, 950 - (53 * i), 650, null);
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + meldTiles.get(i) + ".png"));
+            loadSingleImage(tile);
+            gf.drawImage(tile, 1003 - (53 * i), 650, null);
         }
 
         List<Tile> discardTiles = game.getTileStack().getDiscardTiles();
         for (int i = 0; i != discardTiles.size(); i++) {
-            Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + discardTiles.get(i) + ".png");
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + discardTiles.get(i) + ".png"));
+            loadSingleImage(tile);
             gf.drawImage(tile, 220 + (53 * ((i + 15) % 15)), 300 + (i / 15) * 35, null);
         }
 
@@ -139,6 +184,15 @@ public class GameUI extends JFrame implements MouseListener {
         g.drawImage(image, 0, 0, null);
     }
 
+    private void loadSingleImage(Image image){
+        tracker.addImage(image, loadTimes++);
+        try {
+            tracker.waitForID(loadTimes - 1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -146,6 +200,10 @@ public class GameUI extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (!currentPlayer.getHand().isDealingFinished()){
+            return;
+        }
+
         if (e.getButton() == MouseEvent.BUTTON1) {
             int xPos = e.getX();
             int yPos = e.getY();
@@ -187,6 +245,14 @@ public class GameUI extends JFrame implements MouseListener {
                     failKong = true;
                 }else{
                     currentPlayer.drawTile(game.getTileStack());
+                }
+                repaint();
+                return;
+            } else if (selfTurn && "Change tile order".equals(name)) {
+                if (currentPlayer.getHand().getTileSortType() == TileSortType.MinToMax){
+                    currentPlayer.getHand().setMaxType();
+                }else{
+                    currentPlayer.getHand().setMinType();
                 }
                 repaint();
                 return;
@@ -281,6 +347,9 @@ public class GameUI extends JFrame implements MouseListener {
             Player originalPlayer = game.getCurrentPlayer();
 
             Player optionsPlayer = optionPlayers.get(0);
+
+            optionsPlayer.getHand().setDealingFinished(); // 如果这个人需要执行碰等操作的时候 但是他之前还没有看见自己的牌 则屏蔽发牌过程
+
             currentPlayer = optionsPlayer;
             selfTurn = false;
 
@@ -331,6 +400,7 @@ public class GameUI extends JFrame implements MouseListener {
         }
         selectTile = null;
         currentPlayer = game.getCurrentPlayer();
+        startDealing();
         repaint();
     }
 
@@ -340,7 +410,8 @@ public class GameUI extends JFrame implements MouseListener {
         gf.drawString("The banker is: " + banker, 220, 100);
 
         gf.drawString("LaiZi is: ", 550, 100);
-        Image tile = Toolkit.getDefaultToolkit().getImage("src\\resources\\" + laiZi + ".png");
+        Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + laiZi + ".png"));
+        loadSingleImage(tile);
         gf.drawImage(tile, 700, 65, null);
 
         gf.setColor(Color.BLACK);
@@ -392,5 +463,22 @@ public class GameUI extends JFrame implements MouseListener {
         failPung = false;
         failChow = false;
         failKong = false;
+    }
+
+    public void startDealing(){
+        currentTileIndex = 1;
+        timer = new Timer(500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentTileIndex < 15){
+                    currentTileIndex++;
+                }else{
+                    timer.stop();
+                    currentPlayer.getHand().setDealingFinished();
+                }
+                repaint();
+            }
+        });
+        timer.start();
     }
 }
