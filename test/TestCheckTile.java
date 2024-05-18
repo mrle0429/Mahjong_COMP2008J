@@ -1,3 +1,4 @@
+import Model.MeldType;
 import Model.Tile;
 import Model.TileType;
 import Util.CheckTile;
@@ -41,6 +42,18 @@ public class TestCheckTile {
         tiles.add(new Tile(TileType.Character, 5));
         tiles.add(new Tile(TileType.Character, 5));
 
+        assertTrue(CheckTile.isHu(tiles));
+
+        tiles.clear();
+
+        tiles.add(new Tile(TileType.Circle, 9));
+        tiles.add(new Tile(TileType.Circle, 9));
+        tiles.add(new Tile(TileType.Circle, 9));
+        tiles.add(new Tile(TileType.Circle, 7));
+        tiles.add(new Tile(TileType.Circle, 7));
+        tiles.add(new Tile(TileType.Wind, "West"));
+        tiles.add(new Tile(TileType.Wind, "West"));
+        tiles.add(new Tile(TileType.Wind, "West"));
         assertTrue(CheckTile.isHu(tiles));
     }
 }

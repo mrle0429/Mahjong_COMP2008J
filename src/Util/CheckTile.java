@@ -58,7 +58,7 @@ public class CheckTile {
         List<Tile> result = new ArrayList<>();
         // 只写碰和杠
         if(meldType == MeldType.PENG) {
-            for(int i = 0; i != tiles.size() - 2; i++) {
+            for(int i = 0; i != tiles.size() - 1; i++) {
                 if(tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1))) {
                     result.add(tiles.get(i));
                     result.add(tiles.get(i + 1));
@@ -66,7 +66,7 @@ public class CheckTile {
                 }
             }
         } else if(meldType == MeldType.GANG) {
-            for(int i = 0; i != tiles.size() - 3; i++) {
+            for(int i = 0; i != tiles.size() - 2; i++) {
                 if(tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1)) && tile.equals(tiles.get(i + 2))) {
                     result.add(tiles.get(i));
                     result.add(tiles.get(i + 1));
