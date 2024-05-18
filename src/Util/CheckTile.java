@@ -92,6 +92,7 @@ public class CheckTile {
             if (tiles.contains(seqTile_) && tiles.contains(seqTile)){
                 result.add(seqTile);
                 result.add(seqTile_);
+                return result;
             }
         }
         return result;
@@ -150,15 +151,25 @@ public class CheckTile {
             return true;
         }
 
-
         // Test if it has pair
         if (!findPair){
-            for (int i = 0; i != tiles.size() - 2; i++) {
-                if (tiles.get(i).equals(tiles.get(i + 1)) && !tiles.get(i).equals(tiles.get(i + 2))){
+            int firstIndex = 0;
+            if (tiles.get(firstIndex).equals(tiles.get(firstIndex + 1)) && !tiles.get(firstIndex).equals(tiles.get(firstIndex + 2))){
+                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
+                newTiles.remove(firstIndex);
+                newTiles.remove(firstIndex);
+                if (routineWay(newTiles, true)){
+                    return true;
+                }
+            }
+            for (int i = 1; i != tiles.size() - 2; i++) {
+                if (!tiles.get(i).equals(tiles.get(i - 1)) && tiles.get(i).equals(tiles.get(i + 1)) && !tiles.get(i + 1).equals(tiles.get(i + 2))){
                     ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                     newTiles.remove(i + 1);
                     newTiles.remove(i);
-                    return routineWay(newTiles, true);
+                    if (routineWay(newTiles, true)){
+                        return true;
+                    }
                 }
             }
             int lastIndex = tiles.size() - 2;
@@ -166,7 +177,9 @@ public class CheckTile {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
-                return routineWay(newTiles, true);
+                if (routineWay(newTiles, true)){
+                    return true;
+                }
             }
             return false; // Not find pair, not in this win way.
         }
@@ -175,19 +188,35 @@ public class CheckTile {
             return false;
         }
 
+
         Tile firstTile = tiles.get(0);
         Tile secondTile = tiles.get(1);
         Tile thirdTile = tiles.get(2);
 
         // Test the other can be formed by Sequence
         if (CheckTile.isNumberType(firstTile)){
-            if (firstTile.getTileType() == secondTile.getTileType() && firstTile.getTileType() == thirdTile.getTileType() &&
-            firstTile.getValue() + 1 == secondTile.getValue() && firstTile.getValue() + 2 == thirdTile.getValue()){
-                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                newTiles.remove(firstTile);
-                newTiles.remove(secondTile);
-                newTiles.remove(thirdTile);
-                return routineWay(newTiles, true);
+            if (firstTile.getTileType() == secondTile.getTileType() &&
+            firstTile.getValue() + 1 == secondTile.getValue()){
+                if (firstTile.getTileType() == thirdTile.getTileType()){
+                    if (firstTile.getValue() + 2 == thirdTile.getValue()){
+                        ArrayList<Tile> newTiles = new ArrayList<>(tiles);
+                        newTiles.remove(firstTile);
+                        newTiles.remove(secondTile);
+                        newTiles.remove(thirdTile);
+                        return routineWay(newTiles, true);
+                    }else{
+                        if (tiles.size() > 3){
+                            Tile fourthTile = tiles.get(3);
+                            if (firstTile.getTileType() == fourthTile.getTileType() && firstTile.getValue() + 2 == fourthTile.getValue()){
+                                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
+                                newTiles.remove(firstTile);
+                                newTiles.remove(secondTile);
+                                newTiles.remove(fourthTile);
+                                return routineWay(newTiles, true);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -195,8 +224,8 @@ public class CheckTile {
         if (firstTile.equals(secondTile) && firstTile.equals(thirdTile)){
             ArrayList<Tile> newTiles = new ArrayList<>(tiles);
             newTiles.remove(firstTile);
-            newTiles.remove(secondTile);
-            newTiles.remove(thirdTile);
+            newTiles.remove(firstTile);
+            newTiles.remove(firstTile);
             return routineWay(newTiles, true);
         }
         return false;

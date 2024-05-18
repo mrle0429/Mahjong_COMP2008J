@@ -13,5 +13,4 @@ public enum TileType {
     Circle,
     Wind,
     Dragon,
-    Joker
 }
