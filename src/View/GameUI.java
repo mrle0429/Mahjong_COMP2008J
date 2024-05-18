@@ -35,6 +35,7 @@ public class GameUI extends JFrame implements MouseListener {
     private boolean selfTurn = true;
     private MediaTracker tracker;
     private int loadTimes;
+    private boolean gameOver;
 
     private Image backgroundImage;
     private Image leftPlayerTile;
@@ -55,6 +56,7 @@ public class GameUI extends JFrame implements MouseListener {
         optionPlayers = new ArrayList<>();
         loadTimes = 0;
         tracker = new MediaTracker(this);
+        gameOver = false;
 
         backgroundImage = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/background.png"));
         leftPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/leftP.png"));
@@ -200,7 +202,7 @@ public class GameUI extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!currentPlayer.getHand().isDealingFinished()){
+        if (!currentPlayer.getHand().isDealingFinished() || gameOver){
             return;
         }
 
@@ -244,7 +246,13 @@ public class GameUI extends JFrame implements MouseListener {
                 if (!currentPlayer.getHand().canGang()){
                     failKong = true;
                 }else{
-                    currentPlayer.drawTile(game.getTileStack());
+                    if (!checkTileStack()) {
+                        currentPlayer.drawTile(game.getTileStack());
+                        if (currentPlayer.isWinner()){
+                            hasWinner = true;
+                            gameOver = true;
+                        }
+                    }
                 }
                 repaint();
                 return;
@@ -266,6 +274,8 @@ public class GameUI extends JFrame implements MouseListener {
                 currentPlayer.getHand().operation(MeldType.PENG, selectTile);
                 game.getTileStack().getDiscardTiles().remove(selectTile);
 
+                checkGameWin();
+
                 selfTurn = true;
                 game.setCurrentPlayer(currentPlayer);
                 selectTile = null;
@@ -281,7 +291,13 @@ public class GameUI extends JFrame implements MouseListener {
                 game.getTileStack().getDiscardTiles().remove(selectTile);
 
                 // 因为杠牌是需要一下出4张，这个时候需要让这名玩家取一张牌的同时，还要出一张牌，为了保持游戏特性的同时维持手牌稳定
-                currentPlayer.getHand().addTile(game.getTileStack().takeTile());
+                if (!checkTileStack()) {
+                    currentPlayer.drawTile(game.getTileStack());
+                    if (currentPlayer.isWinner()){
+                        hasWinner = true;
+                        gameOver = true;
+                    }
+                }
 
                 selfTurn = true;
                 game.setCurrentPlayer(currentPlayer);
@@ -294,6 +310,8 @@ public class GameUI extends JFrame implements MouseListener {
 
                 currentPlayer.getHand().operation(MeldType.EAT, selectTile);
                 game.getTileStack().getDiscardTiles().remove(selectTile);
+
+                checkGameWin();
 
                 selfTurn = true;
                 game.setCurrentPlayer(currentPlayer);
@@ -389,19 +407,35 @@ public class GameUI extends JFrame implements MouseListener {
 
         //正常情况下，下一名玩家的逻辑
         selfTurn = true;
-        if (game.getTileStack().isEmpty()){
-            noTiles = true;
+        if (checkTileStack()){
             repaint();
             return;
         }
         game.updateGame();
+        selectTile = null;
         if (game.isHasWinner()){
             hasWinner = true;
+            gameOver = true;
         }
-        selectTile = null;
         currentPlayer = game.getCurrentPlayer();
         startDealing();
         repaint();
+    }
+
+    public boolean checkTileStack(){
+        if (game.getTileStack().isEmpty()){
+            noTiles = true;
+            gameOver = true;
+            return true;
+        }
+        return false;
+    }
+
+    public void checkGameWin(){
+        if (currentPlayer.getHand().checkIsWin()){
+            hasWinner = true;
+            gameOver = true;
+        }
     }
 
     public void paintBankerInfo(){
@@ -480,5 +514,9 @@ public class GameUI extends JFrame implements MouseListener {
             }
         });
         timer.start();
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

@@ -64,7 +64,7 @@ public class Game {
         }
         currentPlayer = findZhuang();
         // 地主额外获得一张牌
-        currentPlayer.getHand().addTile(tileStack.takeTile());
+        currentPlayer.drawTile(tileStack);
         gameUI.initializeUI();
 //
 //        showAllTiles();    // 打印所有玩家的牌
