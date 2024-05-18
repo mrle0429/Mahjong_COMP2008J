@@ -47,16 +47,12 @@ public class Game {
             for (int i = 0; i != 13; i++) {
                 player.getHand().addTile(tileStack.takeTile());
             }
-//            if (player.isZhuang()) {
-//                player.getHand().addTile(tileStack.takeTile());
-//            }
         }
     }
     /*逻辑更新
     * 1. 庄家第一轮直接打出一张
     * 2. 之后进入正常循环*/
     public void startGame() {
-//        System.out.println("Game start!");
         if (!isStart){
             initializeGame();
             preparationUI.initializeUI();
@@ -66,28 +62,8 @@ public class Game {
         // 地主额外获得一张牌
         currentPlayer.drawTile(tileStack);
         gameUI.initializeUI();
-//
-//        showAllTiles();    // 打印所有玩家的牌
-//        System.out.println();
-//
-//        currentPlayer = findZhuang();
-//        takeTurn(currentPlayer, true);
-//
-//        while (!hasWinner) {
-//            takeTurn(currentPlayer, false);
-//
-//            if (tileStack.isEmpty() || currentPlayer.isWinner()) {
-//                hasWinner = true;
-//            }
-//        }
     }
 
-    public void showAllTiles() {
-        for (Player player : players) {
-            System.out.println(player.getLocation() + " 's tiles: ");
-            player.getHand().showHandTiles();
-        }
-    }
 
     public Player getNextPlayer(Player player){
         for (Player p : players) {
@@ -128,7 +104,7 @@ public class Game {
      *
      * @param player
      */
-    public void takeTurn(Player player, boolean isFirstTurn) {
+    /*public void takeTurn(Player player, boolean isFirstTurn) {
         System.out.println(player.getLocation() + " 's turn");
         System.out.println("You current tiles: ");  // 打印玩家手牌
         player.getHand().showHandTiles();
@@ -174,7 +150,7 @@ public class Game {
                 isDiscard = true;
             }
         }
-    }
+    }*/
 
 
     // 玩家弃牌
@@ -199,7 +175,7 @@ public class Game {
 
     // 自动检测玩家是否有碰或杠
     // 询问玩家是否要进行操作
-    public void playerOperations(Player player, Tile operationCard, boolean canEat) {
+    /*public void playerOperations(Player player, Tile operationCard, boolean canEat) {
         Boolean isGang = player.getHand().canGang(operationCard);
         Boolean isPeng = player.getHand().canPeng(operationCard);
         boolean isEat = false;
@@ -303,7 +279,7 @@ public class Game {
                     System.out.println("Please enter correct number");
             }
         }
-    }
+    }*/
 
     public void updateGame(){
         moveToNext(currentPlayer);

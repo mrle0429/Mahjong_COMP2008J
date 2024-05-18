@@ -14,19 +14,15 @@ public class Player {
         isZhuang = false;
     }
 
-    public void drawTile(TileStack tileStack){
+    public void drawTile(TileStack tileStack){  // 抓牌
         Tile tile = tileStack.takeTile();
+
         if (tile != null) {
             hand.addTile(tile);
-//            System.out.println(location + " catches a new tile: " + tile);
-
             if (hand.checkIsWin()) {
                 isWinner = true;
             }
         }
-//        else{
-////            System.out.println("There are not enough tiles for this game. Game is over. No winner.");
-//        }
     }
 
     public boolean discardTile(TileStack tileStack, String tileName){

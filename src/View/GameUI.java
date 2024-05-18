@@ -78,21 +78,20 @@ public class GameUI extends JFrame implements MouseListener {
         button.setBounds(350, 555, 90, 40);
         buttons.add(button);
 
-        button = new Button("Pung");
+/*        button = new Button("Pung");
         button.setBounds(465, 555, 55, 40);
         buttons.add(button);
 
         button = new Button("Kong");
         button.setBounds(545, 555, 55, 40);
-        buttons.add(button);
+        buttons.add(button);*/
+
 
         button = new Button("Change tile order");
         button.setBounds(500, 740, 230, 40);
         buttons.add(button);
 
-//        button = new Button("Chow");
-//        button.setBounds(625, 555, 55, 40);
-//        buttons.add(button);
+
 
         this.setSize(width, height);
 
@@ -106,7 +105,9 @@ public class GameUI extends JFrame implements MouseListener {
 
         this.setVisible(true);
 
+
         startDealing();
+
     }
 
     @Override
@@ -123,6 +124,7 @@ public class GameUI extends JFrame implements MouseListener {
         gf.drawImage(leftPlayerTile, 150, 200, null);
         gf.drawImage(rightPlayerTile, 1050, 200, null);
         gf.drawImage(topPlayerTile, 220, 180, null);
+
         gf.setFont(new Font("宋体", Font.BOLD, 24));
 
 
@@ -351,6 +353,19 @@ public class GameUI extends JFrame implements MouseListener {
         }
 
         if (isPeng || isGang || isEat){
+            Button button;
+            if(isPeng) {
+                button = new Button("Pung");
+                button.setBounds(465, 555, 55, 40);
+                otherButtons.add(button);
+            }
+
+            if(isGang) {
+                button = new Button("Kong");
+                button.setBounds(545, 555, 55, 40);
+                otherButtons.add(button);
+
+            }
 //            Button button = new Button("Pung");
 //            button.setBounds(465, 555, 55, 40);
 //            otherButtons.add(button);
