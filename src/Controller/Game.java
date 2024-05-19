@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.*;
-import Util.CheckTile;
 import View.GameUI;
 import View.PreparationUI;
 
@@ -14,19 +13,18 @@ public class Game {
     private TileStack tileStack;
     private boolean hasWinner;
     private Player currentPlayer;
-    private Scanner scanner;
+
     private GameUI gameUI;
     private PreparationUI preparationUI;
+
     private boolean isStart;
 
     public Game() {
         players = new ArrayList<>();
         tileStack = new TileStack();
-        scanner = new Scanner(System.in);
         hasWinner = false;
         isStart = false;
         gameUI = new GameUI(this);
-
         preparationUI = new PreparationUI(this);
     }
 
@@ -45,7 +43,7 @@ public class Game {
     public void distributeTile() {
         for (Player player : players) {
             for (int i = 0; i != 13; i++) {
-                player.getHand().addTile(tileStack.takeTile());
+                player.getHand().addTile(tileStack.playerDrawTile());
             }
         }
     }
@@ -153,24 +151,11 @@ public class Game {
     }*/
 
 
-    // 玩家弃牌
-    public boolean playerDiscard(Player player) {
-        System.out.println("Enter the name of tile you want to discard");
-        String tileName = scanner.next();
-        if (player.discardTile(tileStack, tileName)) {
-            //System.out.println(player.getName() + " discard: "+ tileName);
-            moveToNext(player);
-            return true;
-        }
-        return false;
-    }
 
     public void playerDiscardTile(Player player, Tile tile){
         if (player.discardTile(tileStack, tile)){
-//            moveToNext(player);
-//            return true;
+
         }
-//        return false;
     }
 
     // 自动检测玩家是否有碰或杠

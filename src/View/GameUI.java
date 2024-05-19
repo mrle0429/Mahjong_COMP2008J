@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameUI extends JFrame implements MouseListener {
+    private static final String TITLE = "Mahjong Game";
+    public static final int width = 1200;
+    public static final int height = 800;
+
     private Game game;
     private Player currentPlayer;
     private Player banker;
     private List<Player> optionPlayers;
-    public static int height = 800;
-    public static int width = 1200;
+
     List<Button> buttons = new ArrayList<>();
     List<Button> otherButtons = new ArrayList<>();
     List<Button> showButtons;
@@ -47,12 +50,13 @@ public class GameUI extends JFrame implements MouseListener {
 
     public GameUI(Game game) {
         this.game = game;
+
     }
 
     public void initializeUI() {
         currentPlayer = game.getCurrentPlayer();
         banker = game.findZhuang();
-        laiZi = game.getTileStack().getLaiZi();
+        laiZi = game.getTileStack().getJokerTile();
         optionPlayers = new ArrayList<>();
         loadTimes = 0;
         tracker = new MediaTracker(this);
@@ -74,22 +78,14 @@ public class GameUI extends JFrame implements MouseListener {
             throw new RuntimeException(e);
         }
 
-        Button button = new Button("Discard");
-        button.setBounds(350, 555, 90, 40);
-        buttons.add(button);
-
-/*        button = new Button("Pung");
-        button.setBounds(465, 555, 55, 40);
-        buttons.add(button);
-
-        button = new Button("Kong");
-        button.setBounds(545, 555, 55, 40);
-        buttons.add(button);*/
+        Button discardButton = new Button("Discard");
+        discardButton.setBounds(350, 555, 90, 40);
+        buttons.add(discardButton);
 
 
-        button = new Button("Change tile order");
-        button.setBounds(500, 740, 230, 40);
-        buttons.add(button);
+        Button changeButton = new Button("Change tile order");
+        changeButton.setBounds(500, 740, 230, 40);
+        buttons.add(changeButton);
 
 
 
@@ -104,7 +100,6 @@ public class GameUI extends JFrame implements MouseListener {
         this.addMouseListener(this);
 
         this.setVisible(true);
-
 
         startDealing();
 
@@ -129,6 +124,8 @@ public class GameUI extends JFrame implements MouseListener {
 
 
         paintBankerInfo();
+        paintMessages();
+
 
         if (!currentPlayer.getHand().isDealingFinished()){
             List<Tile> tileList = currentPlayer.getHand().getTiles();
@@ -142,9 +139,9 @@ public class GameUI extends JFrame implements MouseListener {
             return;
         }
 
-        paintMessages();
 
         List<Tile> tileList = currentPlayer.getHand().getTiles();
+
         for (int i = 0; i != tileList.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + tileList.get(i) + ".png"));
             loadSingleImage(tile);
@@ -208,7 +205,7 @@ public class GameUI extends JFrame implements MouseListener {
             return;
         }
 
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if (e.getButton() == MouseEvent.BUTTON1) {  // 检测鼠标左键
             int xPos = e.getX();
             int yPos = e.getY();
 
@@ -453,19 +450,25 @@ public class GameUI extends JFrame implements MouseListener {
         }
     }
 
+
     public void paintBankerInfo(){
-        gf.setFont(new Font("宋体", Font.BOLD, 24));
-        gf.setColor(Color.BLACK);
-        gf.drawString("The banker is: " + banker, 220, 100);
+    gf.setFont(new Font("宋体", Font.BOLD, 24));
+    gf.setColor(Color.RED); // 修改颜色为红色
 
-        gf.drawString("LaiZi is: ", 550, 100);
-        Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + laiZi + ".png"));
-        loadSingleImage(tile);
-        gf.drawImage(tile, 700, 65, null);
+    // 修改显示位置，你可以根据需要调整这些值
+    int playerInfoX = 240;
+    int playerInfoY = 620;
 
-        gf.setColor(Color.BLACK);
-        gf.drawString(currentPlayer + "'s turn", 240, 780);
-    }
+    gf.drawString(currentPlayer + "'s turn", playerInfoX, playerInfoY);
+
+    gf.setColor(Color.BLACK);
+    gf.drawString("The banker is: " + banker, 220, 100);
+
+    gf.drawString("LaiZi is: ", 550, 100);
+    Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + laiZi + ".png"));
+    loadSingleImage(tile);
+    gf.drawImage(tile, 700, 65, null);
+}
 
     public void paintMessages(){
         if (failDiscard){

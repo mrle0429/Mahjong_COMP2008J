@@ -6,7 +6,6 @@ public class Player {
     private boolean isWinner;
     private boolean isZhuang;
 
-
     public Player(PlayerType location) {
         this.location = location;
         hand = new Hand();
@@ -14,39 +13,28 @@ public class Player {
         isZhuang = false;
     }
 
-    public void drawTile(TileStack tileStack){  // 抓牌
-        Tile tile = tileStack.takeTile();
-
-        if (tile != null) {
-            hand.addTile(tile);
-            if (hand.checkIsWin()) {
-                isWinner = true;
-            }
+    public boolean drawTile(TileStack tileStack){  // 抓牌
+        boolean hasDrawn = hand.drawTile(tileStack);
+        if (hand.checkIsWin()) {
+            isWinner = true;
         }
-    }
-
-    public boolean discardTile(TileStack tileStack, String tileName){
-        if(!hand.discardTile(tileStack, tileName)){
-            System.out.println("You just can discard tile that on your hand");
-            return false;
-        }
-        return true;
+        return hasDrawn;
     }
 
     public boolean discardTile(TileStack tileStack, Tile tile){
         return hand.discardTile(tileStack, tile);
     }
 
-    public void showHandTiles(){
-        hand.showHandTiles();
-    }
-
-    public void peng(Tile tile) {
+    public void pengTile(Tile tile) {
         hand.operation(MeldType.PENG, tile);
     }
 
-    public void gang(Tile tile) {
+    public void gangTile(Tile tile) {
         hand.operation(MeldType.GANG, tile);
+    }
+
+    public void eatTile(Tile tile) {
+        hand.operation(MeldType.EAT, tile);
     }
 
     public boolean isWinner() {

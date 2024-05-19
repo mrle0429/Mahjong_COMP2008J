@@ -20,9 +20,10 @@ public class Hand {
 
     }
 
-    public void addTile(Tile tile){
-        tiles.add(tile);
+    public boolean addTile(Tile tile){
+        boolean hasAdd = tiles.add(tile);
         sortTiles(tiles);
+        return hasAdd;
     }
 
     public void addMeldTile(Tile tile){
@@ -38,59 +39,22 @@ public class Hand {
         return hasRemoved;
     }
 
-    public void sortTiles(List<Tile> tiles){
-        if (tileSortType == null){
-            return;
-        }
-        tiles.sort(new Comparator<Tile>() {
-            @Override
-            public int compare(Tile t1, Tile t2) {
-                // Compare the type of tile
-                int typeCompare = t1.getTileType().compareTo(t2.getTileType());
-                if (typeCompare != 0){
-                    if (tileSortType == TileSortType.MinToMax){
-                        return typeCompare;
-                    }else{
-                        return -typeCompare;
-                    }
-                }
-                // If the type is same, compare their number
-                if (CheckTile.isNumberType(t1)){
-                    return t1.getValue() - t2.getValue();
-                }else{
-                    return t1.getCharacter().compareTo(t2.getCharacter());
-                }
-            }
-        });
-    }
+
 
     public boolean checkIsWin(){
         return CheckTile.isHu(tiles);
     }
 
-    public boolean discardTile(TileStack tileStack, String tileName){
-        Tile tile = CheckTile.findTile(tileName);
-        if (tile == null){
-            return false;
-        }
-        tileStack.playerDiscard(tile);  // 加入弃牌堆
-        return tiles.remove(tile);      // 从手牌中删除
+    public boolean drawTile(TileStack tileStack) {
+        Tile tile = tileStack.playerDrawTile();
+        return addTile(tile);
+
     }
+
 
     public boolean discardTile(TileStack tileStack, Tile tile){
-        tileStack.playerDiscard(tile);
+        tileStack.playerDiscardTile(tile);
         return removeTile(tile);
-    }
-
-    public void showHandTiles(){
-        for (int i = 0; i != tiles.size(); i++) {
-            if ((i + 1) % 5 == 0){
-                System.out.println(tiles.get(i));
-            }else{
-                System.out.print(tiles.get(i) + "\t");
-            }
-        }
-        System.out.println();
     }
 
 
@@ -188,5 +152,31 @@ public class Hand {
 
     public TileSortType getTileSortType() {
         return tileSortType;
+    }
+
+    public void sortTiles(List<Tile> tiles){
+        if (tileSortType == null){
+            return;
+        }
+        tiles.sort(new Comparator<Tile>() {
+            @Override
+            public int compare(Tile t1, Tile t2) {
+                // Compare the type of tile
+                int typeCompare = t1.getTileType().compareTo(t2.getTileType());
+                if (typeCompare != 0){
+                    if (tileSortType == TileSortType.MinToMax){
+                        return typeCompare;
+                    }else{
+                        return -typeCompare;
+                    }
+                }
+                // If the type is same, compare their number
+                if (CheckTile.isNumberType(t1)){
+                    return t1.getValue() - t2.getValue();
+                }else{
+                    return t1.getCharacter().compareTo(t2.getCharacter());
+                }
+            }
+        });
     }
 }
