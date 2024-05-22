@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.List;
+
 public class Player {
     private PlayerType location;
     private Hand hand;
@@ -60,5 +62,17 @@ public class Player {
     @Override
     public String toString() {
         return this.location.toString();
+    }
+
+    public boolean firstDrawFinish() {
+        return hand.isDealingFinished();
+    }
+
+    public List<Tile> getTiles() {
+        return hand.getTiles();
+    }
+
+    public List<Tile> getMeldTiles() {
+        return hand.getMeldTiles();
     }
 }

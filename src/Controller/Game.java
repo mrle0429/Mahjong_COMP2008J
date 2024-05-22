@@ -301,4 +301,16 @@ public class Game {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public List<Tile> getPlayerTiles(Player player){
+        return player.getTiles();
+    }
+
+    public List<Tile> getPlayerMeldTiles(Player player){
+        return player.getMeldTiles();
+    }
+
+    public List<Tile> getDiscardTiles(){
+        return tileStack.getDiscardTiles();
+    }
 }
