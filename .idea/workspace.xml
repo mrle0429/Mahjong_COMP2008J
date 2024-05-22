@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="Partial refactoring of Player, Hand, and TileStack classe">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="GameUI" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mrle0429&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="b2256997-dcd0-4774-b5aa-fcc62add832b" />
+        <option name="url" value="git@github.com:mrle0429/Mahjong_COMP2008J.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2fAshmuT9XHAS2zy03W9KmPPsfP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Rebasing YSC",
+    "last_opened_file_path": "E:/BDIC/stage2_2/SoftwareEngProject/lab2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "configurable.group.editor",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Controller.Application" />
+      <module name="Mahjong" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="" />
+      <created>1713255340823</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713255340823</updated>
+      <workItem from="1713255343659" duration="141000" />
+      <workItem from="1713255493807" duration="4946000" />
+      <workItem from="1713312396850" duration="21000" />
+      <workItem from="1713425123031" duration="293000" />
+      <workItem from="1713437934440" duration="7000" />
+      <workItem from="1713781240982" duration="12972000" />
+      <workItem from="1713858491396" duration="39000" />
+      <workItem from="1714099377494" duration="15744000" />
+      <workItem from="1714220717959" duration="663000" />
+      <workItem from="1714221476650" duration="783000" />
+      <workItem from="1714222293468" duration="2278000" />
+      <workItem from="1715221121244" duration="3050000" />
+      <workItem from="1715567840949" duration="263000" />
+      <workItem from="1715654845527" duration="6841000" />
+      <workItem from="1715672572771" duration="674000" />
+      <workItem from="1715675208411" duration="6000" />
+      <workItem from="1715740865248" duration="1473000" />
+      <workItem from="1715822131284" duration="17000" />
+      <workItem from="1715839624713" duration="178000" />
+      <workItem from="1715839881219" duration="406000" />
+      <workItem from="1716027606901" duration="11457000" />
+      <workItem from="1716124625942" duration="5525000" />
+      <workItem from="1716186584489" duration="3277000" />
+      <workItem from="1716281476848" duration="320000" />
+      <workItem from="1716344929375" duration="815000" />
+    </task>
+    <task id="LOCAL-00001" summary="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）">
+      <option name="closed" value="true" />
+      <created>1713261656964</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713261656964</updated>
+    </task>
+    <task id="LOCAL-00002" summary="The card logic is modified. After player discard, other can peng and gang.">
+      <option name="closed" value="true" />
+      <created>1713796656987</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1713796656987</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Joker is added. But function need to finish.">
+      <option name="closed" value="true" />
+      <created>1714123892867</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1714123892867</updated>
+    </task>
+    <task id="LOCAL-00004" summary="format">
+      <option name="closed" value="true" />
+      <created>1715672646770</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1715672646770</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Partial refactoring of Player, Hand, and TileStack classe">
+      <option name="closed" value="true" />
+      <created>1716130725750</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716130725750</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="- 新增对对胡&#10;- 重构Game类中的初始化游戏&#10;- 新增CheckPlayer中的判断庄家（默认P1是庄家）" />
+    <MESSAGE value="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）" />
+    <MESSAGE value="The card logic is modified. After player discard, other can peng and gang." />
+    <MESSAGE value="Joker is added. But function need to finish." />
+    <MESSAGE value="format" />
+    <MESSAGE value="Partial refactoring of Player, Hand, and TileStack classe" />
+    <option name="LAST_COMMIT_MESSAGE" value="Partial refactoring of Player, Hand, and TileStack classe" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
