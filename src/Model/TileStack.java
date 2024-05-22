@@ -1,14 +1,13 @@
 package Model;
 
-import Util.CheckTile;
-import Util.ResetTiles;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TileStack {
     private List<Tile> tiles;
     private List<Tile> discardTiles;
+    private Tile laiZi;
 
     public TileStack() {
         tiles = new ArrayList<>();
@@ -17,12 +16,17 @@ public class TileStack {
         shuffle();
     }
 
+/*    public static void main(String[] args) {
+        TileStack tileStack = new TileStack();
+        System.out.println(tileStack.size());
+        tileStack.showTiles();
+    }*/
+
     private void initializeTiles(){
         TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
-        String[] seasonCharacters = new String[]{"Spring", "Summer", "Autumn", "Winter"};
-        String[] flowerCharacters = new String[]{"Plum", "Orchid", "Chrysan_themum", "Bamboo"};
+
 
         // For number tiles
         for (TileType tileType : numberTileTypes) {
@@ -47,24 +51,23 @@ public class TileStack {
             }
         }
 
-        // For season tiles
-        for (String season : seasonCharacters) {
-            for (int i = 0; i != 4; i++) {
-                tiles.add(new Tile(TileType.Season, season));
-            }
-        }
-
-        // For flower tiles
-        for (String flower : flowerCharacters) {
-            for (int i = 0; i != 4; i++) {
-                tiles.add(new Tile(TileType.Flower, flower));
-            }
-        }
+        // For Joker tiles
+        setLaiZiTile();
 
     }
 
     private void shuffle(){
-        ResetTiles.randomSort(tiles);
+        Collections.shuffle(tiles);
+    }
+
+    public void setLaiZiTile(){
+        Tile tile = tiles.get((int) (Math.random() * 136));
+        for (Tile t : tiles) {
+            if (t.equals(tile)){
+                t.setLaiZi(true);
+            }
+        }
+        laiZi = tile;
     }
 
     public void playerDiscard(Tile tile){
@@ -92,11 +95,26 @@ public class TileStack {
         shuffle();
     }
 
+    public void showTiles(){
+        for (int i = 0; i != tiles.size(); i++) {
+            if ((i + 1) % 5 == 0){
+                System.out.println(tiles.get(i));
+            }else{
+                System.out.print(tiles.get(i) + "\t");
+            }
+        }
+        System.out.println();
+    }
+
     public int size(){
         return tiles.size();
     }
 
     public boolean isEmpty(){
         return size() == 0;
+    }
+
+    public Tile getLaiZi() {
+        return laiZi;
     }
 }
