@@ -260,15 +260,20 @@ public class GameUI extends JFrame implements MouseListener {
                             repaint();
                         }else{
                             game.playerDiscardTile(currentPlayer, selectTile);
-                            Player currentTestPlayer = currentPlayer;
-                            for (int i = 0; i != 3; i++) {
+                            //Player currentTestPlayer = currentPlayer;
+
+                            // 检测其他家是否可以碰吃杠，如果可以将他们加入optionPlayers中
+                            /*for (int i = 0; i != 3; i++) {
                                 currentTestPlayer = game.getNextPlayer(currentTestPlayer);
                                 boolean canEat = false;
                                 if (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()){
                                     canEat = true;
                                 }
                                 playerOperations(currentTestPlayer, selectTile, canEat);
-                            }
+                            }*/
+
+                            // 检测其他家是否可以碰吃杠，如果可以将他们加入optionPlayers中
+                            checkAndAddOptionPlayers();
                             updateGame();
                         }
                         return;
@@ -280,8 +285,43 @@ public class GameUI extends JFrame implements MouseListener {
                         return;
                     case "Kong":
                         // 自己回合杠，仅能暗杠
-                        // TODO: 检测是否有暗杠
+                        if (game.concealedKongTile(currentPlayer)) {
+                            game.playerDrawTile(currentPlayer);
+                            repaint();
+                            return;
+                        }
+
                         failKong = true;
+                        repaint();
+                        return;
+
+                    case "Change tile order":
+                        if (currentPlayer.getHand().getTileSortType() == TileSortType.MinToMax){
+                            currentPlayer.getHand().setMaxType();
+                        }else{
+                            currentPlayer.getHand().setMinType();
+                        }
+                        repaint();
+                        return;
+                }
+            } else{
+                switch (buttonName){
+                    case "Pass":
+                        updateGame();
+                        return;
+
+                    case "Pung":
+                        // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清楚
+                        optionPlayers.clear();
+
+                        game.playerPungTile(currentPlayer, selectTile);  // 碰牌加入手牌，同时从弃牌堆删除
+
+                        checkGameWin();
+
+                        selfTurn = true;
+                        game.setCurrentPlayer(currentPlayer);
+                        selectTile = null;
+
                         repaint();
                         return;
                 }
@@ -306,13 +346,13 @@ public class GameUI extends JFrame implements MouseListener {
                 }
                 return;*/
             } else if (selfTurn && "Pung".equals(buttonName)) {
-                if (!currentPlayer.getHand().canPeng()){
+                /*if (!currentPlayer.getHand().canPeng()){
                     failPung = true;
                 }
                 repaint();
-                return;
+                return;*/
             } else if (selfTurn && "Kong".equals(buttonName)) {
-                if (!currentPlayer.getHand().canGang()){
+                /*if (!currentPlayer.getHand().canGang()){
                     failKong = true;
                 }else{
                     if (!checkTileStack()) {
@@ -324,21 +364,21 @@ public class GameUI extends JFrame implements MouseListener {
                     }
                 }
                 repaint();
-                return;
+                return;*/
             } else if (selfTurn && "Change tile order".equals(buttonName)) {
-                if (currentPlayer.getHand().getTileSortType() == TileSortType.MinToMax){
+               /* if (currentPlayer.getHand().getTileSortType() == TileSortType.MinToMax){
                     currentPlayer.getHand().setMaxType();
                 }else{
                     currentPlayer.getHand().setMinType();
                 }
                 repaint();
-                return;
+                return;*/
             } else if (!selfTurn && "Pass".equals(buttonName)) {
-                updateGame();
-                return;
+               /* updateGame();
+                return;*/
             } else if (!selfTurn && "Pung".equals(buttonName)) {
                 // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清楚
-                optionPlayers.clear();
+/*                optionPlayers.clear();
 
                 currentPlayer.getHand().operation(MeldType.PENG, selectTile);
                 game.getTileStack().getDiscardTiles().remove(selectTile);
@@ -349,7 +389,7 @@ public class GameUI extends JFrame implements MouseListener {
                 game.setCurrentPlayer(currentPlayer);
                 selectTile = null;
 
-                repaint();
+                repaint();*/
 //                game.setCurrentPlayer(game.getLastPlayer(currentPlayer));
 //                updateGame();
                 return;
@@ -419,33 +459,32 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     public void playerOperations(Player player, Tile tile, boolean canEat) {
-        boolean isPeng = player.getHand().canPeng(tile);
-        boolean isGang = player.getHand().canGang(tile);
+        boolean isPeng = game.checkPung(player, tile);
+        boolean isGang = game.checkGang(player, tile);
         boolean isEat = false;
         if (canEat){
             isEat = player.getHand().canEat(tile);
         }
 
         if (isPeng || isGang || isEat){
-            Button button;
-            if(isPeng) {
-                button = new Button("Pung");
-                button.setBounds(465, 555, 55, 40);
-                otherButtons.add(button);
-            }
-
-            if(isGang) {
-                button = new Button("Kong");
-                button.setBounds(545, 555, 55, 40);
-                otherButtons.add(button);
-
-            }
-//            Button button = new Button("Pung");
-//            button.setBounds(465, 555, 55, 40);
-//            otherButtons.add(button);
             optionPlayers.add(player);
         }
     }
+    public void checkAndAddOptionPlayers() {
+        Player currentTestPlayer = currentPlayer;
+
+        for (int i = 0; i != 3; i++) {
+            currentTestPlayer = game.getNextPlayer(currentTestPlayer);
+
+            boolean canPeng = game.checkPung(currentTestPlayer, selectTile);
+            boolean canGang = game.checkGang(currentTestPlayer, selectTile);
+            boolean canEat = (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()) && currentTestPlayer.getHand().canEat(selectTile); // 只有下家能吃
+            if (canPeng || canGang || canEat){
+                optionPlayers.add(currentTestPlayer);
+            }
+        }
+    }
+    //TODO: 玩家弃牌后操作，分为下家继续摸牌弃牌，或其他家吃碰杠
 
     public void updateGame(){
         // 如果当前玩家出的牌可以被其他玩家碰 吃 杠操作的时候 的逻辑
@@ -500,7 +539,7 @@ public class GameUI extends JFrame implements MouseListener {
             repaint();
             return;
         }
-        game.updateGame();
+        game.updateGame();   // 转至下一个玩家
         selectTile = null;
         if (game.isHasWinner()){
             hasWinner = true;
@@ -521,7 +560,7 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     public void checkGameWin(){
-        if (currentPlayer.getHand().checkIsWin()){
+        if (game.checkIsWin(currentPlayer)){
             hasWinner = true;
             gameOver = true;
         }

@@ -39,6 +39,18 @@ public class Player {
         hand.operation(MeldType.EAT, tile);
     }
 
+    public boolean checkPung(Tile tile) {
+        return hand.canPeng(tile);
+    }
+
+    public boolean checkGang(Tile tile) {
+        return hand.canGang(tile);
+    }
+
+    public boolean concealedKongTile() {
+       return hand.concealedKong();
+    }
+
     public boolean isWinner() {
         return isWinner;
     }

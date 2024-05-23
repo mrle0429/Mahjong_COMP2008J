@@ -98,6 +98,26 @@ public class CheckTile {
         return result;
     }
 
+    // 暗杠,玩家手牌中有四张相同的牌.仅考虑同时存在一组暗杠
+    public static List<Tile> ConcealedKong(List<Tile> tiles) {
+        boolean canKong = false;
+        List<Tile> result = new ArrayList<>();
+        Map<Tile, Integer> tileCount = new HashMap<>();
+        for (Tile tile : tiles) {
+            tileCount.put(tile, tileCount.getOrDefault(tile, 0) + 1);
+        }
+        for (Tile tile : tileCount.keySet()) {
+            if (tileCount.get(tile) == 4) {
+                for (int i =0; i < 4; i++) {
+                    result.add(tile);
+                }
+                return result;
+
+            }
+        }
+        return null;
+    }
+
     public static boolean canPeng(List<Tile> tiles, Tile tile) {
         List<Tile> result = findPair(tiles, MeldType.PENG, tile);
         return !result.isEmpty();

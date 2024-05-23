@@ -75,6 +75,20 @@ public class Hand {
             removeTile(t);
             addMeldTile(t);
         }
+
+    }
+
+    public boolean concealedKong() {
+        List<Tile> quad = CheckTile.ConcealedKong(tiles);
+        if(quad != null) {
+            for (Tile t : quad) {
+                removeTile(t);
+                addMeldTile(t);
+            }
+            return true;
+        }
+        return false;
+
     }
 
     /**
