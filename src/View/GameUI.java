@@ -453,18 +453,37 @@ public class GameUI extends JFrame implements MouseListener {
         }
     }
 
+    private void paintScores(Graphics gf) {
+        int yPosition = 50; // 分数的顶部边距
+        int xPosition = 100; // 开始显示玩家分数的位置
+        int spacing = 250; // 玩家分数之间的间距
+
+        gf.setFont(new Font("宋体", Font.BOLD, 24));
+        gf.setColor(Color.BLACK);
+
+        // 遍历所有玩家并显示他们的分数
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            Player player = game.getPlayers().get(i);
+            String scoreText = player.toString() + ": " + player.getScore() + " points";
+            gf.drawString(scoreText, xPosition + (i * spacing), yPosition);
+        }
+    }
+
     public void paintBankerInfo(){
         gf.setFont(new Font("宋体", Font.BOLD, 24));
         gf.setColor(Color.BLACK);
         gf.drawString("The banker is: " + banker, 220, 100);
 
-        gf.drawString("LaiZi is: ", 550, 100);
-        Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + laiZi + ".png"));
-        loadSingleImage(tile);
-        gf.drawImage(tile, 700, 65, null);
+        gf.drawString("Player now: ", 550, 100);
+        gf.setColor(Color.RED);
+        gf.drawString(currentPlayer + "'s turn", 750, 100);
 
-        gf.setColor(Color.BLACK);
-        gf.drawString(currentPlayer + "'s turn", 240, 780);
+        paintScores(gf);
+
+//        gf.drawImage(tile, 700, 65, null);
+//
+//        gf.setColor(Color.BLACK);
+//        gf.drawString(currentPlayer + "'s turn", 240, 780);
     }
 
     public void paintMessages(){

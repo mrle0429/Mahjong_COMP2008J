@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Util.CheckTile;
+import Util.WaysOfHu;
 import View.GameUI;
 import View.PreparationUI;
 
@@ -96,14 +97,6 @@ public class Game {
         return null;
     }
 
-    /**
-     * 正常回合
-     * 1.玩家摸牌
-     * 2.玩家丢出一张牌
-     * 3.检测其他玩家是否可操作
-     *
-     * @param player
-     */
     /*public void takeTurn(Player player, boolean isFirstTurn) {
         System.out.println(player.getLocation() + " 's turn");
         System.out.println("You current tiles: ");  // 打印玩家手牌
@@ -151,6 +144,33 @@ public class Game {
             }
         }
     }*/
+
+    public void updateScore() {
+        System.out.println("updateScore");
+        if (!hasWinner) return;
+
+        Player winner = null;
+        int baseScore = 1;
+
+        for (Player player : players) {
+            if (player.isWinner()) {
+                winner = player;
+                break;
+            }
+        }
+
+        if (winner == null) return;
+
+        int fan = WaysOfHu.calculateScore(winner.getHand().getTiles());
+        int totalScore = baseScore + fan;
+
+        for (Player otherPlayer : players) {
+            if (otherPlayer != winner) {
+                otherPlayer.setScore(otherPlayer.getScore() - totalScore);
+                winner.setScore(winner.getScore() + totalScore);
+            }
+        }
+    }
 
 
     // 玩家弃牌
@@ -286,6 +306,7 @@ public class Game {
         currentPlayer.drawTile(tileStack);
         if (currentPlayer.isWinner()){
             hasWinner = true;
+            updateScore();
         }
     }
 

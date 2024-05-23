@@ -6,17 +6,19 @@ public class Player {
     private boolean isWinner;
     private boolean isZhuang;
 
+    private int score;
+
 
     public Player(PlayerType location) {
         this.location = location;
         hand = new Hand();
         isWinner = false;
         isZhuang = false;
+        score = 500;
     }
 
     public void drawTile(TileStack tileStack){  // 抓牌
         Tile tile = tileStack.takeTile();
-
         if (tile != null) {
             hand.addTile(tile);
             if (hand.checkIsWin()) {
@@ -56,6 +58,20 @@ public class Player {
     public Hand getHand() {
         return hand;
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        if (score < 0) {
+            System.out.println("Attempt to set a negative score for player. Score not set.");
+            return;
+        }
+        this.score = score;
+        System.out.println("Score updated to: " + score);
+    }
+
 
     public PlayerType getLocation() {
         return location;
