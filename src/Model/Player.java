@@ -15,7 +15,7 @@ public class Player {
         isZhuang = false;
     }
 
-    public boolean drawTile(TileStack tileStack){  // 抓牌
+    public boolean drawTile(TileStack tileStack) {  // 抓牌
         boolean hasDrawn = hand.drawTile(tileStack);
         if (hand.checkIsWin()) {
             isWinner = true;
@@ -23,7 +23,7 @@ public class Player {
         return hasDrawn;
     }
 
-    public boolean discardTile(TileStack tileStack, Tile tile){
+    public boolean discardTile(TileStack tileStack, Tile tile) {
         return hand.discardTile(tileStack, tile);
     }
 
@@ -39,6 +39,10 @@ public class Player {
         hand.operation(MeldType.EAT, tile);
     }
 
+    public void anGangTile() {
+        hand.operation(MeldType.ANGANG, null);
+    }
+
     public boolean checkPung(Tile tile) {
         return hand.canPeng(tile);
     }
@@ -47,9 +51,15 @@ public class Player {
         return hand.canGang(tile);
     }
 
-    public boolean concealedKongTile() {
-       return hand.concealedKong();
+    public boolean checkEat(Tile tile) {
+        return hand.canEat(tile);
     }
+
+    public boolean checkAnGang() {
+        return hand.canAnGang();
+    }
+
+
 
     public boolean isWinner() {
         return isWinner;
