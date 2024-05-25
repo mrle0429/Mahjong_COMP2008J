@@ -154,6 +154,7 @@ public class CheckTile {
         return result;
     }
 
+
     public static boolean isHu(List<Tile> tiles) {
         return routineWay(tiles, false) || duiziHu(tiles);
         // TODO add more methods as Hu
@@ -161,6 +162,18 @@ public class CheckTile {
 
     private static boolean routineWay(List<Tile> tiles, boolean findPair) {
         if (tiles.isEmpty()) {
+
+    public static boolean isHu(List<Tile> tiles){
+        System.out.println("isHu");
+        return isroutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
+                || WaysOfHu.isSevenPairs(tiles)
+                || WaysOfHu.isDeluxeSevenPairs(tiles) || WaysOfHu.isAllPongs(tiles)
+                || WaysOfHu.isAllWinds(tiles);
+    }
+
+    public static boolean isroutineHu(List<Tile> tiles, boolean findPair){
+        if (tiles.isEmpty()){
+
             return true;
         }
 
@@ -171,7 +184,11 @@ public class CheckTile {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                 newTiles.remove(firstIndex);
                 newTiles.remove(firstIndex);
+
                 if (routineWay(newTiles, true)) {
+
+                if (isroutineHu(newTiles, true)){
+
                     return true;
                 }
             }
@@ -180,7 +197,11 @@ public class CheckTile {
                     ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                     newTiles.remove(i + 1);
                     newTiles.remove(i);
+
                     if (routineWay(newTiles, true)) {
+
+                    if (isroutineHu(newTiles, true)){
+
                         return true;
                     }
                 }
@@ -190,7 +211,11 @@ public class CheckTile {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
+
                 if (routineWay(newTiles, true)) {
+
+                if (isroutineHu(newTiles, true)){
+
                     return true;
                 }
             }
@@ -216,16 +241,22 @@ public class CheckTile {
                         newTiles.remove(firstTile);
                         newTiles.remove(secondTile);
                         newTiles.remove(thirdTile);
+
                         return routineWay(newTiles, true);
                     } else {
                         if (tiles.size() > 3) {
+
+                        return isroutineHu(newTiles, true);
+                    }else{
+                        if (tiles.size() > 3){
+
                             Tile fourthTile = tiles.get(3);
                             if (firstTile.getTileType() == fourthTile.getTileType() && firstTile.getValue() + 2 == fourthTile.getValue()) {
                                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                                 newTiles.remove(firstTile);
                                 newTiles.remove(secondTile);
                                 newTiles.remove(fourthTile);
-                                return routineWay(newTiles, true);
+                                return isroutineHu(newTiles, true);
                             }
                         }
                     }
@@ -239,7 +270,7 @@ public class CheckTile {
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
-            return routineWay(newTiles, true);
+            return isroutineHu(newTiles, true);
         }
         return false;
     }
@@ -257,4 +288,5 @@ public class CheckTile {
         }
         return true;
     }
+
 }

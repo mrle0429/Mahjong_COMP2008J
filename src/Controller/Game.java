@@ -1,9 +1,9 @@
 package Controller;
 
-import Model.Player;
-import Model.PlayerType;
-import Model.Tile;
-import Model.TileStack;
+
+import Model.*;
+import Util.CheckTile;
+import Util.WaysOfHu;
 import View.GameUI;
 import View.PreparationUI;
 
@@ -103,6 +103,34 @@ public class Game {
     }
 
 
+
+    public void updateScore() {
+        System.out.println("updateScore");
+        if (!hasWinner) return;
+
+        Player winner = null;
+        int baseScore = 1;
+
+        for (Player player : players) {
+            if (player.isWinner()) {
+                winner = player;
+                break;
+            }
+        }
+
+        if (winner == null) return;
+
+        int fan = WaysOfHu.calculateScore(winner.getHand().getTiles());
+        int totalScore = baseScore + fan;
+
+        for (Player otherPlayer : players) {
+            if (otherPlayer != winner) {
+                otherPlayer.setScore(otherPlayer.getScore() - totalScore);
+                winner.setScore(winner.getScore() + totalScore);
+            }
+        }
+    }
+
     public void playerDiscardTile(Player player, Tile tile) {
         player.discardTile(tileStack, tile);
     }
@@ -126,6 +154,7 @@ public class Game {
         currentPlayer.drawTile(tileStack);
         if (checkIsWin(currentPlayer)) {
             hasWinner = true;
+            updateScore();
         }
     }
 
