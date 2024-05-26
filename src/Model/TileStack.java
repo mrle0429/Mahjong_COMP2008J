@@ -7,7 +7,7 @@ import java.util.List;
 public class TileStack {
     private List<Tile> tiles;
     private List<Tile> discardTiles;
-    private Tile laiZi;
+    private Tile jokerTile;
 
     public TileStack() {
         tiles = new ArrayList<>();
@@ -16,17 +16,10 @@ public class TileStack {
         shuffle();
     }
 
-/*    public static void main(String[] args) {
-        TileStack tileStack = new TileStack();
-        System.out.println(tileStack.size());
-        tileStack.showTiles();
-    }*/
-
     private void initializeTiles(){
         TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
-
 
         // For number tiles
         for (TileType tileType : numberTileTypes) {
@@ -52,7 +45,7 @@ public class TileStack {
         }
 
         // For Joker tiles
-        setLaiZiTile();
+        setJokerTile();
 
     }
 
@@ -60,21 +53,22 @@ public class TileStack {
         Collections.shuffle(tiles);
     }
 
-    public void setLaiZiTile(){
-        Tile tile = tiles.get((int) (Math.random() * 136));
+    public void setJokerTile(){
+        Tile tile = tiles.get((int) (Math.random() * 136));  // Randomly select a tile as joker
         for (Tile t : tiles) {
+
             if (t.equals(tile)){
                 t.setLaiZi(true);
             }
         }
-        laiZi = tile;
+        jokerTile = tile;
     }
 
-    public void playerDiscard(Tile tile){
+    public void playerDiscardTile(Tile tile){
         discardTiles.add(tile);
     }
 
-    public Tile takeTile(){
+    public Tile playerDrawTile(){
         if (tiles.isEmpty()){
             return null;
         }
@@ -95,16 +89,6 @@ public class TileStack {
         shuffle();
     }
 
-    public void showTiles(){
-        for (int i = 0; i != tiles.size(); i++) {
-            if ((i + 1) % 5 == 0){
-                System.out.println(tiles.get(i));
-            }else{
-                System.out.print(tiles.get(i) + "\t");
-            }
-        }
-        System.out.println();
-    }
 
     public int size(){
         return tiles.size();
@@ -114,7 +98,7 @@ public class TileStack {
         return size() == 0;
     }
 
-    public Tile getLaiZi() {
-        return laiZi;
+    public Tile getJokerTile() {
+        return jokerTile;
     }
 }
