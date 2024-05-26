@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.List;
-
 public class Player {
     private PlayerType location;
     private Hand hand;
@@ -9,64 +7,47 @@ public class Player {
     private boolean isZhuang;
 
 
-    private int score;
-
-
-
     public Player(PlayerType location) {
         this.location = location;
         hand = new Hand();
         isWinner = false;
         isZhuang = false;
-        score = 500;
     }
 
+    public void drawTile(TileStack tileStack){  // 抓牌
+        Tile tile = tileStack.takeTile();
 
-    public boolean drawTile(TileStack tileStack) {  // 抓牌
-        boolean hasDrawn = hand.drawTile(tileStack);
-        if (hand.checkIsWin()) {
-            isWinner = true;
+        if (tile != null) {
+            hand.addTile(tile);
+            if (hand.checkIsWin()) {
+                isWinner = true;
+            }
         }
-        return hasDrawn;
     }
 
-    public boolean discardTile(TileStack tileStack, Tile tile) {
+    public boolean discardTile(TileStack tileStack, String tileName){
+        if(!hand.discardTile(tileStack, tileName)){
+            System.out.println("You just can discard tile that on your hand");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean discardTile(TileStack tileStack, Tile tile){
         return hand.discardTile(tileStack, tile);
     }
 
-    public void pengTile(Tile tile) {
+    public void showHandTiles(){
+        hand.showHandTiles();
+    }
+
+    public void peng(Tile tile) {
         hand.operation(MeldType.PENG, tile);
     }
 
-    public void gangTile(Tile tile) {
+    public void gang(Tile tile) {
         hand.operation(MeldType.GANG, tile);
     }
-
-    public void eatTile(Tile tile) {
-        hand.operation(MeldType.EAT, tile);
-    }
-
-    public void anGangTile() {
-        hand.operation(MeldType.ANGANG, null);
-    }
-
-    public boolean checkPung(Tile tile) {
-        return hand.canPeng(tile);
-    }
-
-    public boolean checkGang(Tile tile) {
-        return hand.canGang(tile);
-    }
-
-    public boolean checkEat(Tile tile) {
-        return hand.canEat(tile);
-    }
-
-    public boolean checkAnGang() {
-        return hand.canAnGang();
-    }
-
-
 
     public boolean isWinner() {
         return isWinner;
@@ -75,20 +56,6 @@ public class Player {
     public Hand getHand() {
         return hand;
     }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        if (score < 0) {
-            System.out.println("Attempt to set a negative score for player. Score not set.");
-            return;
-        }
-        this.score = score;
-        System.out.println("Score updated to: " + score);
-    }
-
 
     public PlayerType getLocation() {
         return location;
@@ -105,17 +72,5 @@ public class Player {
     @Override
     public String toString() {
         return this.location.toString();
-    }
-
-    public boolean firstDrawFinish() {
-        return hand.isDealingFinished();
-    }
-
-    public List<Tile> getTiles() {
-        return hand.getTiles();
-    }
-
-    public List<Tile> getMeldTiles() {
-        return hand.getMeldTiles();
     }
 }
