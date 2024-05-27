@@ -20,77 +20,89 @@ public class Hand {
 
     }
 
-    public void addTile(Tile tile){
-        tiles.add(tile);
+    // 为可操作牌堆添加牌，用于抓牌操作的辅助
+    // 已调整排序。不对最后摸到的牌进行排序，方便用户了解刚才拿到的牌是什么。
+    // Todo: 在展示牌的时候，将刚刚摸到的牌和其他的牌拉开一点距离
+    private boolean addTile(Tile tile) {
         sortTiles(tiles);
+        boolean hasAdd = tiles.add(tile);
+        return hasAdd;
     }
 
-    public void addMeldTile(Tile tile){
+    // 为不可操作牌堆添加牌，用于碰杠吃操作的辅助
+    private void addMeldTile(Tile tile) {
         meldTiles.add(tile);
         sortTiles(meldTiles);
     }
 
-    public boolean removeTile(Tile tile){
+    // 从可操作牌堆中移除牌，用于打牌操作的辅助
+    private boolean removeTile(Tile tile) {
         boolean hasRemoved = tiles.remove(tile);
-        if (hasRemoved){
+        if (hasRemoved) {
             sortTiles(tiles);
         }
         return hasRemoved;
     }
 
-    public void sortTiles(List<Tile> tiles){
-        if (tileSortType == null){
-            return;
-        }
-        tiles.sort(new Comparator<Tile>() {
-            @Override
-            public int compare(Tile t1, Tile t2) {
-                // Compare the type of tile
-                int typeCompare = t1.getTileType().compareTo(t2.getTileType());
-                if (typeCompare != 0){
-                    if (tileSortType == TileSortType.MinToMax){
-                        return typeCompare;
-                    }else{
-                        return -typeCompare;
-                    }
-                }
-                // If the type is same, compare their number
-                if (CheckTile.isNumberType(t1)){
-                    return t1.getValue() - t2.getValue();
-                }else{
-                    return t1.getCharacter().compareTo(t2.getCharacter());
-                }
-            }
-        });
+
+    public boolean checkIsWin() {
+        // 合并可操纵的牌和不可操作的牌。即玩家真正拥有的14张牌，判断是否胡牌
+        List<Tile> hand = new ArrayList<>();
+        hand.addAll(tiles);
+        hand.addAll(meldTiles);
+        return hand.size() ==14 && CheckTile.isHu(hand);
     }
 
-    public boolean checkIsWin(){
-        return CheckTile.isHu(tiles);
+    // 抓牌操作
+    // 1. 从牌堆中抓一张牌
+    // 2. 将抓到的牌加入到可操作牌堆中
+    public boolean drawTile(TileStack tileStack) {
+        Tile tile = tileStack.playerDrawTile();
+        return addTile(tile);
+
     }
 
-    public boolean discardTile(TileStack tileStack, String tileName){
-        Tile tile = CheckTile.findTile(tileName);
-        if (tile == null){
-            return false;
-        }
-        tileStack.playerDiscard(tile);  // 加入弃牌堆
-        return tiles.remove(tile);      // 从手牌中删除
-    }
 
-    public boolean discardTile(TileStack tileStack, Tile tile){
-        tileStack.playerDiscard(tile);
+    // 打牌操作
+    // 1. 将打出的牌加入到弃牌堆
+    // 2. 从可操作牌堆中移除打出的牌
+    public boolean discardTile(TileStack tileStack, Tile tile) {
+        tileStack.playerDiscardTile(tile);
         return removeTile(tile);
     }
 
-    public void showHandTiles(){
-        for (int i = 0; i != tiles.size(); i++) {
-            if ((i + 1) % 5 == 0){
-                System.out.println(tiles.get(i));
-            }else{
-                System.out.print(tiles.get(i) + "\t");
-            }
+    // 吃操作
+    // 1. 从可操作牌堆中找到连续的两张牌
+    private void chow(Tile tile) {
+        List<Tile> sequence = CheckTile.findSequence(tiles, tile);  // 返回吃后的三张牌
+        for (Tile t : sequence) {
+            removeTile(t);                     // 将sequence的牌，从可操纵手牌中移除，并加入不可操作牌中
+            addMeldTile(t);
         }
-        System.out.println();
+    }
+
+    private void pung(Tile tile) {
+        List<Tile> triplet = CheckTile.findPair(tiles, MeldType.PENG, tile);
+        for (Tile t : triplet) {
+            removeTile(t);
+            addMeldTile(t);
+        }
+    }
+
+    private void kong(Tile tile) {
+        List<Tile> quad = CheckTile.findPair(tiles, MeldType.GANG, tile);
+        for (Tile t : quad) {
+            removeTile(t);
+            addMeldTile(t);
+        }
+    }
+
+    private void concealedKong() {
+        List<Tile> quad = CheckTile.findQuadForAngang(tiles);
+        for (Tile t : quad) {
+            removeTile(t);
+            addMeldTile(t);
+        }
     }
 
 
@@ -98,66 +110,48 @@ public class Hand {
     // 对手牌执行操作，碰或杠或吃
     public void operation(MeldType meldType, Tile tile) {
         List<Tile> pair;
-        if(meldType == MeldType.PENG) {
-            pair = CheckTile.findPair(tiles, meldType, tile);
-        } else if(meldType == MeldType.GANG) {
-            pair = CheckTile.findPair(tiles, meldType, tile);
-        } else {
-            pair = CheckTile.findSequence(tiles, tile);
-            addMeldTile(tile);
-        }
-
-        for (Tile t : pair) {
-            removeTile(t);
-            addMeldTile(t);
+        if (meldType == MeldType.PENG) {
+            pung(tile);
+        } else if (meldType == MeldType.GANG) {
+            kong(tile);
+        } else if (meldType == MeldType.EAT) {
+            chow(tile);
+        } else if(meldType == MeldType.ANGANG) {
+            concealedKong();
         }
     }
 
-    /**
-     * 判断是否可以碰
-     * 需要依据上一张弃牌
-     * @param tile
-     * @return
-     */
-    public boolean canPeng(Tile tile){
-        return CheckTile.canPeng(tiles, tile);
-    }
 
-    public boolean canPeng(){
-        List<Tile> result = CheckTile.canPeng(tiles);
-        if (result.isEmpty()){
-            return false;
-        }
-        for (Tile tile : result) {
-            removeTile(tile);
-            addMeldTile(tile);
-        }
-        return true;
+    // 判断是否可以暗杠
+    // 不做操作
+    public boolean canConcealedKong() {
+        return CheckTile.canAnGang(tiles);
+
     }
 
 
-
-    public boolean canGang(){
-        List<Tile> result = CheckTile.canGang(tiles);
-        if (result.isEmpty()){
-            return false;
-        }
-        for (Tile tile : result) {
-            removeTile(tile);
-            addMeldTile(tile);
-        }
-        return true;
+    // 判断是否可以碰
+    // 不做操作
+    public boolean canPeng(Tile tile) {
+        return tiles.size() > 1 && CheckTile.canPeng(tiles, tile);
     }
 
-    public boolean canGang(Tile tile){
-        return CheckTile.canGang(tiles, tile);
+
+    // 判断是否可以杠
+    // 不做操作
+    public boolean canGang(Tile tile) {
+        return tiles.size() > 2 && CheckTile.canGang(tiles, tile);
     }
 
-    public boolean canEat(Tile tile){
-        if (!CheckTile.isNumberType(tile)){
-            return false;
-        }
-        return CheckTile.canEat(tiles, tile);
+    // 判断是否可以吃
+    // 不做操作
+    // 只有数字牌可以吃的逻辑移至findSequence
+    public boolean canEat(Tile tile) {
+        return tiles.size() > 1 && CheckTile.canEat(tiles, tile);
+    }
+
+    public boolean canAnGang() {
+        return CheckTile.canAnGang(tiles);
     }
 
     public List<Tile> getTiles() {
@@ -188,5 +182,31 @@ public class Hand {
 
     public TileSortType getTileSortType() {
         return tileSortType;
+    }
+
+    public void sortTiles(List<Tile> tiles) {
+        if (tileSortType == null) {
+            return;
+        }
+        tiles.sort(new Comparator<Tile>() {
+            @Override
+            public int compare(Tile t1, Tile t2) {
+                // Compare the type of tile
+                int typeCompare = t1.getTileType().compareTo(t2.getTileType());
+                if (typeCompare != 0) {
+                    if (tileSortType == TileSortType.MinToMax) {
+                        return typeCompare;
+                    } else {
+                        return -typeCompare;
+                    }
+                }
+                // If the type is same, compare their number
+                if (CheckTile.isNumberType(t1)) {
+                    return t1.getValue() - t2.getValue();
+                } else {
+                    return t1.getCharacter().compareTo(t2.getCharacter());
+                }
+            }
+        });
     }
 }

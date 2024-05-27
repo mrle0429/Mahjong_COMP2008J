@@ -1,0 +1,145 @@
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># 更新日志\r\n说明：本文档用中文维护，旨在记录开发过程中的每次提交更新的中文版本。需要注意的是，除本文档外不应在其他地方出现中文\r\n# 2024/4/22\r\n提交人：刘乐\r\n\r\n庄家第一轮的特殊性：庄家开局直接弃牌\r\n\r\n每轮中逻辑的修正：玩家回合中只有摸牌和弃牌操作，弃牌后系统自动识别其他玩家是否有机会执行碰或杠操作，检测后询问用户是否执行，对于存在多种选择的情况，邀请用户做出选择。\r\n\r\nTodo: 癞子未实现\r\n\r\n缺陷：输出页面表述不清晰，信息不便于观察。但这个不重要，UI界面每次循环都应该做出牌堆刷新。\r\n\r\n# 2024/4/26\r\n提交人：刘乐\r\n\r\nHand类： 修改碰和杠操作。 根据弃牌堆的最后一张牌执行碰和杠\r\n\r\nPlayer类： 根据完善类图的要求丰富玩家功能。玩家操作：弃牌，抓牌， 碰，吃，杠。（吃未实现）。增加玩家类型东南西北，取代玩家名称。\r\n\r\nTileStack类：向牌堆种加入癞子牌，总牌数达到140张。功能并未实现\r\n\r\n# 2024/4/27\r\n提交人：王子恒\r\n\r\nCheckTile：加入吃的方法，更改部分代码逻辑\r\n\r\nHand：完善吃的判断逻辑，加入已经形成的牌型列表\r\n\r\nPlayer：加入下一名玩家的判断，目的是对吃的操作增加限制\r\n\r\nPlayerType: 加入判断下一名玩家的方法\r\n\r\nTile: 加入赖子属性, 赖子为万 条 桶 东南西北 中发白中的一种，而不是新的牌型\r\n\r\nGame: 优化玩家出牌判断顺序，执行杠、碰操作会跳过中间玩家，完善初始化赖子牌的功能\r\n\r\n增加UI中\r\n\r\n缺点：只添加了部分赖子的方法，缺少对赖子判断（杠，碰，吃，赢）的操作，修改的时候不管是胡牌还是\r\n进行吃碰操作的时候都要根据代码的复杂性来判断，可建立新的方法，也可以直接在原有的代码上修改\r\n具体的可以在群中讨论\r\n\r\n# 2024/5/2\r\n提交人：王子恒\r\n\r\n增加View包，主要负责管理UI界面\r\n\r\n添加Resource包，主要负责相关的图片\r\n\r\n# 2024/5/3\r\n提交人：王子恒\r\n\r\n新增碰、杠和吃按钮，吃的按钮是否应该存在还在思考，增加在手牌进行碰和杠的逻辑\r\n\r\n缺少玩家出牌后对其他玩家进行测试的逻辑，稍后添加\r\n\r\n缺少：赖子逻辑、得分系统和开始规则介绍界面和决定地主界面\r\n\r\n中招了，有点烧，明日再更\r\n\r\n# 2024/5/5\r\n提交人：王子恒\r\n\r\n删除吃(Chow)按钮，不允许玩家在自己轮次进行吃的操作，只能在上一家出牌的时候执行吃操作\r\n\r\n增加杠 碰后的牌型展示，放在手牌的右侧，距离手牌大约半个牌的距离\r\n\r\n还在更新中\r\n\r\n# 2024/5/6\r\n提交人：王子恒\r\n\r\n增加当前玩家打出牌后对于其他玩家的判定功能，由于时间问题只完成碰操作，其他操作明日会完成\r\n\r\n缺少：赖子逻辑、得分系统和开始规则介绍\r\n\r\n# 2024/5/7\r\n提交人：王子恒\r\n\r\nHand类：修复Sort方法只排手牌的问题，加入参数让其能够对传入参数序列进行排序\r\n\r\nGameUI: 加入对当前玩家出牌的吃 杠逻辑判断。\r\n\r\nPreparationUI: 增加欢迎界面，主要的目的是让玩家投骰子来判断庄家\r\n\r\n缺少：赖子逻辑、得分逻辑\r\n\r\n# 2024/5/17\r\n提交人：王子恒\r\n\r\nGameUI: 修复图片显示延迟问题。对已经组成的牌区向右增加一个显示位置，以避免重叠问题。\r\n\r\nHand类：增加发牌过程， 增加玩家可以自由选择牌型顺序，只限于 五种类型牌的摆放\r\n\r\nCheckTile: 修复吃操作的逻辑问题，修复常规胡牌算法的检测问题\r\n\r\n增加test类以检测部分算法\r\n\r\n修复其他类一些已知问题
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision c1314c0ef41401c25ec85c8fc7b7f543841b44f7)
++++ b/README.md	(date 1716029280495)
+@@ -97,4 +97,9 @@
+ 
+ 增加test类以检测部分算法
+ 
+-修复其他类一些已知问题
+\ No newline at end of file
++修复其他类一些已知问题
++
++# 2024/5/18
++提交人： 刘乐
++合并dev devUI分支
++
+Index: src/Model/PlayerType.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\n/**\r\n * @author Le Liu\r\n * @create 2024-04\r\n */\r\npublic enum PlayerType {\r\n    East,\r\n    South,\r\n    West,\r\n    North;\r\n\r\n    public PlayerType next(){\r\n        switch (this) {\r\n            case East:\r\n                return North;\r\n            case South:\r\n                return East;\r\n            case West:\r\n                return South;\r\n            case North:\r\n                return West;\r\n            default:\r\n                return null;\r\n        }\r\n    }\r\n\r\n    public static PlayerType getPlayerType(int index){\r\n        switch (index){\r\n            case 0:\r\n                return East;\r\n            case 1:\r\n                return North;\r\n            case 2:\r\n                return West;\r\n            case 3:\r\n                return South;\r\n            default:\r\n                return null;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/PlayerType.java b/src/Model/PlayerType.java
+--- a/src/Model/PlayerType.java	(revision c1314c0ef41401c25ec85c8fc7b7f543841b44f7)
++++ b/src/Model/PlayerType.java	(date 1716029866869)
+@@ -4,6 +4,7 @@
+  * @author Le Liu
+  * @create 2024-04
+  */
++
+ public enum PlayerType {
+     East,
+     South,
+Index: src/View/GameUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package View;\r\n\r\nimport Controller.Game;\r\nimport Model.*;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\nimport java.awt.event.MouseEvent;\r\nimport java.awt.event.MouseListener;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class GameUI extends JFrame implements MouseListener {\r\n    private Game game;\r\n    private Player currentPlayer;\r\n    private Player banker;\r\n    private List<Player> optionPlayers;\r\n    public static int height = 800;\r\n    public static int width = 1200;\r\n    List<Button> buttons = new ArrayList<>();\r\n    List<Button> otherButtons = new ArrayList<>();\r\n    List<Button> showButtons;\r\n    private Image image = null;\r\n    private Graphics gf = null;\r\n    private Tile laiZi;\r\n    private Tile selectTile = null;\r\n    private boolean failDiscard = false;\r\n    private boolean failPung = false;\r\n    private boolean failChow = false;\r\n    private boolean failKong = false;\r\n    private boolean hasWinner = false;\r\n    private boolean noTiles = false;\r\n    private boolean selfTurn = true;\r\n    private MediaTracker tracker;\r\n    private int loadTimes;\r\n\r\n    private Image backgroundImage;\r\n    private Image leftPlayerTile;\r\n    private Image rightPlayerTile;\r\n    private Image topPlayerTile;\r\n\r\n    private int currentTileIndex;\r\n    private Timer timer;\r\n\r\n    public GameUI(Game game) {\r\n        this.game = game;\r\n    }\r\n\r\n    public void initializeUI() {\r\n        currentPlayer = game.getCurrentPlayer();\r\n        banker = game.findZhuang();\r\n        laiZi = game.getTileStack().getLaiZi();\r\n        optionPlayers = new ArrayList<>();\r\n        loadTimes = 0;\r\n        tracker = new MediaTracker(this);\r\n\r\n        backgroundImage = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/background.png\"));\r\n        leftPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/leftP.png\"));\r\n        rightPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/rightP.png\"));\r\n        topPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/topP.png\"));\r\n\r\n        tracker.addImage(backgroundImage, loadTimes++);\r\n        tracker.addImage(leftPlayerTile, loadTimes++);\r\n        tracker.addImage(rightPlayerTile, loadTimes++);\r\n        tracker.addImage(topPlayerTile, loadTimes++);\r\n\r\n        try {\r\n            tracker.waitForAll();\r\n        } catch (InterruptedException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n\r\n        Button button = new Button(\"Discard\");\r\n        button.setBounds(350, 555, 90, 40);\r\n        buttons.add(button);\r\n\r\n/*        button = new Button(\"Pung\");\r\n        button.setBounds(465, 555, 55, 40);\r\n        buttons.add(button);\r\n\r\n        button = new Button(\"Kong\");\r\n        button.setBounds(545, 555, 55, 40);\r\n        buttons.add(button);*/\r\n\r\n\r\n        button = new Button(\"Change tile order\");\r\n        button.setBounds(500, 740, 230, 40);\r\n        buttons.add(button);\r\n\r\n\r\n\r\n        this.setSize(width, height);\r\n\r\n        this.setTitle(\"Mahjong Game\");\r\n\r\n        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n\r\n        this.setLocationRelativeTo(null);\r\n\r\n        this.addMouseListener(this);\r\n\r\n        this.setVisible(true);\r\n\r\n\r\n        startDealing();\r\n\r\n    }\r\n\r\n    @Override\r\n    public void paint(Graphics g) {\r\n        // 添加临时图片 解决屏幕闪烁问题\r\n        if (image == null) {\r\n            image = this.createImage(1200, 800);\r\n        }\r\n        if (this.gf == null) {\r\n            this.gf = image.getGraphics();\r\n        }\r\n\r\n        gf.drawImage(backgroundImage, 0, 0, null);\r\n        gf.drawImage(leftPlayerTile, 150, 200, null);\r\n        gf.drawImage(rightPlayerTile, 1050, 200, null);\r\n        gf.drawImage(topPlayerTile, 220, 180, null);\r\n\r\n        gf.setFont(new Font(\"宋体\", Font.BOLD, 24));\r\n\r\n\r\n        paintBankerInfo();\r\n\r\n        if (!currentPlayer.getHand().isDealingFinished()){\r\n            List<Tile> tileList = currentPlayer.getHand().getTiles();\r\n            for (int i = 0; i != currentTileIndex - 1; i++) {\r\n                Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/\" + tileList.get(i) + \".png\"));\r\n                loadSingleImage(tile);\r\n                gf.drawImage(tile, 240 + (53 * i), 630, null);\r\n            }\r\n\r\n            g.drawImage(image, 0, 0, null);\r\n            return;\r\n        }\r\n\r\n        paintMessages();\r\n\r\n        List<Tile> tileList = currentPlayer.getHand().getTiles();\r\n        for (int i = 0; i != tileList.size(); i++) {\r\n            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/\" + tileList.get(i) + \".png\"));\r\n            loadSingleImage(tile);\r\n            if (tileList.get(i) != selectTile) {\r\n                gf.drawImage(tile, 240 + (53 * i), 650, null);\r\n            } else {\r\n                gf.drawImage(tile, 240 + (53 * i), 630, null);\r\n            }\r\n        }\r\n\r\n        List<Tile> meldTiles = currentPlayer.getHand().getMeldTiles();\r\n        for (int i = 0; i != meldTiles.size(); i++) {\r\n            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/\" + meldTiles.get(i) + \".png\"));\r\n            loadSingleImage(tile);\r\n            gf.drawImage(tile, 1003 - (53 * i), 650, null);\r\n        }\r\n\r\n        List<Tile> discardTiles = game.getTileStack().getDiscardTiles();\r\n        for (int i = 0; i != discardTiles.size(); i++) {\r\n            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/\" + discardTiles.get(i) + \".png\"));\r\n            loadSingleImage(tile);\r\n            gf.drawImage(tile, 220 + (53 * ((i + 15) % 15)), 300 + (i / 15) * 35, null);\r\n        }\r\n\r\n        // 对于不同的界面绘制不同的按钮\r\n        if (selfTurn){\r\n            showButtons = buttons;\r\n        }else{\r\n            showButtons = otherButtons;\r\n        }\r\n\r\n        for (Button button : showButtons) {\r\n            gf.setColor(Color.GRAY);\r\n            gf.fillRect(button.getX(), button.getY(), button.getWidth(), button.getHeight());\r\n\r\n            gf.setFont(new Font(\"宋体\", Font.BOLD, 24));\r\n            gf.setColor(Color.BLACK);\r\n            gf.drawString(button.getLabel(), button.getX(), button.getY() + 36);\r\n        }\r\n\r\n        g.drawImage(image, 0, 0, null);\r\n    }\r\n\r\n    private void loadSingleImage(Image image){\r\n        tracker.addImage(image, loadTimes++);\r\n        try {\r\n            tracker.waitForID(loadTimes - 1);\r\n        } catch (InterruptedException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void mouseClicked(MouseEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void mousePressed(MouseEvent e) {\r\n        if (!currentPlayer.getHand().isDealingFinished()){\r\n            return;\r\n        }\r\n\r\n        if (e.getButton() == MouseEvent.BUTTON1) {\r\n            int xPos = e.getX();\r\n            int yPos = e.getY();\r\n\r\n            String name = \"\";\r\n\r\n            for (Button button : showButtons) {\r\n                if (button.getBounds().contains(xPos, yPos)) {\r\n                    name = button.getLabel();\r\n                }\r\n            }\r\n\r\n            if (selfTurn && \"Discard\".equals(name)){\r\n                if (selectTile == null){\r\n                    failDiscard = true;\r\n                    repaint();\r\n                }else{\r\n                    game.playerDiscardTile(currentPlayer, selectTile);\r\n                    Player currentTestPlayer = currentPlayer;\r\n                    for (int i = 0; i != 3; i++) {\r\n                        currentTestPlayer = game.getNextPlayer(currentTestPlayer);\r\n                        boolean canEat = false;\r\n                        if (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()){\r\n                            canEat = true;\r\n                        }\r\n                        playerOperations(currentTestPlayer, selectTile, canEat);\r\n                    }\r\n                    updateGame();\r\n                }\r\n                return;\r\n            } else if (selfTurn && \"Pung\".equals(name)) {\r\n                if (!currentPlayer.getHand().canPeng()){\r\n                    failPung = true;\r\n                }\r\n                repaint();\r\n                return;\r\n            } else if (selfTurn && \"Kong\".equals(name)) {\r\n                if (!currentPlayer.getHand().canGang()){\r\n                    failKong = true;\r\n                }else{\r\n                    currentPlayer.drawTile(game.getTileStack());\r\n                }\r\n                repaint();\r\n                return;\r\n            } else if (selfTurn && \"Change tile order\".equals(name)) {\r\n                if (currentPlayer.getHand().getTileSortType() == TileSortType.MinToMax){\r\n                    currentPlayer.getHand().setMaxType();\r\n                }else{\r\n                    currentPlayer.getHand().setMinType();\r\n                }\r\n                repaint();\r\n                return;\r\n            } else if (!selfTurn && \"Pass\".equals(name)) {\r\n                updateGame();\r\n                return;\r\n            } else if (!selfTurn && \"Pung\".equals(name)) {\r\n                // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清楚\r\n                optionPlayers.clear();\r\n\r\n                currentPlayer.getHand().operation(MeldType.PENG, selectTile);\r\n                game.getTileStack().getDiscardTiles().remove(selectTile);\r\n\r\n                selfTurn = true;\r\n                game.setCurrentPlayer(currentPlayer);\r\n                selectTile = null;\r\n\r\n                repaint();\r\n//                game.setCurrentPlayer(game.getLastPlayer(currentPlayer));\r\n//                updateGame();\r\n                return;\r\n            } else if (!selfTurn && \"Kong\".equals(name)) {\r\n                optionPlayers.clear();\r\n\r\n                currentPlayer.getHand().operation(MeldType.GANG, selectTile);\r\n                game.getTileStack().getDiscardTiles().remove(selectTile);\r\n\r\n                // 因为杠牌是需要一下出4张，这个时候需要让这名玩家取一张牌的同时，还要出一张牌，为了保持游戏特性的同时维持手牌稳定\r\n                currentPlayer.getHand().addTile(game.getTileStack().takeTile());\r\n\r\n                selfTurn = true;\r\n                game.setCurrentPlayer(currentPlayer);\r\n                selectTile = null;\r\n\r\n                repaint();\r\n                return;\r\n            } else if (!selfTurn && \"Chow\".equals(name)) {\r\n                optionPlayers.clear();\r\n\r\n                currentPlayer.getHand().operation(MeldType.EAT, selectTile);\r\n                game.getTileStack().getDiscardTiles().remove(selectTile);\r\n\r\n                selfTurn = true;\r\n                game.setCurrentPlayer(currentPlayer);\r\n                selectTile = null;\r\n\r\n                repaint();\r\n                return;\r\n            }\r\n\r\n            if (selfTurn) {\r\n                List<Tile> tiles = currentPlayer.getHand().getTiles();\r\n\r\n                int widthArea = tiles.size() * 53;\r\n                if (xPos < 240 || xPos > 239 + widthArea || yPos < 630 || yPos > 700) {\r\n                    selectTile = null;\r\n                } else {\r\n                    if (selectTile == null) {\r\n                        int tilePos = (xPos - 240) / 53;\r\n                        selectTile = tiles.get(tilePos);\r\n                    } else {\r\n                        selectTile = null;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        resetMessage();\r\n        repaint();\r\n    }\r\n\r\n    public void playerOperations(Player player, Tile tile, boolean canEat) {\r\n        boolean isPeng = player.getHand().canPeng(tile);\r\n        boolean isGang = player.getHand().canGang(tile);\r\n        boolean isEat = false;\r\n        if (canEat){\r\n            isEat = player.getHand().canEat(tile);\r\n        }\r\n\r\n        if (isPeng || isGang || isEat){\r\n            Button button;\r\n            if(isPeng) {\r\n                button = new Button(\"Pung\");\r\n                button.setBounds(465, 555, 55, 40);\r\n                otherButtons.add(button);\r\n            }\r\n\r\n            if(isGang) {\r\n                button = new Button(\"Kong\");\r\n                button.setBounds(545, 555, 55, 40);\r\n                otherButtons.add(button);\r\n\r\n            }\r\n//            Button button = new Button(\"Pung\");\r\n//            button.setBounds(465, 555, 55, 40);\r\n//            otherButtons.add(button);\r\n            optionPlayers.add(player);\r\n        }\r\n    }\r\n\r\n    public void updateGame(){\r\n        // 如果当前玩家出的牌可以被其他玩家碰 吃 杠操作的时候 的逻辑\r\n        if (!optionPlayers.isEmpty()){\r\n            // 设置出这张牌的玩家，这样方便检测吃的操作\r\n            Player originalPlayer = game.getCurrentPlayer();\r\n\r\n            Player optionsPlayer = optionPlayers.get(0);\r\n\r\n            optionsPlayer.getHand().setDealingFinished(); // 如果这个人需要执行碰等操作的时候 但是他之前还没有看见自己的牌 则屏蔽发牌过程\r\n\r\n            currentPlayer = optionsPlayer;\r\n            selfTurn = false;\r\n\r\n            optionPlayers.remove(optionsPlayer);\r\n            // 对于这名玩家的专属按钮进行重置\r\n            otherButtons = new ArrayList<>();\r\n\r\n            Button button;\r\n\r\n            if (optionsPlayer.getHand().canPeng(selectTile)){\r\n                button = new Button(\"Pung\");\r\n                button.setBounds(465, 555, 55, 40);\r\n                otherButtons.add(button);\r\n            }\r\n\r\n            if (optionsPlayer.getHand().canGang(selectTile)){\r\n                button = new Button(\"Kong\");\r\n                button.setBounds(545, 555, 55, 40);\r\n                otherButtons.add(button);\r\n            }\r\n\r\n            if (optionsPlayer.getLocation() == originalPlayer.getLocation().next()){\r\n                if (optionsPlayer.getHand().canEat(selectTile)){\r\n                    button = new Button(\"Chow\");\r\n                    button.setBounds(625, 555, 55, 40);\r\n                    otherButtons.add(button);\r\n                }\r\n            }\r\n\r\n            button = new Button(\"Pass\");\r\n            button.setBounds(350, 555, 75, 40);\r\n            otherButtons.add(button);\r\n\r\n            repaint();\r\n            return;\r\n        }\r\n\r\n        //正常情况下，下一名玩家的逻辑\r\n        selfTurn = true;\r\n        if (game.getTileStack().isEmpty()){\r\n            noTiles = true;\r\n            repaint();\r\n            return;\r\n        }\r\n        game.updateGame();\r\n        if (game.isHasWinner()){\r\n            hasWinner = true;\r\n        }\r\n        selectTile = null;\r\n        currentPlayer = game.getCurrentPlayer();\r\n        startDealing();\r\n        repaint();\r\n    }\r\n\r\n    public void paintBankerInfo(){\r\n        gf.setFont(new Font(\"宋体\", Font.BOLD, 24));\r\n        gf.setColor(Color.BLACK);\r\n        gf.drawString(\"The banker is: \" + banker, 220, 100);\r\n\r\n        gf.drawString(\"LaiZi is: \", 550, 100);\r\n        Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource(\"Resources/\" + laiZi + \".png\"));\r\n        loadSingleImage(tile);\r\n        gf.drawImage(tile, 700, 65, null);\r\n\r\n        gf.setColor(Color.BLACK);\r\n        gf.drawString(currentPlayer + \"'s turn\", 240, 780);\r\n    }\r\n\r\n    public void paintMessages(){\r\n        if (failDiscard){\r\n            gf.setColor(Color.RED);\r\n            gf.drawString(\"You must select a tile to discard\", 350, 500);\r\n        } else if (failPung) {\r\n            gf.setColor(Color.RED);\r\n            gf.drawString(\"You do not have enough to Pung\", 350, 500);\r\n        } else if (failChow) {\r\n            gf.setColor(Color.RED);\r\n            gf.drawString(\"You do not have enough to Chow\", 350, 500);\r\n        } else if (failKong) {\r\n            gf.setColor(Color.RED);\r\n            gf.drawString(\"You do not have enough to Kong\", 350, 500);\r\n        } else if (!selfTurn) {\r\n            gf.setColor(Color.YELLOW);\r\n            gf.drawString(\"You can do options with last tile are as follow.\", 350, 500);\r\n        } else if (hasWinner) {\r\n            gf.setColor(Color.YELLOW);\r\n            gf.drawString(currentPlayer + \" wins the Game!\", 350, 500);\r\n        } else if (noTiles) {\r\n            gf.setColor(Color.RED);\r\n            gf.drawString(\"Game Over,There are not enough tile to play!\", 340, 500);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void mouseReleased(MouseEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void mouseEntered(MouseEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void mouseExited(MouseEvent e) {\r\n\r\n    }\r\n\r\n    public void resetMessage(){\r\n        failDiscard = false;\r\n        failPung = false;\r\n        failChow = false;\r\n        failKong = false;\r\n    }\r\n\r\n    public void startDealing(){\r\n        currentTileIndex = 1;\r\n        timer = new Timer(500, new ActionListener() {\r\n            @Override\r\n            public void actionPerformed(ActionEvent e) {\r\n                if (currentTileIndex < 15){\r\n                    currentTileIndex++;\r\n                }else{\r\n                    timer.stop();\r\n                    currentPlayer.getHand().setDealingFinished();\r\n                }\r\n                repaint();\r\n            }\r\n        });\r\n        timer.start();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/View/GameUI.java b/src/View/GameUI.java
+--- a/src/View/GameUI.java	(revision c1314c0ef41401c25ec85c8fc7b7f543841b44f7)
++++ b/src/View/GameUI.java	(date 1716036459304)
+@@ -72,23 +72,14 @@
+             throw new RuntimeException(e);
+         }
+ 
+-        Button button = new Button("Discard");
+-        button.setBounds(350, 555, 90, 40);
+-        buttons.add(button);
+-
+-/*        button = new Button("Pung");
+-        button.setBounds(465, 555, 55, 40);
+-        buttons.add(button);
++        Button discardButton = new Button("Discard");
++        discardButton.setBounds(350, 555, 90, 40);
++        buttons.add(discardButton);
+ 
+-        button = new Button("Kong");
+-        button.setBounds(545, 555, 55, 40);
+-        buttons.add(button);*/
+ 
+-
+-        button = new Button("Change tile order");
+-        button.setBounds(500, 740, 230, 40);
+-        buttons.add(button);
+-
++        Button changeButton = new Button("Change tile order");
++        changeButton.setBounds(500, 740, 230, 40);
++        buttons.add(changeButton);
+ 
+ 
+         this.setSize(width, height);
+@@ -103,7 +94,6 @@
+ 
+         this.setVisible(true);
+ 
+-
+         startDealing();
+ 
+     }
+@@ -419,7 +409,9 @@
+         repaint();
+     }
+ 
+-    public void paintBankerInfo(){
++
++/*    public void paintBankerInfo(){
++
+         gf.setFont(new Font("宋体", Font.BOLD, 24));
+         gf.setColor(Color.BLACK);
+         gf.drawString("The banker is: " + banker, 220, 100);
+@@ -431,7 +423,25 @@
+ 
+         gf.setColor(Color.BLACK);
+         gf.drawString(currentPlayer + "'s turn", 240, 780);
+-    }
++    }*/
++    public void paintBankerInfo(){
++    gf.setFont(new Font("宋体", Font.BOLD, 24));
++    gf.setColor(Color.RED); // 修改颜色为红色
++
++    // 修改显示位置，你可以根据需要调整这些值
++    int playerInfoX = 240;
++    int playerInfoY = 620;
++
++    gf.drawString(currentPlayer + "'s turn", playerInfoX, playerInfoY);
++
++    gf.setColor(Color.BLACK);
++    gf.drawString("The banker is: " + banker, 220, 100);
++
++    gf.drawString("LaiZi is: ", 550, 100);
++    Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + laiZi + ".png"));
++    loadSingleImage(tile);
++    gf.drawImage(tile, 700, 65, null);
++}
+ 
+     public void paintMessages(){
+         if (failDiscard){
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision c1314c0ef41401c25ec85c8fc7b7f543841b44f7)
++++ b/.idea/misc.xml	(date 1714220872708)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
