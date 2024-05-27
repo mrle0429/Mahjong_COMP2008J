@@ -37,7 +37,6 @@ public class WaysOfHu {
                 return false;
             }
         }
-        System.out.println("isSevenPairs");
         return true;
 
     }
@@ -54,7 +53,6 @@ public class WaysOfHu {
                 return false;
             }
         }
-        System.out.println("isDeluxeSevenPairs");
         return hasQuad;
     }
 
@@ -66,7 +64,6 @@ public class WaysOfHu {
                 return false;
             }
         }
-        System.out.println("isAllPongs");
         return true;
     }
 
@@ -77,41 +74,8 @@ public class WaysOfHu {
                 return false;
             }
         }
-        System.out.println("isAllWinds");
         return true;
     }
-
-
-//    // ThirteenOrphans
-//    public static boolean isThirteenOrphans(List<Tile> tiles) {
-//        if (tiles.size() != 14) return false; // 必须正好14张牌
-//
-//        // 国士无双的必需牌型
-//        List<Tile> requiredTiles = List.of(
-//                new Tile(TileType.Character,1), new Tile(TileType.Character, 9),
-//                new Tile(TileType.Bamboo, 1), new Tile(TileType.Bamboo, 9),
-//                new Tile(TileType.Circle, 1), new Tile(TileType.Circle, 9),
-//                new Tile(TileType.Wind, "East"), new Tile(TileType.Wind, "South"),
-//                new Tile(TileType.Wind, "West"), new Tile(TileType.Wind, "North"),
-//                new Tile(TileType.Dragon, "Zhong"), new Tile(TileType.Dragon, "Fa"),
-//                new Tile(TileType.Dragon, "White")
-//        );
-//        System.out.println("isThirteenOrphans");
-//
-//        Map<Tile, Integer> counts = countTiles(tiles);
-//        int pairCount = 0;
-//        for (Tile requiredTile : requiredTiles) {
-//            int count = counts.getOrDefault(requiredTile, 0);
-//            if (count == 0) {
-//                return false;
-//            } else if (count > 1) {
-//                pairCount++;
-//            }
-//        }
-//        return pairCount == 1;
-//
-//    }
-
 
     private static Map<Tile, Integer> countTiles(List<Tile> tiles) {
         Map<Tile, Integer> tileCount = new HashMap<>();
@@ -122,7 +86,6 @@ public class WaysOfHu {
     }
 
     public static int calculateScore(List<Tile> tiles) {
-        System.out.println("WaysOfHu calculateScore");
         int fanNum = 1;
         if (CheckTile.isroutineHu(tiles, false)) {
             fanNum += 1; // 1  basic fan

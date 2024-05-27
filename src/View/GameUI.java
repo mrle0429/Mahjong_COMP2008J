@@ -28,7 +28,6 @@ public class GameUI extends JFrame implements MouseListener {
     List<Button> showButtons;
     private Image image = null;
     private Graphics gf = null;
-    private Tile laiZi;
     private Tile selectTile = null;
     private boolean failDiscard = false;
     private boolean failPung = false;
@@ -54,7 +53,6 @@ public class GameUI extends JFrame implements MouseListener {
 
     public void initializeUI() {
         currentPlayer = game.getCurrentPlayer();
-        laiZi = game.getTileStack().getJokerTile();
         optionPlayers = new ArrayList<>();
         loadTimes = 0;
         tracker = new MediaTracker(this);
@@ -185,6 +183,10 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     private void paintDiscardTile() {
+        if (gameOver){
+            return;
+        }
+
         List<Tile> discardTiles = game.getDiscardTiles();
         for (int i = 0; i != discardTiles.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + discardTiles.get(i) + ".png"));
@@ -451,8 +453,6 @@ public class GameUI extends JFrame implements MouseListener {
         gf.setColor(Color.RED);
         gf.drawString(currentPlayer + "'s turn", 750, 100);
 
-
-      
         // 显示分数
         paintScores(gf);
     }

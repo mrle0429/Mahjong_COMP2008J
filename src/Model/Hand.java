@@ -2,11 +2,13 @@ package Model;
 
 import Util.CheckTile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Hand {
+public class Hand implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Tile> tiles;
     private List<Tile> meldTiles;
     private boolean isDealingFinished;
@@ -21,11 +23,9 @@ public class Hand {
     }
 
     // 为可操作牌堆添加牌，用于抓牌操作的辅助
-    // 已调整排序。不对最后摸到的牌进行排序，方便用户了解刚才拿到的牌是什么。
-    // Todo: 在展示牌的时候，将刚刚摸到的牌和其他的牌拉开一点距离
-    private boolean addTile(Tile tile) {
-        sortTiles(tiles);
+    public boolean addTile(Tile tile) {
         boolean hasAdd = tiles.add(tile);
+        sortTiles(tiles);
         return hasAdd;
     }
 
@@ -36,7 +36,7 @@ public class Hand {
     }
 
     // 从可操作牌堆中移除牌，用于打牌操作的辅助
-    private boolean removeTile(Tile tile) {
+    public boolean removeTile(Tile tile) {
         boolean hasRemoved = tiles.remove(tile);
         if (hasRemoved) {
             sortTiles(tiles);
@@ -50,7 +50,7 @@ public class Hand {
         List<Tile> hand = new ArrayList<>();
         hand.addAll(tiles);
         hand.addAll(meldTiles);
-        return hand.size() ==14 && CheckTile.isHu(hand);
+        return hand.size() == 14 && CheckTile.isHu(hand);
     }
 
     // 抓牌操作
@@ -105,8 +105,6 @@ public class Hand {
         }
     }
 
-
-
     // 对手牌执行操作，碰或杠或吃
     public void operation(MeldType meldType, Tile tile) {
         List<Tile> pair;
@@ -116,11 +114,10 @@ public class Hand {
             kong(tile);
         } else if (meldType == MeldType.EAT) {
             chow(tile);
-        } else if(meldType == MeldType.ANGANG) {
+        } else if (meldType == MeldType.ANGANG) {
             concealedKong();
         }
     }
-
 
     // 判断是否可以暗杠
     // 不做操作
@@ -129,13 +126,11 @@ public class Hand {
 
     }
 
-
     // 判断是否可以碰
     // 不做操作
     public boolean canPeng(Tile tile) {
         return tiles.size() > 1 && CheckTile.canPeng(tiles, tile);
     }
-
 
     // 判断是否可以杠
     // 不做操作

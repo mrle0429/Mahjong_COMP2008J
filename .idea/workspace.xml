@@ -5,12 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="Partial refactoring of Player, Hand, and TileStack classe">
+      <change afterPath="$PROJECT_DIR$/src/Model/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/MessageType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Network/GameServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Network/PlayerClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Network/PlayerThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/NetWaitingUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51_[Changes]/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Hand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Hand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/TileStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/TileStack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/CheckTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/CheckTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/WaysOfHu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/WaysOfHu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/GameUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +68,7 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2fAshmuT9XHAS2zy03W9KmPPsfP" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -69,16 +82,28 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "GameUI",
-    "last_opened_file_path": "E:/BDIC/stage2_2/SoftwareEngProject/lab2",
+    "last_opened_file_path": "E:/java/GameProject/Mahjong_1/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "configurable.group.editor",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\java\GameProject\Mahjong_1\src" />
+      <recent name="E:\java\GameProject\Mahjong_1\src\Model" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="View" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Controller.Application" />
@@ -95,7 +120,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
+        <item itemvalue="应用程序.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -132,6 +157,7 @@
       <workItem from="1716186584489" duration="3277000" />
       <workItem from="1716281476848" duration="320000" />
       <workItem from="1716344929375" duration="815000" />
+      <workItem from="1716788608785" duration="2712000" />
     </task>
     <task id="LOCAL-00001" summary="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）">
       <option name="closed" value="true" />

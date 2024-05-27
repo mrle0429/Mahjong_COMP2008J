@@ -19,8 +19,6 @@ public class CheckTile {
         return tileType == TileType.Character || tileType == TileType.Circle || tileType == TileType.Bamboo;
     }
 
-
-
     public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile) {
         List<Tile> result = new ArrayList<>();
         // 只写碰和杠
@@ -46,8 +44,6 @@ public class CheckTile {
     }
 
     // 找到手牌中连续两张牌，用于吃操作
-    // Todo: 没有给用户选择使用45吃6，还是78吃6
-    // 若存在此情况，现有方法默认用78吃
     public static List<Tile> findSequence(List<Tile> tiles, Tile tile) {
         List<Tile> result = new ArrayList<>();
 
@@ -163,6 +159,11 @@ public class CheckTile {
 
         // Test if it has pair
         if (!findPair) {
+
+            if (tiles.size() == 2){
+                return tiles.get(0).equals(tiles.get(1));
+            }
+
             int firstIndex = 0;
             if (tiles.get(firstIndex).equals(tiles.get(firstIndex + 1)) && !tiles.get(firstIndex).equals(tiles.get(firstIndex + 2))) {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);

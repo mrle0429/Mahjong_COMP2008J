@@ -2,7 +2,10 @@ package Model;
 
 import Util.CheckTile;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
+    private static final long serialVersionUID = 1L;
     private TileType tileType;
     private int value; // For WAN, TONG and TIAO
     private String character; // For FENG and JIAN

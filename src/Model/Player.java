@@ -1,17 +1,15 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable {
+    private static final long serialVersionUID = 1L;
     private PlayerType location;
     private Hand hand;
     private boolean isWinner;
     private boolean isZhuang;
-
-
     private int score;
-
-
 
     public Player(PlayerType location) {
         this.location = location;
@@ -20,9 +18,6 @@ public class Player {
         isZhuang = false;
         score = 500;
     }
-
-
-
 
     public boolean drawTile(TileStack tileStack) {  // 抓牌
         boolean hasDrawn = hand.drawTile(tileStack);
@@ -68,8 +63,6 @@ public class Player {
         return hand.canAnGang();
     }
 
-
-
     public boolean isWinner() {
         return isWinner;
     }
@@ -84,13 +77,10 @@ public class Player {
 
     public void setScore(int score) {
         if (score < 0) {
-            System.out.println("Attempt to set a negative score for player. Score not set.");
             return;
         }
         this.score = score;
-        System.out.println("Score updated to: " + score);
     }
-
 
     public PlayerType getLocation() {
         return location;
@@ -119,5 +109,9 @@ public class Player {
 
     public List<Tile> getMeldTiles() {
         return hand.getMeldTiles();
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
     }
 }

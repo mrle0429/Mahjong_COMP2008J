@@ -1,13 +1,14 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TileStack {
+public class TileStack implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Tile> tiles;
     private List<Tile> discardTiles;
-    private Tile jokerTile;
 
     public TileStack() {
         tiles = new ArrayList<>();
@@ -16,7 +17,7 @@ public class TileStack {
         shuffle();
     }
 
-    private void initializeTiles(){
+    private void initializeTiles() {
         TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
@@ -44,32 +45,25 @@ public class TileStack {
             }
         }
 
-        // For Joker tiles
-        setJokerTile();
-
     }
 
-    private void shuffle(){
+    private void shuffle() {
         Collections.shuffle(tiles);
     }
 
-    public void setJokerTile(){
-        Tile tile = tiles.get((int) (Math.random() * 136));  // Randomly select a tile as joker
-        for (Tile t : tiles) {
-
-            if (t.equals(tile)){
-                t.setLaiZi(true);
-            }
+    public Tile takeTile() {
+        if (tiles.isEmpty()) {
+            return null;
         }
-        jokerTile = tile;
+        return tiles.remove(tiles.size() - 1); // Take the last one to player
     }
 
-    public void playerDiscardTile(Tile tile){
+    public void playerDiscardTile(Tile tile) {
         discardTiles.add(tile);
     }
 
-    public Tile playerDrawTile(){
-        if (tiles.isEmpty()){
+    public Tile playerDrawTile() {
+        if (tiles.isEmpty()) {
             return null;
         }
         return tiles.remove(tiles.size() - 1); // Take the last one to player
@@ -83,22 +77,17 @@ public class TileStack {
         return tiles;
     }
 
-    public void resetGame(){
+    public void resetGame() {
         tiles = new ArrayList<>();
         initializeTiles();
         shuffle();
     }
 
-
-    public int size(){
+    public int size() {
         return tiles.size();
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size() == 0;
-    }
-
-    public Tile getJokerTile() {
-        return jokerTile;
     }
 }
