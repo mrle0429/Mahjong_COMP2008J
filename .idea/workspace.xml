@@ -4,27 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="Partial refactoring of Player, Hand, and TileStack classe">
-      <change afterPath="$PROJECT_DIR$/src/Model/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/MessageType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Network/GameServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Network/PlayerClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Network/PlayerThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/NetWaitingUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51_[Changes]/img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024_5_18_20_51__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+    <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="feat: 更新27日更新内容">
+      <change afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Hand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Hand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/TileStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/TileStack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/CheckTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/CheckTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/WaysOfHu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/WaysOfHu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GameUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Network/PlayerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/PlayerClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +74,7 @@
     "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.editor",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -104,13 +87,20 @@
       <recent name="View" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Controller.Application" />
+  <component name="RunManager" selected="应用程序.App">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App" />
+      <module name="Mahjong" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Network.PlayerClient" />
       <module name="Mahjong" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Controller.*" />
+          <option name="PATTERN" value="Network.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -120,7 +110,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="应用程序.Application" />
+        <item itemvalue="应用程序.App" />
+        <item itemvalue="应用程序.PlayerClient" />
       </list>
     </recent_temporary>
   </component>
@@ -157,7 +148,9 @@
       <workItem from="1716186584489" duration="3277000" />
       <workItem from="1716281476848" duration="320000" />
       <workItem from="1716344929375" duration="815000" />
-      <workItem from="1716788608785" duration="2712000" />
+      <workItem from="1716788608785" duration="3432000" />
+      <workItem from="1716797638848" duration="1876000" />
+      <workItem from="1716806857504" duration="3053000" />
     </task>
     <task id="LOCAL-00001" summary="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）">
       <option name="closed" value="true" />
@@ -199,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716130725750</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: 更新27日更新内容">
+      <option name="closed" value="true" />
+      <created>1716791722730</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716791722730</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,7 +242,8 @@
     <MESSAGE value="Joker is added. But function need to finish." />
     <MESSAGE value="format" />
     <MESSAGE value="Partial refactoring of Player, Hand, and TileStack classe" />
-    <option name="LAST_COMMIT_MESSAGE" value="Partial refactoring of Player, Hand, and TileStack classe" />
+    <MESSAGE value="feat: 更新27日更新内容" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 更新27日更新内容" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
