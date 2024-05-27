@@ -1,0 +1,150 @@
+Index: src/Model/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\npublic class Player {\r\n    private PlayerType location;\r\n    private Hand hand;\r\n    private boolean isWinner;\r\n    private boolean isZhuang;\r\n\r\n    public Player(PlayerType location) {\r\n        this.location = location;\r\n        hand = new Hand();\r\n        isWinner = false;\r\n        isZhuang = false;\r\n    }\r\n\r\n    public boolean drawTile(TileStack tileStack){  // 抓牌\r\n        boolean hasDrawn = hand.drawTile(tileStack);\r\n        if (hand.checkIsWin()) {\r\n            isWinner = true;\r\n        }\r\n        return hasDrawn;\r\n    }\r\n\r\n    public boolean discardTile(TileStack tileStack, Tile tile){\r\n        return hand.discardTile(tileStack, tile);\r\n    }\r\n\r\n    public void pengTile(Tile tile) {\r\n        hand.operation(MeldType.PENG, tile);\r\n    }\r\n\r\n    public void gangTile(Tile tile) {\r\n        hand.operation(MeldType.GANG, tile);\r\n    }\r\n\r\n    public void eatTile(Tile tile) {\r\n        hand.operation(MeldType.EAT, tile);\r\n    }\r\n\r\n    public boolean isWinner() {\r\n        return isWinner;\r\n    }\r\n\r\n    public Hand getHand() {\r\n        return hand;\r\n    }\r\n\r\n    public PlayerType getLocation() {\r\n        return location;\r\n    }\r\n\r\n    public void setZhuang(boolean zhuang) {\r\n        isZhuang = zhuang;\r\n    }\r\n\r\n    public boolean isZhuang() {\r\n        return isZhuang;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return this.location.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Player.java b/src/Model/Player.java
+--- a/src/Model/Player.java	(revision d0462529c812d1d215f9a2b32a9f76d39ac3532c)
++++ b/src/Model/Player.java	(date 1716188704417)
+@@ -21,10 +21,20 @@
+         return hasDrawn;
+     }
+ 
++
++
+     public boolean discardTile(TileStack tileStack, Tile tile){
+         return hand.discardTile(tileStack, tile);
+     }
+ 
++    public boolean checkIsWin(){
++        boolean win = hand.checkIsWin();
++        if (win){
++            isWinner = true;
++        }
++        return hand.checkIsWin();
++    }
++
+     public void pengTile(Tile tile) {
+         hand.operation(MeldType.PENG, tile);
+     }
+Index: src/Controller/Game.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Controller;\r\n\r\nimport Model.*;\r\nimport View.GameUI;\r\nimport View.PreparationUI;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Scanner;\r\n\r\npublic class Game {\r\n    private List<Player> players;\r\n    private TileStack tileStack;\r\n    private boolean hasWinner;\r\n    private Player currentPlayer;\r\n\r\n    private GameUI gameUI;\r\n    private PreparationUI preparationUI;\r\n\r\n    private boolean isStart;\r\n\r\n    public Game() {\r\n        players = new ArrayList<>();\r\n        tileStack = new TileStack();\r\n        hasWinner = false;\r\n        isStart = false;\r\n        gameUI = new GameUI(this);\r\n        preparationUI = new PreparationUI(this);\r\n    }\r\n\r\n    public void initializeGame() {    // 重构初始化函数\r\n        addPlayer();                 // 添加四名玩家\r\n        distributeTile();            // 发牌，同时为庄家多发一张\r\n    }\r\n\r\n    public void addPlayer() {\r\n        players.add(new Player(PlayerType.East));\r\n        players.add(new Player(PlayerType.South));\r\n        players.add(new Player(PlayerType.West));\r\n        players.add(new Player(PlayerType.North));\r\n    }\r\n\r\n    public void distributeTile() {\r\n        for (Player player : players) {\r\n            for (int i = 0; i != 13; i++) {\r\n                player.getHand().addTile(tileStack.playerDrawTile());\r\n            }\r\n        }\r\n    }\r\n    /*逻辑更新\r\n    * 1. 庄家第一轮直接打出一张\r\n    * 2. 之后进入正常循环*/\r\n    public void startGame() {\r\n        if (!isStart){\r\n            initializeGame();\r\n            preparationUI.initializeUI();\r\n            return;\r\n        }\r\n        currentPlayer = findZhuang();\r\n        // 地主额外获得一张牌\r\n        currentPlayer.drawTile(tileStack);\r\n        gameUI.initializeUI();\r\n    }\r\n\r\n\r\n    public Player getNextPlayer(Player player){\r\n        for (Player p : players) {\r\n            if (p.getLocation() == player.getLocation().next()){\r\n                return p;\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n\r\n    public Player getLastPlayer(Player player){\r\n        for (Player p : players) {\r\n            if (player.getLocation() == p.getLocation().next()){\r\n                return p;\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n\r\n    public void moveToNext(Player player){\r\n        currentPlayer = getNextPlayer(player);\r\n    }\r\n\r\n    public Player findZhuang(){\r\n        for (Player player : players) {\r\n            if (player.isZhuang()){\r\n                return player;\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * 正常回合\r\n     * 1.玩家摸牌\r\n     * 2.玩家丢出一张牌\r\n     * 3.检测其他玩家是否可操作\r\n     *\r\n     * @param player\r\n     */\r\n    /*public void takeTurn(Player player, boolean isFirstTurn) {\r\n        System.out.println(player.getLocation() + \" 's turn\");\r\n        System.out.println(\"You current tiles: \");  // 打印玩家手牌\r\n        player.getHand().showHandTiles();\r\n        System.out.println();\r\n\r\n        if(!isFirstTurn) {\r\n            player.drawTile(tileStack);  // 玩家摸牌\r\n        }\r\n\r\n        if (player.isWinner()){\r\n            return;\r\n        }\r\n\r\n        boolean isDiscard = false;\r\n        while (!isDiscard) {\r\n            if(!isFirstTurn) {\r\n                System.out.println(\"You current tiles after catch: \");  // 打印摸牌后的手牌\r\n                player.getHand().showHandTiles();\r\n            }\r\n\r\n            System.out.println(\"Please discard one tile.\");  // 提示玩家应该弃牌\r\n            // TODO 癞子牌操作\r\n\r\n            if (playerDiscard(player)) {  // 玩家选择要丢弃的牌\r\n\r\n                List<Tile> discardPile = tileStack.getDiscardTiles();   // 打印弃牌堆\r\n                System.out.println(\"Discard Piles : \\n\");\r\n\r\n                for (Tile tile : discardPile) {\r\n                    System.out.print(tile + \"\\t\");\r\n                }\r\n                System.out.println();\r\n\r\n                for (Player p : players) {  // 检测玩家操作\r\n                    if (p != player) {\r\n                        boolean canEat = false;\r\n                        if (p.getLocation() == player.getLocation().next()){\r\n                            canEat = true;\r\n                        }\r\n                        playerOperations(p, tileStack.getDiscardTiles().get(tileStack.getDiscardTiles().size() - 1), canEat);\r\n                    }\r\n                }\r\n                isDiscard = true;\r\n            }\r\n        }\r\n    }*/\r\n\r\n\r\n\r\n    public void playerDiscardTile(Player player, Tile tile){\r\n        if (player.discardTile(tileStack, tile)){\r\n\r\n        }\r\n    }\r\n\r\n    // 自动检测玩家是否有碰或杠\r\n    // 询问玩家是否要进行操作\r\n    /*public void playerOperations(Player player, Tile operationCard, boolean canEat) {\r\n        Boolean isGang = player.getHand().canGang(operationCard);\r\n        Boolean isPeng = player.getHand().canPeng(operationCard);\r\n        boolean isEat = false;\r\n        if (canEat){\r\n            isEat = player.getHand().canEat(operationCard);\r\n        }\r\n\r\n        if (isPeng && isGang) {\r\n            System.out.println(player.getLocation() + \" 's tiles: \");\r\n            player.getHand().showHandTiles();\r\n            System.out.println(player.getLocation() + \" can Peng or Gang tiles. Please choice options\\n\" +\r\n                    \"1. Peng\\n\" +\r\n                    \"2. Gang\\n\" +\r\n                    \"3. Not Peng or Gang\");\r\n            String option = scanner.next();\r\n            switch (option) {\r\n                case \"1\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    player.getHand().operation(MeldType.PENG, operationCard);\r\n                    player.getHand().showHandTiles();\r\n                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被碰的这张牌\r\n                    playerDiscard(player);\r\n                    break;\r\n                case \"2\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    player.getHand().operation(MeldType.GANG, operationCard);\r\n                    player.getHand().showHandTiles();\r\n                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌\r\n                    player.getHand().addTile(tileStack.takeTile()); // 为了保证牌的总量 杠完需要额外获得牌\r\n                    playerDiscard(player);\r\n                    break;\r\n                case \"3\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    break;\r\n            }\r\n\r\n        } else if (isPeng) {\r\n            System.out.println(player.getLocation() + \" 's tiles: \");\r\n            player.getHand().showHandTiles();\r\n            System.out.println(player.getLocation() + \" can Peng tiles. Please choice options\\n\" +\r\n                    \"1. Peng\\n\" +\r\n                    \"2. Not Peng\");\r\n            String option = scanner.next();\r\n\r\n            switch (option) {\r\n                case \"1\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    player.getHand().operation(MeldType.PENG, operationCard);\r\n                    player.getHand().showHandTiles();\r\n                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被碰的这张牌\r\n                    playerDiscard(player);\r\n                    break;\r\n                case \"2\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    break;\r\n                default:\r\n                    System.out.println(\"Please enter correct number\");\r\n            }\r\n        } else if (isGang) {\r\n            System.out.println(player.getLocation() + \" 's tiles: \");\r\n            player.getHand().showHandTiles();\r\n            System.out.println(player.getLocation()+ \" can Gang tiles. Please choice options\\n\" +\r\n                    \"1. Gang\\n\" +\r\n                    \"2. Not Gang\");\r\n            String option = scanner.next();\r\n            switch (option) {\r\n                case \"1\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    player.getHand().operation(MeldType.GANG, operationCard);\r\n                    player.getHand().showHandTiles();\r\n                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌\r\n                    player.getHand().addTile(tileStack.takeTile()); // 为了保证牌的总量 杠完需要额外获得牌\r\n                    playerDiscard(player);\r\n                    break;\r\n                case \"2\":\r\n                    scanner.nextLine(); // Clear scanner\r\n                    break;\r\n                default:\r\n                    System.out.println(\"Please enter correct number\");\r\n            }\r\n        }\r\n        if (isEat) {\r\n            System.out.println(player.getLocation() + \" 's tiles: \");\r\n            player.getHand().showHandTiles();\r\n            System.out.println(player.getLocation()+ \" can Eat tiles. Please choice options\\n\" +\r\n                    \"1. Eat\\n\" +\r\n                    \"2. Not Eat\");\r\n            String option = scanner.next();\r\n            switch (option){\r\n                case \"1\":\r\n                    scanner.nextLine();\r\n                    player.getHand().operation(MeldType.EAT, operationCard);\r\n                    player.getHand().showHandTiles();\r\n                    tileStack.getDiscardTiles().remove(tileStack.getDiscardTiles().size() - 1);  // 弃牌堆删除被杠的这张牌\r\n                    playerDiscard(player);\r\n                    break;\r\n                case \"2\":\r\n                    scanner.nextLine();\r\n                    break;\r\n                default:\r\n                    System.out.println(\"Please enter correct number\");\r\n            }\r\n        }\r\n    }*/\r\n\r\n    public void updateGame(){\r\n        moveToNext(currentPlayer);\r\n        currentPlayer.drawTile(tileStack);\r\n        if (currentPlayer.isWinner()){\r\n            hasWinner = true;\r\n        }\r\n    }\r\n\r\n    public TileStack getTileStack() {\r\n        return tileStack;\r\n    }\r\n\r\n    public boolean isHasWinner() {\r\n        return hasWinner;\r\n    }\r\n\r\n    public void setCurrentPlayer(Player currentPlayer) {\r\n        this.currentPlayer = currentPlayer;\r\n    }\r\n\r\n    public void setStart(){\r\n        isStart = true;\r\n    }\r\n\r\n    public void setZhuang(int index){\r\n        players.get(index).setZhuang(true);\r\n    }\r\n\r\n    public Player getCurrentPlayer() {\r\n        return currentPlayer;\r\n    }\r\n\r\n    public List<Player> getPlayers() {\r\n        return players;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Controller/Game.java b/src/Controller/Game.java
+--- a/src/Controller/Game.java	(revision d0462529c812d1d215f9a2b32a9f76d39ac3532c)
++++ b/src/Controller/Game.java	(date 1716188704409)
+@@ -94,68 +94,11 @@
+         return null;
+     }
+ 
+-    /**
+-     * 正常回合
+-     * 1.玩家摸牌
+-     * 2.玩家丢出一张牌
+-     * 3.检测其他玩家是否可操作
+-     *
+-     * @param player
+-     */
+-    /*public void takeTurn(Player player, boolean isFirstTurn) {
+-        System.out.println(player.getLocation() + " 's turn");
+-        System.out.println("You current tiles: ");  // 打印玩家手牌
+-        player.getHand().showHandTiles();
+-        System.out.println();
+-
+-        if(!isFirstTurn) {
+-            player.drawTile(tileStack);  // 玩家摸牌
+-        }
+-
+-        if (player.isWinner()){
+-            return;
+-        }
+-
+-        boolean isDiscard = false;
+-        while (!isDiscard) {
+-            if(!isFirstTurn) {
+-                System.out.println("You current tiles after catch: ");  // 打印摸牌后的手牌
+-                player.getHand().showHandTiles();
+-            }
+-
+-            System.out.println("Please discard one tile.");  // 提示玩家应该弃牌
+-            // TODO 癞子牌操作
+-
+-            if (playerDiscard(player)) {  // 玩家选择要丢弃的牌
+-
+-                List<Tile> discardPile = tileStack.getDiscardTiles();   // 打印弃牌堆
+-                System.out.println("Discard Piles : \n");
+-
+-                for (Tile tile : discardPile) {
+-                    System.out.print(tile + "\t");
+-                }
+-                System.out.println();
+-
+-                for (Player p : players) {  // 检测玩家操作
+-                    if (p != player) {
+-                        boolean canEat = false;
+-                        if (p.getLocation() == player.getLocation().next()){
+-                            canEat = true;
+-                        }
+-                        playerOperations(p, tileStack.getDiscardTiles().get(tileStack.getDiscardTiles().size() - 1), canEat);
+-                    }
+-                }
+-                isDiscard = true;
+-            }
+-        }
+-    }*/
+ 
+ 
+ 
+     public void playerDiscardTile(Player player, Tile tile){
+-        if (player.discardTile(tileStack, tile)){
+-
+-        }
++        player.discardTile(tileStack, tile);
+     }
+ 
+     // 自动检测玩家是否有碰或杠
+@@ -268,10 +211,16 @@
+ 
+     public void updateGame(){
+         moveToNext(currentPlayer);
++        currentPlayerDrawTile();
++
++        checkPlayerIsWin();
++    }
++    public boolean checkPlayerIsWin() {
++        return currentPlayer.checkIsWin();
++
++    }
++    public void currentPlayerDrawTile() {
+         currentPlayer.drawTile(tileStack);
+-        if (currentPlayer.isWinner()){
+-            hasWinner = true;
+-        }
+     }
+ 
+     public TileStack getTileStack() {
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision d0462529c812d1d215f9a2b32a9f76d39ac3532c)
++++ b/.idea/misc.xml	(date 1716036686637)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file

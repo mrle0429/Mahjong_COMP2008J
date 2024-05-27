@@ -1,167 +1,220 @@
 package Controller;
 
 import Model.Player;
+import Model.PlayerType;
 import Model.Tile;
 import Model.TileStack;
-import Util.CheckTile;
+import View.GameUI;
+import View.PreparationUI;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
     private List<Player> players;
     private TileStack tileStack;
-    private boolean hasWinner;
-    private Scanner scanner;
+    private Player currentPlayer;
 
-    public Game(){
+    private GameUI gameUI;
+    private PreparationUI preparationUI;
+
+    private boolean isStart;
+    private boolean isGameOver;
+    private boolean hasWinner;
+
+
+
+    public Game() {
         players = new ArrayList<>();
         tileStack = new TileStack();
-        scanner = new Scanner(System.in);
         hasWinner = false;
+        isStart = false;
+        isGameOver = false;
+        gameUI = new GameUI(this);
+        preparationUI = new PreparationUI(this);
     }
 
-    public void initializeGame(){
-        //TODO CheckPlayer class to replace this.
-        players.add(new Player("Player 1"));
-        players.add(new Player("Player 2"));
-        players.add(new Player("Player 3"));
-        players.add(new Player("Player 4"));
+    // 初始化游戏
+    public void initializeGame() {
+        addPlayer();                 // 添加四名玩家
+        preparationUI.initializeUI();
+    }
 
+    public void startGame() {
+        if (!isStart) {
+            initializeGame();
+            return;
+        }
+        distributeTile(); // 发牌
+
+        currentPlayer = findZhuang();
+        gameUI.initializeUI();
+
+        // 地主额外获得一张牌
+        playerDrawTile(currentPlayer);
+        //gameUI.updateGameUI();
+    }
+
+    private void addPlayer() {
+        players.add(new Player(PlayerType.East));
+        players.add(new Player(PlayerType.South));
+        players.add(new Player(PlayerType.West));
+        players.add(new Player(PlayerType.North));
+    }
+
+    private void distributeTile() {
         for (Player player : players) {
             for (int i = 0; i != 13; i++) {
-                ;player.getHand().addTile(tileStack.takeTile());
-            }
-        }
-        //TODO TouZi to solve who is 庄家, 这里假设第一名是庄家
-//        players.get(0).getHand().addTile(tileStack.takeTile());
-    }
-
-    public void startGame(){
-        System.out.println("Game start!");
-        initializeGame();
-        int currentPlayerIndex = 0;
-
-        while (!hasWinner){
-            Player currentPlayer = players.get(currentPlayerIndex);
-            System.out.println(currentPlayer.getName() + " 's turn");
-            takeTurn(currentPlayer);
-            if (tileStack.isEmpty() || currentPlayer.isWinner()){
-                hasWinner = true;
-            }else{
-                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                player.drawTile(tileStack);
             }
         }
     }
 
-    public void takeTurn(Player player){
-        System.out.println("You current tiles: ");
-        player.getHand().showHandTiles();
-        playerCatchTile(player);
-        boolean isDiscard = false;
-        while (!isDiscard) {
-            System.out.println();
 
-            System.out.println("You current tiles: ");
-            player.getHand().showHandTiles();
-
-            System.out.println("Please choice options\n" +
-                    "1. For replace tile (only for flowers and seasons)\n" +
-                    "2. For discard\n" +
-                    "3. For operations(GANG, Win, etc.)");
-            String option = scanner.next();
-            switch (option) {
-                case "1":
-                    scanner.nextLine(); // Clear scanner
-                    playerReplaceTile(player);
-                    break;
-                case "2":
-                    scanner.nextLine(); // Clear scanner
-                    if (playerDiscard(player)){
-                        isDiscard = true;
-                    }
-                    break;
-                case "3":
-                    scanner.nextLine(); // Clear scanner
-                    playerOperations(player);
-                    break;
-                default:
-                    System.out.println("Please enter correct option");
-                    takeTurn(player);
+    public Player getNextPlayer(Player player) {
+        for (Player p : players) {
+            if (p.getLocation() == player.getLocation().next()) {
+                return p;
             }
         }
+        return null;
     }
 
-    public void playerCatchTile(Player player){
-        System.out.println("Please choice options\n" +
-                "1. For catch tile already in stack\n" +
-                "2. For directly catch tile");
-        String option = scanner.next();
-        switch (option){
-            case "1":
-                if (!player.catchTileFromTable(tileStack)){
-                    System.out.println("You can not catch it, because you can not form GANG or Win ...");
-                    player.catchTileFromTable(tileStack);
-                    System.out.println("System already help you catch a new tile in stack");
-                }
-                break;
-            case "2":
-                player.catchTileFromStack(tileStack);
-                break;
-            default:
-                System.out.println("Please enter correct option");
-                playerCatchTile(player);
-        }
-        scanner.nextLine(); // Clear scanner
-    }
-
-    public void playerReplaceTile(Player player){
-        System.out.println("Enter flower tile or season tile name: ");
-        // TODO score part in here
-        String tileName = scanner.next();
-        Tile tile = CheckTile.findTile(tileName);
-        if (tile != null){
-            if (player.getHand().removeTile(tile)){
-                player.catchTileFromStack(tileStack);
-            }else{
-                System.out.println("You have not this tile");
+    public Player getLastPlayer(Player player) {
+        for (Player p : players) {
+            if (player.getLocation() == p.getLocation().next()) {
+                return p;
             }
         }
+        return null;
     }
 
-    public boolean playerDiscard(Player player){
-        System.out.println("Enter the name of tile you want to discard");
-        String tileName = scanner.next();
-        if (player.discard(tileStack, tileName)){
-            System.out.println(player.getName() + " discard: "+ tileName);
-            return true;
-        };
-        return false;
+    public void moveToNext(Player player) {
+        currentPlayer = getNextPlayer(player);
     }
 
-    public void playerOperations(Player player){
-        System.out.println("Please choice options\n" +
-                "1. Peng\n" +
-                "2. Gang");
-        String option = scanner.next();
-        switch (option){
-            case "1":
-                if (player.getHand().canPeng()){
-                    System.out.println(player.getName() + " Peng tiles");
-                }else{
-                    System.out.println("You can not peng with your tiles");
-                }
-                break;
-            case "2":
-                if (player.getHand().canGang()){
-                    System.out.println(player.getName() + "Gang tiles");
-                }else{
-                    System.out.println("You can not Gang with your tiles");
-                }
-                break;
-            default:
-                System.out.println("Please enter correct number");
+    public Player findZhuang() {
+        for (Player player : players) {
+            if (player.isZhuang()) {
+                return player;
+            }
         }
+        return null;
+    }
+
+
+    public void playerDiscardTile(Player player, Tile tile) {
+        player.discardTile(tileStack, tile);
+    }
+
+    public void playerDrawTile(Player player) {
+        if (tileStack.isEmpty()) {
+            isGameOver = true;
+            return;
+        }
+        player.drawTile(tileStack);
+        checkIsWin(player);
+        gameUI.updateGameUI();
+    }
+
+    public void updateGame() {
+        moveToNext(currentPlayer);
+        if (checkTileStackEmpty()) {
+            isGameOver = true;
+        }
+
+        currentPlayer.drawTile(tileStack);
+        if (checkIsWin(currentPlayer)) {
+            hasWinner = true;
+        }
+    }
+
+    public TileStack getTileStack() {
+        return tileStack;
+    }
+
+    public boolean checkIsWin(Player player) {
+        if (player.isWinner()){
+            hasWinner = true;
+        }
+        return player.isWinner();
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void setStart() {
+        isStart = true;
+    }
+
+    public void setZhuang(int index) {
+        players.get(index).setZhuang(true);
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public List<Tile> getPlayerTiles(Player player) {
+        return player.getTiles();
+    }
+
+    public List<Tile> getPlayerMeldTiles(Player player) {
+        return player.getMeldTiles();
+    }
+
+    public List<Tile> getDiscardTiles() {
+        return tileStack.getDiscardTiles();
+    }
+
+    public boolean checkEat(Player player, Tile tile) {
+        return player.checkEat(tile);
+    }
+
+    public boolean checkPung(Player player, Tile tile) {
+        return player.checkPung(tile);
+    }
+
+    public boolean checkGang(Player player, Tile tile) {
+        return player.checkGang(tile);
+    }
+
+    public void playerPungTile(Player player, Tile tile) {
+        player.pengTile(tile);
+        tileStack.getDiscardTiles().remove(tile);
+    }
+
+    public void playerGangTile(Player player, Tile tile) {
+        player.gangTile(tile);
+        tileStack.getDiscardTiles().remove(tile);
+    }
+
+    public void playerEatTile(Player player, Tile tile) {
+        player.eatTile(tile);
+        tileStack.getDiscardTiles().remove(tile);
+    }
+
+    public void playerAnGangTile(Player player) {
+        player.anGangTile();
+    }
+
+    public boolean checkTileStackEmpty() {
+        if (tileStack.isEmpty()) {
+            isGameOver = true;
+        }
+        return tileStack.isEmpty();
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public boolean hasWinner() {
+        return hasWinner;
     }
 }

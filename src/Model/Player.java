@@ -1,71 +1,100 @@
 package Model;
 
-import Util.CheckTile;
-
 import java.util.List;
 
 public class Player {
-    private String name;
+    private PlayerType location;
     private Hand hand;
     private boolean isWinner;
+    private boolean isZhuang;
 
-    public Player(String name) {
-        this.name = name;
+    public Player(PlayerType location) {
+        this.location = location;
         hand = new Hand();
         isWinner = false;
+        isZhuang = false;
     }
 
-    public void catchTileFromStack(TileStack tileStack){
-        Tile tile = tileStack.takeTile();
-        if (tile != null){
-            hand.addTile(tile);
-            System.out.println(name + " catches a new tile: " + tile);
-
-            if (hand.checkIsWin()){
-                isWinner = true;
-            }
-        }else{
-            System.out.println("There are not enough tiles for this game");
-        }
-    }
-
-    public boolean catchTileFromTable(TileStack tileStack){
-        List<Tile> discardTiles = tileStack.getDiscardTiles();
-        if (discardTiles.isEmpty()){
-            return false;
-        }
-        Tile tile = discardTiles.get(discardTiles.size() - 1);
-        hand.addTile(tile);
-        if (hand.checkIsWin()){
+    public boolean drawTile(TileStack tileStack) {  // 抓牌
+        boolean hasDrawn = hand.drawTile(tileStack);
+        if (hand.checkIsWin()) {
             isWinner = true;
-            return true;
-        } else if (hand.canGang()) {
-            return true;
-        } else if (hand.canPeng()) {
-            return true;
-        }else{
-            hand.removeTile(tile);
         }
-        return false;
+        return hasDrawn;
     }
 
-    public boolean discard(TileStack tileStack, String tileName){
-        if(!hand.discardTile(tileStack, tileName)){
-            System.out.println("You just can discard tile that on your hand");
-            return false;
-        }
-        return true;
+    public boolean discardTile(TileStack tileStack, Tile tile) {
+        return hand.discardTile(tileStack, tile);
     }
+
+    public void pengTile(Tile tile) {
+        hand.operation(MeldType.PENG, tile);
+    }
+
+    public void gangTile(Tile tile) {
+        hand.operation(MeldType.GANG, tile);
+    }
+
+    public void eatTile(Tile tile) {
+        hand.operation(MeldType.EAT, tile);
+    }
+
+    public void anGangTile() {
+        hand.operation(MeldType.ANGANG, null);
+    }
+
+    public boolean checkPung(Tile tile) {
+        return hand.canPeng(tile);
+    }
+
+    public boolean checkGang(Tile tile) {
+        return hand.canGang(tile);
+    }
+
+    public boolean checkEat(Tile tile) {
+        return hand.canEat(tile);
+    }
+
+    public boolean checkAnGang() {
+        return hand.canAnGang();
+    }
+
+
 
     public boolean isWinner() {
         return isWinner;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Hand getHand() {
         return hand;
+    }
+
+    public PlayerType getLocation() {
+        return location;
+    }
+
+    public void setZhuang(boolean zhuang) {
+        isZhuang = zhuang;
+    }
+
+    public boolean isZhuang() {
+        return isZhuang;
+    }
+
+    @Override
+    public String toString() {
+        return this.location.toString();
+    }
+
+    public boolean firstDrawFinish() {
+        return hand.isDealingFinished();
+    }
+
+    public List<Tile> getTiles() {
+        return hand.getTiles();
+    }
+
+    public List<Tile> getMeldTiles() {
+        return hand.getMeldTiles();
     }
 }
