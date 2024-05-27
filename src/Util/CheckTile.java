@@ -223,7 +223,7 @@ public class CheckTile {
                         return isroutineHu(newTiles, true);
                     }else{
                         if (tiles.size() > 3){
-=
+
                             Tile fourthTile = tiles.get(3);
                             if (firstTile.getTileType() == fourthTile.getTileType() && firstTile.getValue() + 2 == fourthTile.getValue()) {
                                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
