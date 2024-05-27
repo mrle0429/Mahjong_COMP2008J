@@ -20,15 +20,7 @@ public class CheckTile {
     }
 
 
-    /**
-     * 手牌中找到能执行碰或杠的牌
-     * 把他们加入result中
-     *
-     * @param tiles
-     * @param meldType
-     * @param tile
-     * @return
-     */
+
     public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile) {
         List<Tile> result = new ArrayList<>();
         // 只写碰和杠
@@ -154,13 +146,18 @@ public class CheckTile {
         return result;
     }
 
-    public static boolean isHu(List<Tile> tiles) {
-        return routineWay(tiles, false) || duiziHu(tiles);
-        // TODO add more methods as Hu
+
+    public static boolean isHu(List<Tile> tiles){
+     
+        return isroutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
+                || WaysOfHu.isSevenPairs(tiles)
+                || WaysOfHu.isDeluxeSevenPairs(tiles) || WaysOfHu.isAllPongs(tiles)
+                || WaysOfHu.isAllWinds(tiles);
     }
 
-    private static boolean routineWay(List<Tile> tiles, boolean findPair) {
-        if (tiles.isEmpty()) {
+    public static boolean isroutineHu(List<Tile> tiles, boolean findPair){
+      // 可操作手牌为空
+        if (tiles.isEmpty()){
             return true;
         }
 
@@ -171,26 +168,32 @@ public class CheckTile {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                 newTiles.remove(firstIndex);
                 newTiles.remove(firstIndex);
-                if (routineWay(newTiles, true)) {
+
+                if (isroutineHu(newTiles, true)){
                     return true;
                 }
             }
+          
             for (int i = 1; i != tiles.size() - 2; i++) {
                 if (!tiles.get(i).equals(tiles.get(i - 1)) && tiles.get(i).equals(tiles.get(i + 1)) && !tiles.get(i + 1).equals(tiles.get(i + 2))) {
                     ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                     newTiles.remove(i + 1);
                     newTiles.remove(i);
-                    if (routineWay(newTiles, true)) {
+
+                    if (isroutineHu(newTiles, true)){
+
                         return true;
                     }
                 }
             }
+          
             int lastIndex = tiles.size() - 2;
             if (tiles.get(lastIndex).equals(tiles.get(lastIndex + 1))) {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
-                if (routineWay(newTiles, true)) {
+
+                if (isroutineHu(newTiles, true)){
                     return true;
                 }
             }
@@ -216,16 +219,18 @@ public class CheckTile {
                         newTiles.remove(firstTile);
                         newTiles.remove(secondTile);
                         newTiles.remove(thirdTile);
-                        return routineWay(newTiles, true);
-                    } else {
-                        if (tiles.size() > 3) {
+
+                        return isroutineHu(newTiles, true);
+                    }else{
+                        if (tiles.size() > 3){
+=
                             Tile fourthTile = tiles.get(3);
                             if (firstTile.getTileType() == fourthTile.getTileType() && firstTile.getValue() + 2 == fourthTile.getValue()) {
                                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);
                                 newTiles.remove(firstTile);
                                 newTiles.remove(secondTile);
                                 newTiles.remove(fourthTile);
-                                return routineWay(newTiles, true);
+                                return isroutineHu(newTiles, true);
                             }
                         }
                     }
@@ -239,22 +244,9 @@ public class CheckTile {
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
-            return routineWay(newTiles, true);
+            return isroutineHu(newTiles, true);
         }
         return false;
     }
 
-    // TODO more ways of Hu
-    private static boolean duiziHu(List<Tile> tiles) {   // 新增对子胡
-        Map<Tile, Integer> tileCount = new HashMap<>();
-        for (Tile tile : tiles) {
-            tileCount.put(tile, tileCount.getOrDefault(tile, 0) + 1);
-        }
-        for (int count : tileCount.values()) {
-            if (count % 2 != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
