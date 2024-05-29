@@ -1,165 +1,114 @@
 package View;
 
 import Controller.Game;
-import Model.MeldType;
-import Model.PlayerType;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class PreparationUI extends JFrame implements MouseListener {
+public class PreparationUI extends JFrame {
     private Graphics gf = null;
     private Game game;
-    private List<Button> buttons = new ArrayList<>();
+    private List<JButton> buttons = new ArrayList<>();
     private int clickNumber;
     private int[] scores;
     private int maxIndex;
     private boolean startGame;
 
-    public PreparationUI(Game game){
+    public PreparationUI(Game game) {
         this.game = game;
 
         clickNumber = 0;
         scores = new int[4];
         startGame = false;
-        // Test
-        //Test test = new Test();
-        // Test.test();
+
     }
 
-    public void initializeUI(){
+    public void initializeUI() {
+        this.setLayout(null);
+
+        JButton startButton = new JButton("Start the game");
+        startButton.setBounds(450, 200, 300, 50);
+        startButton.setBackground(new Color(50, 205, 50));
+        startButton.setForeground(Color.WHITE);
+        startButton.setFont(new Font("Courier New", Font.BOLD, 20));
+        startButton.setActionCommand("Start");
+        startButton.addActionListener(new ButtonClickListener());
+        this.add(startButton);
+
+
+        JButton helpButton = new JButton("Help");
+        helpButton.setBounds(500, 500, 200, 50);
+        helpButton.setBackground(new Color(50, 205, 50));
+        helpButton.setForeground(Color.WHITE); // Set button text color to white
+        helpButton.setActionCommand("Help");
+        helpButton.addActionListener(new ButtonClickListener());
+        this.add(helpButton);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBounds(500, 550, 200, 50);
+        exitButton.setBackground(new Color(50, 205, 50));
+        exitButton.setForeground(Color.WHITE); // Set button text color to white
+        exitButton.setActionCommand("Exit");
+        exitButton.addActionListener(new ButtonClickListener());
+        this.add(exitButton);
+
+
+        // Add buttons to JFrame
+
+        // Set JFrame properties
         this.setSize(GameUI.width, GameUI.height);
-
-        this.setTitle("Mahjong Game");
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        this.setTitle("Mahjong");
         this.setLocationRelativeTo(null);
-
-        this.addMouseListener(this);
+        this.getContentPane().setBackground(new Color(34, 139, 34));
 
         this.setVisible(true);
 
-        Button button = new Button("Start the game");
-        button.setBounds(450, 400, 255, 50);
-        buttons.add(button);
-
-        button = new Button("Exit");
-        button.setBounds(550, 600, 100, 50);
-        buttons.add(button);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, GameUI.width, GameUI.height);
-        g.setColor(Color.WHITE);
-
-        g.setFont(new Font("Arial", Font.BOLD, 36));
-        if (!startGame) {
-            g.drawString("Welcome to Mahjong Game!", 360, 200);
-        }else{
-            g.drawString("Now decide who is Banker", 360, 200);
-        }
-
-        for (Button button : buttons) {
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString(button.getLabel(), button.getX(), button.getY() + 36);
-        }
-
-        for (int i = 0; i != 4; i++) {
-            if (scores[i] != 0){
-                g.drawString("Player " + PlayerType.getPlayerType(i).toString() + " gets " + scores[i], 100, 300 + (i * 100));
-            }
-        }
-
-        if (clickNumber == 4){
-            g.setFont(new Font("Arial", Font.BOLD, 24));
-            g.drawString("Player " + PlayerType.getPlayerType(maxIndex).toString() + " is banker!", 600, 400);
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
 
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1){
-            int xPos = e.getX();
-            int yPos = e.getY();
+    private class ButtonClickListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
 
-            String name = "";
-
-            for (Button button : buttons) {
-                if (button.getBounds().contains(xPos, yPos)) {
-                    name = button.getLabel();
-                }
-            }
-
-            if ("Exit".equals(name)){
-                System.exit(0);
-                return;
-            } else if ("Start the game".equals(name)) {
+            if (command.equals("Start")) {
                 startGame = true;
-
                 buttons.clear();
+                new DiceRollUI(game);
+                PreparationUI.this.dispose();
 
-                Button button = new Button("Roll the dice");
-                button.setBounds(450, 400, 255, 50);
-                buttons.add(button);
-            } else if ("Roll the dice".equals(name)) {
+            } else if (command.equals("Roll the dice")) {
                 scores[clickNumber] = (int) (Math.random() * 11) + 2;
                 clickNumber++;
-
-
-
-                if (clickNumber == 4){
+                if (clickNumber == 4) {
                     buttons.clear();
-
                     int maxScore = scores[0];
                     for (int i = 1; i != 4; i++) {
-                        if (scores[i] > maxScore){
+                        if (scores[i] > maxScore) {
                             maxIndex = i;
                         }
                     }
-
-                    Button button = new Button("Continue game");
+                    JButton button = new JButton("Continue game");
                     button.setBounds(450, 650, 255, 50);
+                    button.setActionCommand("Continue game");
+                    button.addActionListener(new ButtonClickListener());
                     buttons.add(button);
                 }
-            } else if ("Continue game".equals(name)) {
+            } else if (command.equals("Continue game")) {
                 game.setStart();
                 game.setZhuang(maxIndex);
                 game.startGame();
-
                 dispose();
+
+            } else if (command.equals("Exit")) {
+                System.exit(0);
+            } else if (command.equals("Help")) {
+                new HowToPlayUI();
             }
         }
-
-        repaint();
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }

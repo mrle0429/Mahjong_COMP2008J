@@ -1,4 +1,4 @@
-import Controller.Game;
+import Controller.Application;
 import Network.GameServer;
 import Network.PlayerClient;
 
@@ -12,21 +12,18 @@ import java.util.List;
 public class App extends JFrame implements MouseListener {
     public static void main(String[] args) {
         new App().initializeUI();
-        //Test
-        //Test2
-        //Test3
     }
 
     private static final int Width = 1200;
     private static final int Height = 800;
 
-    public App(){
+    public App() {
         buttons = new ArrayList<>();
     }
 
     private List<Button> buttons;
 
-    public void initializeUI(){
+    public void initializeUI() {
         this.setSize(App.Width, App.Height);
 
         this.setTitle("Mahjong Game");
@@ -88,12 +85,12 @@ public class App extends JFrame implements MouseListener {
                 }
             }
 
-            switch (name){
+            switch (name) {
                 case "Single-player mode":
                     this.dispose();
-                    new Game().startGame();
+                    new Application().main(null);
                     return;
-                case  "Multiplayer mode":
+                case "Multiplayer mode":
                     this.dispose();
                     new ServerThread().start();
                     try {
@@ -107,7 +104,7 @@ public class App extends JFrame implements MouseListener {
                     this.dispose();
                     new PlayerClientThread().start();
                     return;
-                case  "Exit":
+                case "Exit":
                     System.exit(0);
             }
         }
@@ -129,14 +126,14 @@ public class App extends JFrame implements MouseListener {
     }
 }
 
-class PlayerClientThread extends Thread{
+class PlayerClientThread extends Thread {
     @Override
     public void run() {
         new PlayerClient().connectServer();
     }
 }
 
-class ServerThread extends Thread{
+class ServerThread extends Thread {
     @Override
     public void run() {
         new GameServer().startServer();
