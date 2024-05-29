@@ -12,6 +12,7 @@ import java.util.List;
 public class App extends JFrame implements MouseListener {
     public static void main(String[] args) {
         new App().initializeUI();
+        //Test
     }
 
     private static final int Width = 1200;
