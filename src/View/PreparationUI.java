@@ -31,7 +31,7 @@ public class PreparationUI extends JFrame implements MouseListener {
         startGame = false;
         // Test
         //Test test = new Test();
-        // Tesr
+        // Test
     }
 
     public void initializeUI(){
