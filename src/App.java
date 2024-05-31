@@ -1,4 +1,5 @@
 import Controller.Application;
+import Controller.Game;
 import Network.GameServer;
 import Network.PlayerClient;
 
@@ -88,7 +89,7 @@ public class App extends JFrame implements MouseListener {
             switch (name) {
                 case "Single-player mode":
                     this.dispose();
-                    new Application().main(null);
+                    new Game().startGame();
                     return;
                 case "Multiplayer mode":
                     this.dispose();

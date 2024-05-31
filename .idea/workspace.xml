@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="feat: 更新27日更新内容">
-      <change afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Network/PlayerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/PlayerClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/DiceRollUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/DiceRollUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +68,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "GameUI",
-    "last_opened_file_path": "E:/java/GameProject/Mahjong_1/src",
+    "last_opened_file_path": "E:/java/Practice_jdk21",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -151,6 +154,10 @@
       <workItem from="1716788608785" duration="3432000" />
       <workItem from="1716797638848" duration="1876000" />
       <workItem from="1716806857504" duration="3053000" />
+      <workItem from="1716817612593" duration="717000" />
+      <workItem from="1716968852957" duration="125000" />
+      <workItem from="1717038719189" duration="1066000" />
+      <workItem from="1717064376052" duration="4354000" />
     </task>
     <task id="LOCAL-00001" summary="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）">
       <option name="closed" value="true" />

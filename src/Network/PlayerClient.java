@@ -20,7 +20,7 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     private String name = "Wzh";
-    private final String serverIP = "192.168.241.95";
+    private final String serverIP = "192.168.43.89";
     private final int port = 12345;
     private NetWaitingUI netWaitingUI;
     private Player player;

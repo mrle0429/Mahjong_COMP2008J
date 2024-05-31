@@ -117,7 +117,7 @@ public class DiceRollUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Return to the preparation UI
-                    new PreparationUI(new Game()).initializeUI();
+                    new Game().startGame();
                     DiceRollUI.this.dispose();
                 }
             });
