@@ -7,35 +7,48 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Hand class represents the tiles that player can operate and the tiles that player can't operate
+ * (After Pung, Kong, Chow)
+ *
+ * The Hand class is responsible for the following operations:
+ * 1. Draw a tile from the tile stack
+ * 2. Discard a tile to the tile stack
+ * 3. Check if the player has won the game
+ * 4. Check if the player can Pung, Kong, Chow
+ * 5. Execute the Pung, Kong, Chow operation
+ */
 public class Hand implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Tile> tiles;
-    private List<Tile> meldTiles;
-    private boolean isDealingFinished;
-    private TileSortType tileSortType;
+    private List<Tile> tiles;  // stores the tiles that player can operate
+    private List<Tile> meldTiles;  // stores the tiles that player can't operate (After Pung, Kong, Chow)
+    private boolean isDealingFinished;  // Flag to indicate whether the player has finished dealing
+    private TileSortType tileSortType;  // Flag to indicate the sort type of tiles(Ascending or Descending)
 
     public Hand() {
         this.tiles = new ArrayList<>();
         this.meldTiles = new ArrayList<>();
         isDealingFinished = false;
         tileSortType = TileSortType.MinToMax;
-
     }
 
-    // 为可操作牌堆添加牌，用于抓牌操作的辅助
-    public boolean addTile(Tile tile) {
-        boolean hasAdd = tiles.add(tile);
-        sortTiles(tiles);
+
+    private boolean addTileTo(List<Tile> tileList , Tile tile) {
+        boolean hasAdd = tileList.add(tile);
+        sortTiles(tileList);
         return hasAdd;
     }
 
-    // 为不可操作牌堆添加牌，用于碰杠吃操作的辅助
-    private void addMeldTile(Tile tile) {
-        meldTiles.add(tile);
-        sortTiles(meldTiles);
+    public boolean addTile(Tile tile) {
+        return addTileTo(tiles, tile);
     }
 
-    // 从可操作牌堆中移除牌，用于打牌操作的辅助
+
+
+    public boolean addMeldTile(Tile tile) {
+        return addTileTo(meldTiles, tile);
+    }
+
     public boolean removeTile(Tile tile) {
         boolean hasRemoved = tiles.remove(tile);
         if (hasRemoved) {
@@ -45,6 +58,11 @@ public class Hand implements Serializable {
     }
 
 
+    /**
+     * Check if the player has won the game
+     *
+     * @return True if the player has won the game, otherwise false
+     */
     public boolean checkIsWin() {
         // 合并可操纵的牌和不可操作的牌。即玩家真正拥有的14张牌，判断是否胡牌
         List<Tile> hand = new ArrayList<>();
@@ -53,19 +71,25 @@ public class Hand implements Serializable {
         return hand.size() == 14 && CheckTile.isHu(hand);
     }
 
-    // 抓牌操作
-    // 1. 从牌堆中抓一张牌
-    // 2. 将抓到的牌加入到可操作牌堆中
+
+    /**
+     * Draw a tile from the tile stack.
+     * This is fundamental operation in the game.
+     * @param tileStack The tile stack to draw a tile from
+     * @return
+     */
     public boolean drawTile(TileStack tileStack) {
         Tile tile = tileStack.playerDrawTile();
         return addTile(tile);
-
     }
 
 
-    // 打牌操作
-    // 1. 将打出的牌加入到弃牌堆
-    // 2. 从可操作牌堆中移除打出的牌
+    /**
+     * Discard a tile from the hand
+     * @param tileStack The tile stack to discard the tile to
+     * @param tile The tile to discard
+     * @return
+     */
     public boolean discardTile(TileStack tileStack, Tile tile) {
         tileStack.playerDiscardTile(tile);
         return removeTile(tile);
@@ -73,32 +97,62 @@ public class Hand implements Serializable {
 
     // 吃操作
     // 1. 从可操作牌堆中找到连续的两张牌
+
+    /**
+     * Execute the chow operation
+     *
+     * @param tile The tile other player discarded
+     */
     private void chow(Tile tile) {
-        List<Tile> sequence = CheckTile.findSequence(tiles, tile);  // 返回吃后的三张牌
+        // Find the sequence of tiles
+        List<Tile> sequence = CheckTile.findSequence(tiles, tile);
+
+        // Remove the tiles from the tiles and add them to the meldTiles
         for (Tile t : sequence) {
-            removeTile(t);                     // 将sequence的牌，从可操纵手牌中移除，并加入不可操作牌中
+            removeTile(t);
             addMeldTile(t);
         }
     }
 
+    /**
+     * Execute the pung operation
+     *
+     * @param tile The tile other player discarded
+     */
     private void pung(Tile tile) {
-        List<Tile> triplet = CheckTile.findPair(tiles, MeldType.PENG, tile);
+        // Find the triplet of tiles
+        List<Tile> triplet = CheckTile.findPair(tiles, MeldType.PUNG, tile);
+
+        // Remove the tiles from the tiles and add them to the meldTiles
         for (Tile t : triplet) {
             removeTile(t);
             addMeldTile(t);
         }
     }
 
+    /**
+     * Execute the kong operation
+     * @param tile The tile other player discarded
+     */
     private void kong(Tile tile) {
-        List<Tile> quad = CheckTile.findPair(tiles, MeldType.GANG, tile);
+        // Find the quad of tiles
+        List<Tile> quad = CheckTile.findPair(tiles, MeldType.KONG, tile);
+
+        // Remove the tiles from the tiles and add them to the meldTiles
         for (Tile t : quad) {
             removeTile(t);
             addMeldTile(t);
         }
     }
 
+    /**
+     * Execute the concealed kong operation
+     */
     private void concealedKong() {
+        // Find the quad of tiles
         List<Tile> quad = CheckTile.findQuadForAngang(tiles);
+
+        // Remove the tiles from the tiles and add them to the meldTiles
         for (Tile t : quad) {
             removeTile(t);
             addMeldTile(t);
@@ -107,45 +161,33 @@ public class Hand implements Serializable {
 
     // 对手牌执行操作，碰或杠或吃
     public void operation(MeldType meldType, Tile tile) {
-        List<Tile> pair;
-        if (meldType == MeldType.PENG) {
+        if (meldType == MeldType.PUNG) {
             pung(tile);
-        } else if (meldType == MeldType.GANG) {
+        } else if (meldType == MeldType.KONG) {
             kong(tile);
-        } else if (meldType == MeldType.EAT) {
+        } else if (meldType == MeldType.CHOW) {
             chow(tile);
-        } else if (meldType == MeldType.ANGANG) {
+        } else if (meldType == MeldType.CONCEALEDKONG) {
             concealedKong();
         }
     }
 
-    // 判断是否可以暗杠
-    // 不做操作
-    public boolean canConcealedKong() {
-        return CheckTile.canAnGang(tiles);
 
-    }
-
-    // 判断是否可以碰
-    // 不做操作
-    public boolean canPeng(Tile tile) {
+    public boolean canPung(Tile tile) {
         return tiles.size() > 1 && CheckTile.canPeng(tiles, tile);
     }
 
-    // 判断是否可以杠
-    // 不做操作
-    public boolean canGang(Tile tile) {
+
+    public boolean canKong(Tile tile) {
         return tiles.size() > 2 && CheckTile.canGang(tiles, tile);
     }
 
-    // 判断是否可以吃
-    // 不做操作
-    // 只有数字牌可以吃的逻辑移至findSequence
-    public boolean canEat(Tile tile) {
+
+    public boolean canChow(Tile tile) {
         return tiles.size() > 1 && CheckTile.canEat(tiles, tile);
     }
 
-    public boolean canAnGang() {
+    public boolean canConcealedKong() {
         return CheckTile.canAnGang(tiles);
     }
 

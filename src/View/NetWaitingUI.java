@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class NetWaitingUI extends JFrame {
-    private String playerName;
+    private final String playerName;
 
     public NetWaitingUI(String name) {
         this.playerName = name;
@@ -22,7 +22,7 @@ public class NetWaitingUI extends JFrame {
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(0, 100, 0));
         g.fillRect(0, 0, GameUI.width, GameUI.height);
         g.setColor(Color.WHITE);
 

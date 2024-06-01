@@ -15,10 +15,10 @@ import java.util.Random;
 public class DiceRollUI extends JFrame {
     private JLabel diceResultLabel;
     private JTextArea diceResultArea;
-    private int[] diceResults;
+    private final int[] diceResults;
     private int rollCount;
     private int maxIndex;
-    private Game game;
+    private final Game game;
 
     public DiceRollUI(Game game) {
         diceResults = new int[4];
@@ -30,7 +30,7 @@ public class DiceRollUI extends JFrame {
 
     private void initializeUI() {
         this.setLayout(null);
-        this.getContentPane().setBackground(new Color(34, 139, 34));
+        this.getContentPane().setBackground(new Color(0, 100, 0));
 
         diceResultLabel = new JLabel();
         diceResultLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -42,7 +42,7 @@ public class DiceRollUI extends JFrame {
         diceResultArea = new JTextArea();
         diceResultArea.setEditable(false);
         diceResultArea.setFont(new Font("Arial", Font.PLAIN, 25));
-        diceResultArea.setBackground(new Color(34, 139, 34));
+        diceResultArea.setBackground(new Color(46, 139, 87));
         diceResultArea.setForeground(Color.WHITE);
         diceResultArea.setLineWrap(false);
         JScrollPane scrollPane = new JScrollPane(diceResultArea);

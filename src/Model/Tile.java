@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Tile implements Serializable {
     private static final long serialVersionUID = 1L;
-    private TileType tileType;
+    private final TileType tileType;
     private int value; // For WAN, TONG and TIAO
     private String character; // For FENG and JIAN
     private boolean isLaiZi;
@@ -55,10 +55,9 @@ public class Tile implements Serializable {
         if (this == o){
             return true;
         }
-        if (!(o instanceof Tile)){
+        if (!(o instanceof Tile tile)){
             return false;
         }
-        Tile tile = (Tile) o;
         if (CheckTile.isNumberType(this)){
             return this.tileType == tile.getTileType() && this.value == tile.getValue();
         }else{

@@ -14,5 +14,5 @@ public enum MessageType {
     TileStack,
     TurnInfo,
     Waiting,
-    EnoughPlayers;
+    EnoughPlayers
 }

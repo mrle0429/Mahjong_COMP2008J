@@ -10,11 +10,11 @@ import java.net.Socket;
 
 public class PlayerThread extends Thread{
     private String name;
-    private GameServer server;
-    private Socket client;
+    private final GameServer server;
+    private final Socket client;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
-    private boolean gameOver;
+    private final boolean gameOver;
 
     public PlayerThread(GameServer server, int index, Socket client) {
         this.server = server;

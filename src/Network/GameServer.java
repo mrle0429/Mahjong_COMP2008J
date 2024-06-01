@@ -91,7 +91,7 @@ public class GameServer {
         addPlayer();
         distributeTile();
         // 随机一名玩家是庄家
-        players.get(((int) (Math.random() * 4))).setZhuang(true);
+        players.get(((int) (Math.random() * 4))).setBanker(true);
 
         currentPlayer = findZhuang();
         currentPlayer.drawTile(tileStack);
@@ -114,7 +114,7 @@ public class GameServer {
 
     public Player findZhuang() {
         for (Player player : players) {
-            if (player.isZhuang()) {
+            if (player.isBanker()) {
                 return player;
             }
         }
@@ -169,9 +169,9 @@ public class GameServer {
         for (int i = 0; i != 3; i++) {
             currentTestPlayer = getNextPlayer(currentTestPlayer);
 
-            boolean canPeng = currentTestPlayer.getHand().canPeng(tile);
-            boolean canGang = currentTestPlayer.getHand().canGang(tile);
-            boolean canEat = (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()) && currentTestPlayer.getHand().canEat(tile); // 只有下家能吃
+            boolean canPeng = currentTestPlayer.getHand().canPung(tile);
+            boolean canGang = currentTestPlayer.getHand().canKong(tile);
+            boolean canEat = (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()) && currentTestPlayer.getHand().canChow(tile); // 只有下家能吃
             if (canPeng || canGang || canEat) {
                 optionPlayers.add(currentTestPlayer);
             }
@@ -197,7 +197,6 @@ public class GameServer {
         waitForFinish();
 
         if (checkIsHasWinner(player)) {
-            return;
         }
     }
 
@@ -209,7 +208,7 @@ public class GameServer {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.PENG, tile);
+        player.getHand().operation(MeldType.PUNG, tile);
 
         updatePlayer(player);
 
@@ -231,7 +230,7 @@ public class GameServer {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.GANG, tile);
+        player.getHand().operation(MeldType.KONG, tile);
         if (checkEnoughTiles()) {
             return;
         }
@@ -251,7 +250,6 @@ public class GameServer {
         waitForFinish();
 
         if (checkIsHasWinner(player)) {
-            return;
         }
     }
 
@@ -259,7 +257,7 @@ public class GameServer {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.EAT, tile);
+        player.getHand().operation(MeldType.CHOW, tile);
 
         updatePlayer(player);
 

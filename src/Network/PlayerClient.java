@@ -1,6 +1,7 @@
 package Network;
 
 import Model.*;
+import Sound.SoundPlayer;
 import View.NetWaitingUI;
 
 import javax.swing.*;
@@ -19,11 +20,12 @@ public class PlayerClient extends JFrame implements MouseListener {
         playerClient.connectServer();
     }
 
-    private String name = "Wzh";
+    private final String name = "Wzh";
     private final String serverIP = "192.168.43.89";
     private final int port = 12345;
     private NetWaitingUI netWaitingUI;
     private Player player;
+    private SoundPlayer soundPlayer = new SoundPlayer();
 
     // UI information
     private static final String TITLE = "Mahjong Game";
@@ -111,20 +113,20 @@ public class PlayerClient extends JFrame implements MouseListener {
                     optionTile = msg.getTile();
                     tileStack.getDiscardTiles().add(optionTile);
 
-                    if (player.getHand().canPeng(optionTile)) {
+                    if (player.getHand().canPung(optionTile)) {
                         button = new Button("Pung");
                         button.setBounds(465, 555, 70, 40);
                         otherButtons.add(button);
                     }
 
-                    if (player.getHand().canGang(optionTile)) {
+                    if (player.getHand().canKong(optionTile)) {
                         button = new Button("Kong");
                         button.setBounds(545, 555, 70, 40);
                         otherButtons.add(button);
                     }
 
                     if (player.getLocation() == msg.getOriginalPlayer().getLocation().next()) {
-                        if (player.getHand().canEat(optionTile)) {
+                        if (player.getHand().canChow(optionTile)) {
                             button = new Button("Chow");
                             button.setBounds(625, 555, 70, 40);
                             otherButtons.add(button);
@@ -379,9 +381,11 @@ public class PlayerClient extends JFrame implements MouseListener {
             if (selfTurn) {
                 switch (buttonName) {
                     case "Discard":
+
                         if (selectTile == null || !turnInformation.equals(player.toString())) {
                             failDiscard = true;
                         } else {
+                            soundPlayer.playSoundEffect("src/Resources/discard.wav");
                             player.getHand().removeTile(selectTile);
 
                             Message message = new Message();
@@ -392,11 +396,12 @@ public class PlayerClient extends JFrame implements MouseListener {
 
                             selectTile = null;
                         }
+
                         repaint();
                         return;
                     case "Kong":
                         // 自己回合杠，仅能暗杠
-                        if (player.getHand().canAnGang()) {
+                        if (player.getHand().canConcealedKong()) {
                             Message message = new Message();
                             message.setType(MessageType.PlayerKung);
                             message.setPlayer(player);
@@ -429,8 +434,10 @@ public class PlayerClient extends JFrame implements MouseListener {
                         repaint();
                         return;
                     case "Pung":
-                        player.getHand().operation(MeldType.PENG, optionTile);
+                        player.getHand().operation(MeldType.PUNG, optionTile);
                         tileStack.getDiscardTiles().remove(optionTile);
+
+                        soundPlayer.playSoundEffect("src/Resources/pung.wav");
 
                         Message message = new Message();
                         message.setType(MessageType.OptionWithPung);
@@ -442,8 +449,10 @@ public class PlayerClient extends JFrame implements MouseListener {
                         repaint();
                         return;
                     case "Kong":
-                        player.getHand().operation(MeldType.GANG, optionTile);
+                        player.getHand().operation(MeldType.KONG, optionTile);
                         tileStack.getDiscardTiles().remove(optionTile);
+
+                        soundPlayer.playSoundEffect("src/Resources/kong.wav");
 
                         Message messageKong = new Message();
                         messageKong.setType(MessageType.OptionWithKong);
@@ -455,7 +464,7 @@ public class PlayerClient extends JFrame implements MouseListener {
                         repaint();
                         return;
                     case "Chow":
-                        player.getHand().operation(MeldType.EAT, optionTile);
+                        player.getHand().operation(MeldType.CHOW, optionTile);
                         tileStack.getDiscardTiles().remove(optionTile);
 
                         Message messageChow = new Message();

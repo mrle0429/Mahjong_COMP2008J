@@ -22,7 +22,7 @@ public class CheckTile {
     public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile) {
         List<Tile> result = new ArrayList<>();
         // 只写碰和杠
-        if (meldType == MeldType.PENG) {
+        if (meldType == MeldType.PUNG) {
             for (int i = 0; i != tiles.size() - 1; i++) {
                 if (tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1))) {
                     result.add(tiles.get(i));
@@ -30,7 +30,7 @@ public class CheckTile {
                     result.add(tile);
                 }
             }
-        } else if (meldType == MeldType.GANG) {
+        } else if (meldType == MeldType.KONG) {
             for (int i = 0; i != tiles.size() - 2; i++) {
                 if (tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1)) && tile.equals(tiles.get(i + 2))) {
                     result.add(tiles.get(i));
@@ -95,12 +95,12 @@ public class CheckTile {
     }
 
     public static boolean canPeng(List<Tile> tiles, Tile tile) {
-        List<Tile> result = findPair(tiles, MeldType.PENG, tile);
+        List<Tile> result = findPair(tiles, MeldType.PUNG, tile);
         return !result.isEmpty();
     }
 
     public static boolean canGang(List<Tile> tiles, Tile tile) {
-        List<Tile> result = findPair(tiles, MeldType.GANG, tile);
+        List<Tile> result = findPair(tiles, MeldType.KONG, tile);
         return !result.isEmpty();
     }
 
@@ -194,9 +194,7 @@ public class CheckTile {
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
 
-                if (isroutineHu(newTiles, true)){
-                    return true;
-                }
+                return isroutineHu(newTiles, true);
             }
             return false; // Not find pair, not in this win way.
         }

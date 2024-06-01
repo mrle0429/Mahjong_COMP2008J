@@ -4,6 +4,7 @@ import Controller.Game;
 import Model.Player;
 import Model.Tile;
 import Model.TileSortType;
+import Sound.SoundPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,10 @@ public class GameUI extends JFrame implements MouseListener {
     public static final int width = 1200;
     public static final int height = 800;
 
-    private Game game;
+    private final Game game;
     private Player currentPlayer;
     private List<Player> optionPlayers;
+    private SoundPlayer soundPlayer = new SoundPlayer();
 
     List<Button> buttons = new ArrayList<>();
     List<Button> otherButtons = new ArrayList<>();
@@ -123,7 +125,7 @@ public class GameUI extends JFrame implements MouseListener {
         paintMeldTiles();
         paintDiscardTile();
 
-        if(currentPlayer.checkAnGang()) {
+        if(currentPlayer.checkConcealedKong()) {
             Button kongButton = new Button("Kong");
             kongButton.setBounds(545, 555, 70, 40);
             buttons.add(kongButton);
@@ -147,9 +149,9 @@ public class GameUI extends JFrame implements MouseListener {
         gf.drawImage(topPlayerTile, 220, 180, null);
     }
 
+
     private void paintTile() {
         List<Tile> tileList = game.getPlayerTiles(currentPlayer);
-
         for (int i = 0; i != tileList.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + tileList.get(i) + ".png"));
             loadSingleImage(tile);
@@ -168,8 +170,6 @@ public class GameUI extends JFrame implements MouseListener {
             loadSingleImage(tile);
             gf.drawImage(tile, 240 + (53 * i), 630, null);
         }
-
-
     }
 
     private void paintMeldTiles() {
@@ -250,6 +250,7 @@ public class GameUI extends JFrame implements MouseListener {
                             failDiscard = true;
                             repaint();
                         } else {
+                            soundPlayer.playSoundEffect("src/Resources/discard.wav");
                             game.playerDiscardTile(currentPlayer, selectTile);
 
                             // 检测其他家是否可以碰吃杠，如果可以将他们加入optionPlayers中
@@ -290,6 +291,8 @@ public class GameUI extends JFrame implements MouseListener {
                         // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清除
                         optionPlayers.clear();
 
+                        soundPlayer.playSoundEffect("src/Resources/pung.wav");
+
                         game.playerPungTile(currentPlayer, selectTile);  // 碰牌加入手牌，同时从弃牌堆删除
 
                         game.checkIsWin(currentPlayer);
@@ -303,6 +306,8 @@ public class GameUI extends JFrame implements MouseListener {
 
                     case "Kong":
                         optionPlayers.clear();
+
+                        soundPlayer.playSoundEffect("src/Resources/kong.wav");
 
                         game.playerGangTile(currentPlayer, selectTile);  // 杠牌加入手牌，同时从弃牌堆删除
 
@@ -402,14 +407,14 @@ public class GameUI extends JFrame implements MouseListener {
                 otherButtons.add(button);
             }
 
-            if (optionsPlayer.checkGang(selectTile)) {
+            if (optionsPlayer.checkKong(selectTile)) {
                 button = new Button("Kong");
                 button.setBounds(545, 555, 70, 40);
                 otherButtons.add(button);
             }
 
             if (optionsPlayer.getLocation() == originalPlayer.getLocation().next()) {
-                if (optionsPlayer.getHand().canEat(selectTile)) {
+                if (optionsPlayer.getHand().canChow(selectTile)) {
                     button = new Button("Chow");
                     button.setBounds(625, 555, 70, 40);
                     otherButtons.add(button);
@@ -446,12 +451,12 @@ public class GameUI extends JFrame implements MouseListener {
         gf.setFont(new Font("宋体", Font.BOLD, 24));
         gf.setColor(Color.RED); // 修改颜色为红色
       
-        gf.setColor(Color.BLACK);
-        gf.drawString("The banker is: " + game.findZhuang(), 220, 100);
+        gf.setColor(Color.WHITE);
+        gf.drawString("The banker is: " + game.findZhuang(), 220, 130);
       
-        gf.drawString("Player now: ", 550, 100);
+        gf.drawString("Player now: ", 550, 130);
         gf.setColor(Color.RED);
-        gf.drawString(currentPlayer + "'s turn", 750, 100);
+        gf.drawString(currentPlayer + "'s turn", 750, 130);
 
         // 显示分数
         paintScores(gf);
@@ -459,12 +464,12 @@ public class GameUI extends JFrame implements MouseListener {
 
 
     private void paintScores(Graphics gf) {
-        int yPosition = 50; // 分数的顶部边距
+        int yPosition = 80; // 分数的顶部边距
         int xPosition = 100; // 开始显示玩家分数的位置
         int spacing = 250; // 玩家分数之间的间距
 
-        gf.setFont(new Font("宋体", Font.BOLD, 24));
-        gf.setColor(Color.BLACK);
+        gf.setFont(new Font("Arial", Font.BOLD, 24));
+        gf.setColor(Color.white);
 
         // 遍历所有玩家并显示他们的分数
         for (int i = 0; i < game.getPlayers().size(); i++) {

@@ -12,9 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HowToPlayUI extends JFrame {
-    private CardLayout cardLayout = new CardLayout();
-
+    private final CardLayout cardLayout = new CardLayout();
     public HowToPlayUI() {
+
+    }
+
+    public void initializeUI() {
         this.setTitle("How to Play");
         this.setSize(1200, 800);
         this.setLocationRelativeTo(null);
@@ -87,7 +90,7 @@ public class HowToPlayUI extends JFrame {
 
 
     private JPanel createPage(String content1, String content2, String png) {
-        Color customGreen = new Color(34, 139, 34);
+        Color customGreen = new Color(250, 250, 250);
 
         JPanel page = new JPanel(null);
         page.setBackground(customGreen);
@@ -105,7 +108,7 @@ public class HowToPlayUI extends JFrame {
         textPane2.setText("\n\n\n\n\n\n\n" + content2);
         textPane2.setEditable(false);
         textPane2.setFont(new Font("Courier New", Font.BOLD, 20));
-        textPane2.setForeground(Color.WHITE);
+        textPane2.setForeground(Color.GRAY);
         textPane2.setBackground(customGreen);
         textPane2.setBorder(BorderFactory.createLineBorder(customGreen));
         page.add(textPane2, BorderLayout.EAST);
@@ -115,7 +118,7 @@ public class HowToPlayUI extends JFrame {
         textPane1.setText("                 " + content1);
         textPane1.setEditable(false);
         textPane1.setFont(new Font("Courier New", Font.BOLD, 30));
-        textPane1.setForeground(Color.WHITE);
+        textPane1.setForeground(Color.DARK_GRAY);
         textPane1.setBackground(customGreen);
         textPane1.setBorder(BorderFactory.createLineBorder(customGreen));
         page.add(textPane1, BorderLayout.NORTH);

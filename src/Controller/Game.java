@@ -2,7 +2,6 @@ package Controller;
 
 
 import Model.*;
-import Util.CheckTile;
 import Util.WaysOfHu;
 
 
@@ -13,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private List<Player> players;
-    private TileStack tileStack;
+    private final List<Player> players;
+    private final TileStack tileStack;
     private Player currentPlayer;
 
-    private GameUI gameUI;
-    private PreparationUI preparationUI;
+    private final GameUI gameUI;
+    private final PreparationUI preparationUI;
 
     private boolean isStart;
     private boolean isGameOver;
@@ -97,7 +96,7 @@ public class Game {
 
     public Player findZhuang() {
         for (Player player : players) {
-            if (player.isZhuang()) {
+            if (player.isBanker()) {
                 return player;
             }
         }
@@ -181,7 +180,7 @@ public class Game {
     }
 
     public void setZhuang(int index) {
-        players.get(index).setZhuang(true);
+        players.get(index).setBanker(true);
     }
 
     public Player getCurrentPlayer() {
@@ -205,7 +204,7 @@ public class Game {
     }
 
     public boolean checkEat(Player player, Tile tile) {
-        return player.checkEat(tile);
+        return player.checkChow(tile);
     }
 
     public boolean checkPung(Player player, Tile tile) {
@@ -213,26 +212,26 @@ public class Game {
     }
 
     public boolean checkGang(Player player, Tile tile) {
-        return player.checkGang(tile);
+        return player.checkKong(tile);
     }
 
     public void playerPungTile(Player player, Tile tile) {
-        player.pengTile(tile);
+        player.pungTile(tile);
         tileStack.getDiscardTiles().remove(tile);
     }
 
     public void playerGangTile(Player player, Tile tile) {
-        player.gangTile(tile);
+        player.kongTile(tile);
         tileStack.getDiscardTiles().remove(tile);
     }
 
     public void playerEatTile(Player player, Tile tile) {
-        player.eatTile(tile);
+        player.chowTile(tile);
         tileStack.getDiscardTiles().remove(tile);
     }
 
     public void playerAnGangTile(Player player) {
-        player.anGangTile();
+        player.concealedKongTile();
     }
 
     public boolean checkTileStackEmpty() {

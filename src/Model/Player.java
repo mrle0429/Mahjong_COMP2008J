@@ -3,23 +3,34 @@ package Model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Player class represents the player in the game
+ *
+ * The Player class is responsible for the following operations:
+ * 1. Draw a tile from the tile stack
+ * 2. Discard a tile to the tile stack
+ * 3. Check if the player has won the game
+ * 4. Check if the player can Pung, Kong, Chow
+ * 5. Execute the Pung, Kong, Chow operation
+ */
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
-    private PlayerType location;
+    private final PlayerType location;
     private Hand hand;
     private boolean isWinner;
-    private boolean isZhuang;
+    private boolean isBanker;
     private int score;
 
     public Player(PlayerType location) {
         this.location = location;
         hand = new Hand();
         isWinner = false;
-        isZhuang = false;
+        isBanker = false;
         score = 500;
+
     }
 
-    public boolean drawTile(TileStack tileStack) {  // 抓牌
+    public boolean drawTile(TileStack tileStack) {
         boolean hasDrawn = hand.drawTile(tileStack);
         if (hand.checkIsWin()) {
             isWinner = true;
@@ -31,36 +42,36 @@ public class Player implements Serializable {
         return hand.discardTile(tileStack, tile);
     }
 
-    public void pengTile(Tile tile) {
-        hand.operation(MeldType.PENG, tile);
+    public void pungTile(Tile tile) {
+        hand.operation(MeldType.PUNG, tile);
     }
 
-    public void gangTile(Tile tile) {
-        hand.operation(MeldType.GANG, tile);
+    public void kongTile(Tile tile) {
+        hand.operation(MeldType.KONG, tile);
     }
 
-    public void eatTile(Tile tile) {
-        hand.operation(MeldType.EAT, tile);
+    public void chowTile(Tile tile) {
+        hand.operation(MeldType.CHOW, tile);
     }
 
-    public void anGangTile() {
-        hand.operation(MeldType.ANGANG, null);
+    public void concealedKongTile() {
+        hand.operation(MeldType.CONCEALEDKONG, null);
     }
 
     public boolean checkPung(Tile tile) {
-        return hand.canPeng(tile);
+        return hand.canPung(tile);
     }
 
-    public boolean checkGang(Tile tile) {
-        return hand.canGang(tile);
+    public boolean checkKong(Tile tile) {
+        return hand.canKong(tile);
     }
 
-    public boolean checkEat(Tile tile) {
-        return hand.canEat(tile);
+    public boolean checkChow(Tile tile) {
+        return hand.canChow(tile);
     }
 
-    public boolean checkAnGang() {
-        return hand.canAnGang();
+    public boolean checkConcealedKong() {
+        return hand.canConcealedKong();
     }
 
     public boolean isWinner() {
@@ -86,12 +97,12 @@ public class Player implements Serializable {
         return location;
     }
 
-    public void setZhuang(boolean zhuang) {
-        isZhuang = zhuang;
+    public void setBanker(boolean banker) {
+        isBanker = banker;
     }
 
-    public boolean isZhuang() {
-        return isZhuang;
+    public boolean isBanker() {
+        return isBanker;
     }
 
     @Override
