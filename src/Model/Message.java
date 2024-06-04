@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,6 +11,8 @@ public class Message implements Serializable {
     private Tile tile;
     private TileStack tileStack;
     private Tile newTile;
+    private List<Tile> optionTiles;
+    private int tileCount;
 
     public TileStack getTileStack() {
         return tileStack;
@@ -60,5 +63,21 @@ public class Message implements Serializable {
 
     public void setNewTile(Tile newTile) {
         this.newTile = newTile;
+    }
+
+    public List<Tile> getOptionTiles() {
+        return optionTiles;
+    }
+
+    public void setOptionTiles(List<Tile> optionTiles) {
+        this.optionTiles = optionTiles;
+    }
+
+    public int getTileCount() {
+        return tileCount;
+    }
+
+    public void setTileCount(int tileCount) {
+        this.tileCount = tileCount;
     }
 }

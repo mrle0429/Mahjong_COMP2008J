@@ -4,13 +4,88 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="feat: 更新27日更新内容">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+    <list default="true" id="89d3e05d-b8a0-4f2c-a069-15bc2e67818c" name="Changes" comment="feat: 更新31日更新内容">
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/1-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/2-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/3-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/4-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/5-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/6-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/7-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/8-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Bamboo-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Bamboo-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Character-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Character-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Circle-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/9-Circle-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/East-Wind-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/East-Wind-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/Green-Dragon-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/Green-Dragon-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/North-Wind-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/North-Wind-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/Red-Dragon-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/Red-Dragon-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/South-Wind-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/South-Wind-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/West-Wind-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/West-Wind-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/White-Dragon-Left.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/White-Dragon-Right.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/leftPEach.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/rightPEach.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Resources/topPEach.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Hand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Hand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Network/GameServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/GameServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Network/PlayerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/PlayerClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/DiceRollUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/DiceRollUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Resources/1-Bamboo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources/1-Bamboo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/CheckTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/CheckTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/PreparationUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/PreparationUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,10 +165,55 @@
       <recent name="View" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.App">
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="App" />
+  <component name="RunManager" selected="应用程序.PlayerClient (3)">
+    <configuration name="GameServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Network.GameServer" />
       <module name="Mahjong" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Network.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerClient (1)" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Network.PlayerClient" />
+      <module name="Mahjong" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Network.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerClient (2)" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Network.PlayerClient" />
+      <module name="Mahjong" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Network.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerClient (3)" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Network.PlayerClient" />
+      <module name="Mahjong" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Network.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -111,10 +231,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="应用程序.GameServer" />
+      <item itemvalue="应用程序.PlayerClient" />
+      <item itemvalue="应用程序.PlayerClient (1)" />
+      <item itemvalue="应用程序.PlayerClient (2)" />
+      <item itemvalue="应用程序.PlayerClient (3)" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="应用程序.App" />
         <item itemvalue="应用程序.PlayerClient" />
+        <item itemvalue="应用程序.GameServer" />
       </list>
     </recent_temporary>
   </component>
@@ -158,6 +285,11 @@
       <workItem from="1716968852957" duration="125000" />
       <workItem from="1717038719189" duration="1066000" />
       <workItem from="1717064376052" duration="4354000" />
+      <workItem from="1717163778224" duration="382000" />
+      <workItem from="1717303158581" duration="17000" />
+      <workItem from="1717423601388" duration="3624000" />
+      <workItem from="1717465609201" duration="772000" />
+      <workItem from="1717486047897" duration="14355000" />
     </task>
     <task id="LOCAL-00001" summary="新增对对胡; 重构Game类中的初始化游戏; 新增CheckPlayer中的判断庄家（默认P1是庄家）">
       <option name="closed" value="true" />
@@ -207,7 +339,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716791722730</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat: 更新31日更新内容">
+      <option name="closed" value="true" />
+      <created>1717163843147</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1717163843147</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,7 +390,8 @@
     <MESSAGE value="format" />
     <MESSAGE value="Partial refactoring of Player, Hand, and TileStack classe" />
     <MESSAGE value="feat: 更新27日更新内容" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 更新27日更新内容" />
+    <MESSAGE value="feat: 更新31日更新内容" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 更新31日更新内容" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

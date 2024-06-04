@@ -179,6 +179,8 @@ public class GameServer {
     }
 
     public void playerKung(Player player) {
+        List<Tile> optionTiles = player.getHand().operation(MeldType.CONCEALEDKONG, null);
+
         if (checkEnoughTiles()) {
             return;
         }
@@ -190,14 +192,17 @@ public class GameServer {
 
         Message message = new Message();
         message.setType(MessageType.PlayerKung);
+        message.setPlayer(player);
+        message.setTileCount(player.getTilesCount());
+        message.setOptionTiles(optionTiles);
         message.setTile(newTile);
 
-        findPlayerThreadByPlayer(player).sendTurnMessage(message);
+//        findPlayerThreadByPlayer(player).sendTurnMessage(message);
+        sendMessageToAll(message);
 
         waitForFinish();
 
-        if (checkIsHasWinner(player)) {
-        }
+        checkIsHasWinner(player);
     }
 
     public void playerOptionPass(Player player, Tile tile) {
@@ -208,29 +213,29 @@ public class GameServer {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.PUNG, tile);
+        List<Tile> optionTiles = player.getHand().operation(MeldType.PUNG, tile);
 
         updatePlayer(player);
-
-        if (checkIsHasWinner(player)) {
-            return;
-        }
 
         currentPlayer = player;
         Message message = new Message();
         message.setType(MessageType.OptionWithPung);
         message.setTile(tile);
+        message.setOptionTiles(optionTiles);
         message.setPlayer(currentPlayer);
+        message.setTileCount(currentPlayer.getTilesCount());
 
         sendMessageToAll(message);
         waitForFinish();
+
+        checkIsHasWinner(player);
     }
 
     public void playerOptionKong(Player player, Tile tile) {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.KONG, tile);
+        List<Tile> optionTiles = player.getHand().operation(MeldType.KONG, tile);
         if (checkEnoughTiles()) {
             return;
         }
@@ -243,36 +248,37 @@ public class GameServer {
         Message message = new Message();
         message.setType(MessageType.OptionWithKong);
         message.setNewTile(newTile);
+        message.setOptionTiles(optionTiles);
         message.setTile(tile);
         message.setPlayer(currentPlayer);
+        message.setTileCount(currentPlayer.getTilesCount());
 
         sendMessageToAll(message);
         waitForFinish();
 
-        if (checkIsHasWinner(player)) {
-        }
+        checkIsHasWinner(player);
     }
 
     public void playerOptionChow(Player player, Tile tile) {
         tileStack.getDiscardTiles().remove(tile);
         optionPlayers.clear();
 
-        player.getHand().operation(MeldType.CHOW, tile);
+        List<Tile> optionTiles = player.getHand().operation(MeldType.CHOW, tile);
 
         updatePlayer(player);
-
-        if (checkIsHasWinner(player)) {
-            return;
-        }
 
         currentPlayer = player;
         Message message = new Message();
         message.setType(MessageType.OptionWithChow);
         message.setTile(tile);
+        message.setOptionTiles(optionTiles);
         message.setPlayer(currentPlayer);
+        message.setTileCount(currentPlayer.getTilesCount());
 
         sendMessageToAll(message);
         waitForFinish();
+
+        checkIsHasWinner(player);
     }
 
     public void sendMessageToAll(Message message) {
@@ -328,10 +334,6 @@ public class GameServer {
         newTile = tileStack.takeTile();
         currentPlayer.getHand().addTile(newTile);
 
-        if (checkIsHasWinner(currentPlayer)) {
-            return;
-        }
-
         Message msg = new Message();
         msg.setType(MessageType.TakeTurn);
         msg.setPlayer(currentPlayer);
@@ -339,20 +341,19 @@ public class GameServer {
         msg.setTile(tile);
         msg.setNewTile(newTile);
 
+        checkIsHasWinner(currentPlayer);
+
         sendMessageToAll(msg);
     }
 
-    public boolean checkIsHasWinner(Player player) {
+    public void checkIsHasWinner(Player player) {
         if (player.isWinner() || player.getHand().checkIsWin()) {
             Message message = new Message();
             message.setType(MessageType.HasWinner);
             message.setPlayer(player);
             sendMessageToAll(message);
             waitForFinish();
-
-            return true;
         }
-        return false;
     }
 
     public boolean checkEnoughTiles() {

@@ -74,7 +74,6 @@ public class PreparationUI extends JFrame {
                 buttons.clear();
                 new DiceRollUI(game);
                 PreparationUI.this.dispose();
-
             } else if (command.equals("Roll the dice")) {
                 scores[clickNumber] = (int) (Math.random() * 11) + 2;
                 clickNumber++;

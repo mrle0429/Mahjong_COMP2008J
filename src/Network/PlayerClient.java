@@ -21,12 +21,11 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     private final String name = "Wzh";
-    private final String serverIP = "192.168.43.89";
+    private final String serverIP = "10.19.43.183";
     private final int port = 12345;
     private NetWaitingUI netWaitingUI;
     private Player player;
     private SoundPlayer soundPlayer = new SoundPlayer();
-
     // UI information
     private static final String TITLE = "Mahjong Game";
     public static final int width = 1200;
@@ -43,6 +42,8 @@ public class PlayerClient extends JFrame implements MouseListener {
     private boolean failChow = false;
     private boolean failKong = false;
     private boolean noTiles = false;
+    private List<List<Tile>> othersMeld;
+    private int[] othersTileCount;
     private MediaTracker tracker;
     private int loadTimes;
     private boolean gameOver;
@@ -95,6 +96,7 @@ public class PlayerClient extends JFrame implements MouseListener {
 //                    if (player.toString().equals(originalPlayer.toString())){
 //                        player.getHand().removeTile(msg.getTile());
 //                    }
+                    updateTileCount(msg);
                     Player currentPlayer = msg.getPlayer();
                     turnInformation = currentPlayer.toString();
                     if (player.toString().equals(turnInformation)) {
@@ -102,7 +104,14 @@ public class PlayerClient extends JFrame implements MouseListener {
                     }
                     repaint();
                 } else if (msg.getType() == MessageType.PlayerKung) {
-                    player.getHand().addTile(msg.getTile());
+                    if (player.toString().equals(msg.getPlayer().toString())) {
+                        player.getHand().addTile(msg.getTile());
+                    } else {
+                        updateTileCount(msg);
+                    }
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateMeld(msg);
+                    }
                     repaint();
                 } else if (msg.getType() == MessageType.OptionWithTile) {
                     selfTurn = false;
@@ -139,17 +148,34 @@ public class PlayerClient extends JFrame implements MouseListener {
 
                     repaint();
                 } else if (msg.getType() == MessageType.OptionWithPung) {
-//                    tileStack.getDiscardTiles().remove(msg.getTile());
                     turnInformation = msg.getPlayer().toString();
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateTileCount(msg);
+                    }
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateMeld(msg);
+                    }
                     repaint();
                 } else if (msg.getType() == MessageType.OptionWithKong) {
                     turnInformation = msg.getPlayer().toString();
                     if (player.toString().equals(turnInformation)) {
                         player.getHand().addTile(msg.getNewTile());
                     }
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateTileCount(msg);
+                    }
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateMeld(msg);
+                    }
                     repaint();
                 } else if (msg.getType() == MessageType.OptionWithChow) {
                     turnInformation = msg.getPlayer().toString();
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateTileCount(msg);
+                    }
+                    if (!msg.getPlayer().toString().equals(player.toString())) {
+                        updateMeld(msg);
+                    }
                     repaint();
                 } else if (msg.getType() == MessageType.HasWinner) {
                     gameOver = true;
@@ -172,6 +198,27 @@ public class PlayerClient extends JFrame implements MouseListener {
         buttons = new ArrayList<>();
         otherButtons = new ArrayList<>();
         showButtons = new ArrayList<>();
+        othersMeld = new ArrayList<>();
+        othersMeld.add(new ArrayList<>());
+        othersMeld.add(new ArrayList<>());
+        othersMeld.add(new ArrayList<>());
+
+        othersTileCount = new int[3];
+        if (player.toString().equals(banker.toString())) {
+            othersTileCount[0] = 13;
+            othersTileCount[1] = 13;
+            othersTileCount[2] = 13;
+        } else {
+            PlayerType temp = player.getLocation();
+            for (int i = 0; i != 3; i++) {
+                temp = temp.next();
+                if (temp == banker.getLocation()) {
+                    othersTileCount[i] = 14;
+                } else {
+                    othersTileCount[i] = 13;
+                }
+            }
+        }
 
         loadTimes = 0;
         tracker = new MediaTracker(this);
@@ -181,9 +228,9 @@ public class PlayerClient extends JFrame implements MouseListener {
         winner = null;
 
         backgroundImage = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/background.png"));
-        leftPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/leftP.png"));
-        rightPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/rightP.png"));
-        topPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/topP.png"));
+        leftPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/leftPEach.png"));
+        rightPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/rightPEach.png"));
+        topPlayerTile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/topPEach.png"));
 
         tracker.addImage(backgroundImage, loadTimes++);
         tracker.addImage(leftPlayerTile, loadTimes++);
@@ -237,6 +284,7 @@ public class PlayerClient extends JFrame implements MouseListener {
 
         paintTile();
         paintMeldTiles();
+        paintOthersMeldTiles();
         paintDiscardTile();
 
         if (selfTurn) {
@@ -257,9 +305,9 @@ public class PlayerClient extends JFrame implements MouseListener {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + tileList.get(i) + ".png"));
             loadSingleImage(tile);
             if (tileList.get(i) != selectTile) {
-                gf.drawImage(tile, 240 + (53 * i), 650, null);
+                gf.drawImage(tile, 240 + (54 * i), 650, null);
             } else {
-                gf.drawImage(tile, 240 + (53 * i), 630, null);
+                gf.drawImage(tile, 240 + (54 * i), 630, null);
             }
         }
     }
@@ -269,8 +317,41 @@ public class PlayerClient extends JFrame implements MouseListener {
         for (int i = 0; i != meldTiles.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + meldTiles.get(i) + ".png"));
             loadSingleImage(tile);
-            gf.drawImage(tile, 1003 - (53 * i), 650, null);
+            gf.drawImage(tile, 1003 - (54 * i), 650, null);
         }
+    }
+
+    private void paintOthersMeldTiles() {
+        System.out.println(player);
+
+        List<Tile> rightPlayer = othersMeld.get(0);
+        for (int i = 0; i != rightPlayer.size(); i++) {
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + rightPlayer.get(i) + "-Right.png"));
+            loadSingleImage(tile);
+            gf.drawImage(tile, 1100, 200 + (i * 54), null);
+        }
+
+        System.out.println(rightPlayer);
+
+        List<Tile> topPlayer = othersMeld.get(1);
+        for (int i = 0; i != topPlayer.size(); i++) {
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + topPlayer.get(i) + ".png"));
+            loadSingleImage(tile);
+            gf.drawImage(tile, 250 + (i * 54), 100, null);
+        }
+
+        System.out.println(topPlayer);
+
+        List<Tile> leftPlayer = othersMeld.get(2);
+        for (int i = 0; i != leftPlayer.size(); i++) {
+            Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + leftPlayer.get(i) + "-Left.png"));
+            loadSingleImage(tile);
+            gf.drawImage(tile, 50, 200 + (i * 54), null);
+        }
+
+        System.out.println(leftPlayer);
+
+
     }
 
     private void paintDiscardTile() {
@@ -299,9 +380,20 @@ public class PlayerClient extends JFrame implements MouseListener {
 
     private void drawBackground() {
         gf.drawImage(backgroundImage, 0, 0, null);
-        gf.drawImage(leftPlayerTile, 150, 200, null);
-        gf.drawImage(rightPlayerTile, 1050, 200, null);
-        gf.drawImage(topPlayerTile, 220, 180, null);
+//        gf.drawImage(leftPlayerTile, 150, 200, null);
+//        gf.drawImage(rightPlayerTile, 1050, 200, null);
+//        gf.drawImage(topPlayerTile, 220, 180, null);
+        for (int i = 0; i != othersTileCount[0]; i++) {
+            gf.drawImage(rightPlayerTile, 1030, 200 + (i * 26), null);
+        }
+
+        for (int i = 0; i != othersTileCount[1]; i++) {
+            gf.drawImage(topPlayerTile, 220 + (i * 52), 180, null);
+        }
+
+        for (int i = 0; i != othersTileCount[2]; i++) {
+            gf.drawImage(leftPlayerTile, 150, 200 + (i * 28), null);
+        }
     }
 
     public void paintBankerInfo() {
@@ -315,8 +407,13 @@ public class PlayerClient extends JFrame implements MouseListener {
         gf.drawString("You are : " + player, playerInfoX - 160, playerInfoY);
         gf.drawString(turnInformation + "'s turn", playerInfoX + 100, playerInfoY);
 
-        gf.setColor(Color.BLACK);
-        gf.drawString("The banker is: " + banker, 220, 100);
+        if (turnInformation.equals(player.toString())){
+            gf.setColor(Color.YELLOW); // 修改颜色为红色
+            gf.drawString("You turn!", playerInfoX + 300, playerInfoY);
+        }
+
+        gf.setColor(Color.WHITE);
+        gf.drawString("The banker is: " + banker, 300, 60);
     }
 
     public void paintMessages() {
@@ -402,6 +499,8 @@ public class PlayerClient extends JFrame implements MouseListener {
                     case "Kong":
                         // 自己回合杠，仅能暗杠
                         if (player.getHand().canConcealedKong()) {
+                            player.getHand().operation(MeldType.CONCEALEDKONG, null);
+
                             Message message = new Message();
                             message.setType(MessageType.PlayerKung);
                             message.setPlayer(player);
@@ -510,11 +609,11 @@ public class PlayerClient extends JFrame implements MouseListener {
             return null;
         }
 
-        int widthArea = tiles.size() * 53;
+        int widthArea = tiles.size() * 54;
         if (xPos < 240 || xPos > 239 + widthArea || yPos < 630 || yPos > 700) {
             return null;
         } else {
-            int tilePos = (xPos - 240) / 53;
+            int tilePos = (xPos - 240) / 54;
             return tiles.get(tilePos);
         }
     }
@@ -524,6 +623,51 @@ public class PlayerClient extends JFrame implements MouseListener {
         failPung = false;
         failChow = false;
         failKong = false;
+    }
+
+    public void updateMeld(Message msg) {
+        System.out.println("调用更新方法");
+        PlayerType tempPlayer = player.getLocation();
+        for (int i = 0; i != 3; i++) {
+            tempPlayer = tempPlayer.next();
+            if (tempPlayer == msg.getPlayer().getLocation()) {
+                List<Tile> optionTiles = msg.getOptionTiles();
+                for (Tile tile : optionTiles) {
+                    othersMeld.get(i).add(tile);
+                }
+                break;
+            }
+        }
+    }
+
+    public void updateTileCount(Message msg){
+        PlayerType temp = player.getLocation();
+        if (msg.getType() == MessageType.TakeTurn){
+            if (msg.getPlayer().toString().equals(player.toString())){
+                othersTileCount[2] = othersTileCount[2] - 1;
+            }else{
+                temp = temp.next();
+                if (temp == msg.getPlayer().getLocation()){
+                    othersTileCount[0] = othersTileCount[0] + 1;
+                }else{
+                    for (int i = 1; i != 3; i++) {
+                        temp = temp.next();
+                        if (temp == msg.getPlayer().getLocation()){
+                            othersTileCount[i] = othersTileCount[i] + 1;
+                            othersTileCount[i - 1] = othersTileCount[i - 1] - 1;
+                        }
+                    }
+                }
+            }
+        }else{
+            for (int i = 0; i != 3; i++) {
+                temp = temp.next();
+                if (temp == msg.getPlayer().getLocation()){
+                    othersTileCount[i] = msg.getTileCount();
+                    break;
+                }
+            }
+        }
     }
 
     public void sendMessage(Message msg) {

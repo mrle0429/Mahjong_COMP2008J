@@ -103,7 +103,7 @@ public class Hand implements Serializable {
      *
      * @param tile The tile other player discarded
      */
-    private void chow(Tile tile) {
+    private List<Tile> chow(Tile tile) {
         // Find the sequence of tiles
         List<Tile> sequence = CheckTile.findSequence(tiles, tile);
 
@@ -112,6 +112,8 @@ public class Hand implements Serializable {
             removeTile(t);
             addMeldTile(t);
         }
+
+        return sequence;
     }
 
     /**
@@ -119,7 +121,7 @@ public class Hand implements Serializable {
      *
      * @param tile The tile other player discarded
      */
-    private void pung(Tile tile) {
+    private List<Tile> pung(Tile tile) {
         // Find the triplet of tiles
         List<Tile> triplet = CheckTile.findPair(tiles, MeldType.PUNG, tile);
 
@@ -128,13 +130,15 @@ public class Hand implements Serializable {
             removeTile(t);
             addMeldTile(t);
         }
+
+        return triplet;
     }
 
     /**
      * Execute the kong operation
      * @param tile The tile other player discarded
      */
-    private void kong(Tile tile) {
+    private List<Tile> kong(Tile tile) {
         // Find the quad of tiles
         List<Tile> quad = CheckTile.findPair(tiles, MeldType.KONG, tile);
 
@@ -143,12 +147,14 @@ public class Hand implements Serializable {
             removeTile(t);
             addMeldTile(t);
         }
+
+        return quad;
     }
 
     /**
      * Execute the concealed kong operation
      */
-    private void concealedKong() {
+    private List<Tile> concealedKong() {
         // Find the quad of tiles
         List<Tile> quad = CheckTile.findQuadForAngang(tiles);
 
@@ -157,19 +163,22 @@ public class Hand implements Serializable {
             removeTile(t);
             addMeldTile(t);
         }
+
+        return quad;
     }
 
     // 对手牌执行操作，碰或杠或吃
-    public void operation(MeldType meldType, Tile tile) {
+    public List<Tile> operation(MeldType meldType, Tile tile) {
         if (meldType == MeldType.PUNG) {
-            pung(tile);
+            return pung(tile);
         } else if (meldType == MeldType.KONG) {
-            kong(tile);
+            return kong(tile);
         } else if (meldType == MeldType.CHOW) {
-            chow(tile);
+            return chow(tile);
         } else if (meldType == MeldType.CONCEALEDKONG) {
-            concealedKong();
+            return concealedKong();
         }
+        return null;
     }
 
 

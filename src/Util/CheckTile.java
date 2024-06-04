@@ -75,7 +75,6 @@ public class CheckTile {
     }
 
     // 暗杠,玩家手牌中有四张相同的牌.仅考虑同时存在一组暗杠
-    // Todo: 使用了一种新的找四个相同的牌的方法。可与先前的找三元组和四元组的方法进行比较，并选择最优方法
     public static List<Tile> findQuadForAngang(List<Tile> tiles) {
         List<Tile> result = new ArrayList<>();
         Map<Tile, Integer> tileCount = new HashMap<>();
