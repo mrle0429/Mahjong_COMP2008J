@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private final PlayerType location;
     private Hand hand;
     private boolean isWinner;
@@ -27,7 +28,6 @@ public class Player implements Serializable {
         isWinner = false;
         isBanker = false;
         score = 500;
-
     }
 
     public boolean drawTile(TileStack tileStack) {

@@ -107,7 +107,7 @@ public class GameServer {
     public void distributeTile() {
         for (Player player : players) {
             for (int i = 0; i != 13; i++) {
-                player.getHand().addTile(tileStack.playerDrawTile());
+                player.getHand().addTile(tileStack.drawTile());
             }
         }
     }
@@ -185,7 +185,7 @@ public class GameServer {
             return;
         }
 
-        newTile = tileStack.takeTile();
+        newTile = tileStack.drawTile();
         player.getHand().addTile(newTile);
 
         updatePlayer(player);
@@ -239,7 +239,7 @@ public class GameServer {
         if (checkEnoughTiles()) {
             return;
         }
-        newTile = tileStack.takeTile();
+        newTile = tileStack.drawTile();
         player.getHand().addTile(newTile);
 
         updatePlayer(player);
@@ -331,7 +331,7 @@ public class GameServer {
         if (checkEnoughTiles()) {
             return;
         }
-        newTile = tileStack.takeTile();
+        newTile = tileStack.drawTile();
         currentPlayer.getHand().addTile(newTile);
 
         Message msg = new Message();

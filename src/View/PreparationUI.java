@@ -93,7 +93,7 @@ public class PreparationUI extends JFrame {
                 }
             } else if (command.equals("Continue game")) {
                 game.setStart();
-                game.setZhuang(maxIndex);
+                game.setBanker(maxIndex);
                 game.startGame();
                 dispose();
 

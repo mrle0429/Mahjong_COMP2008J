@@ -27,7 +27,6 @@ public class WaysOfHu {
     }
 
 
-
     // SevenPairsHu
     public static boolean isSevenPairs(List<Tile> tiles) {
         if (tiles.size() != 14) return false;
@@ -87,7 +86,7 @@ public class WaysOfHu {
 
     public static int calculateScore(List<Tile> tiles) {
         int fanNum = 1;
-        if (CheckTile.isroutineHu(tiles, false)) {
+        if (CheckTile.isRoutineHu(tiles, false)) {
             fanNum += 1; // 1  basic fan
         }
         if (isPureHand(tiles)) {
@@ -96,7 +95,7 @@ public class WaysOfHu {
 
         if (isSevenPairs(tiles)) {
             fanNum += Math.max(fanNum, 4); // 4 based on basic
-        }else if (isDeluxeSevenPairs(tiles)) {
+        } else if (isDeluxeSevenPairs(tiles)) {
             fanNum += 8; // 8 based on fan 4
         }
 

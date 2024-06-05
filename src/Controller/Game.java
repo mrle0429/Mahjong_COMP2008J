@@ -1,16 +1,29 @@
 package Controller;
 
-
-import Model.*;
+import Model.Player;
+import Model.PlayerType;
+import Model.Tile;
+import Model.TileStack;
 import Util.WaysOfHu;
-
-
 import View.GameUI;
 import View.PreparationUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Game class represents the main controller of the game.
+ * It manages the game state, player actions, and game UI.
+ *
+ * This class maintains a list of players, the tile stack, and the current player.
+ * It also keeps track of the game state through boolean flags such as isStart, isGameOver, and hasWinner.
+ *
+ * The Game class provides methods for game initialization, starting the game, player actions (drawing and discarding tiles),
+ * moving to the next player, checking win conditions, and updating the game state and score.
+ *
+ * This class interacts with the Player class for player actions and the TileStack class for tile management.
+ * It also interacts with the GameUI and PreparationUI classes for updating the user interface.
+ */
 public class Game {
     private final List<Player> players;
     private final TileStack tileStack;
@@ -23,37 +36,38 @@ public class Game {
     private boolean isGameOver;
     private boolean hasWinner;
 
+    private static final int INITIAL_TILE_NUM = 13;
 
 
     public Game() {
         players = new ArrayList<>();
         tileStack = new TileStack();
+
+        gameUI = new GameUI(this);
+        preparationUI = new PreparationUI(this);
+
         hasWinner = false;
         isStart = false;
         isGameOver = false;
-        gameUI = new GameUI(this);
-        preparationUI = new PreparationUI(this);
     }
 
-    // 初始化游戏
-    public void initializeGame() {
-        addPlayer();                 // 添加四名玩家
-        preparationUI.initializeUI();
-    }
+
+
 
     public void startGame() {
         if (!isStart) {
-            initializeGame();
+            addPlayer();
+            preparationUI.initializeUI();
             return;
         }
-        distributeTile(); // 发牌
 
-        currentPlayer = findZhuang();
+        distributeTile();
+        currentPlayer = findBanker();
         gameUI.initializeUI();
 
-        // 地主额外获得一张牌
+        // Banker draws a tile
         playerDrawTile(currentPlayer);
-        //gameUI.updateGameUI();
+
     }
 
     private void addPlayer() {
@@ -65,7 +79,7 @@ public class Game {
 
     private void distributeTile() {
         for (Player player : players) {
-            for (int i = 0; i != 13; i++) {
+            for (int i = 0; i != INITIAL_TILE_NUM; i++) {
                 player.drawTile(tileStack);
             }
         }
@@ -94,7 +108,7 @@ public class Game {
         currentPlayer = getNextPlayer(player);
     }
 
-    public Player findZhuang() {
+    public Player findBanker() {
         for (Player player : players) {
             if (player.isBanker()) {
                 return player;
@@ -105,8 +119,9 @@ public class Game {
 
 
     public void updateScore() {
-        //System.out.println("updateScore");
-        if (!hasWinner) {return;}
+        if (!hasWinner) {
+            return;
+        }
 
         Player winner = null;
         int baseScore = 1;
@@ -132,7 +147,6 @@ public class Game {
     }
 
 
-
     public void playerDiscardTile(Player player, Tile tile) {
         player.discardTile(tileStack, tile);
     }
@@ -142,6 +156,7 @@ public class Game {
             isGameOver = true;
             return;
         }
+
         player.drawTile(tileStack);
         checkIsWin(player);
         gameUI.updateGameUI();
@@ -160,12 +175,9 @@ public class Game {
         }
     }
 
-    public TileStack getTileStack() {
-        return tileStack;
-    }
 
     public boolean checkIsWin(Player player) {
-        if (player.isWinner()){
+        if (player.isWinner()) {
             hasWinner = true;
         }
         return player.isWinner();
@@ -179,7 +191,7 @@ public class Game {
         isStart = true;
     }
 
-    public void setZhuang(int index) {
+    public void setBanker(int index) {
         players.get(index).setBanker(true);
     }
 
@@ -203,7 +215,7 @@ public class Game {
         return tileStack.getDiscardTiles();
     }
 
-    public boolean checkEat(Player player, Tile tile) {
+    public boolean checkChow(Player player, Tile tile) {
         return player.checkChow(tile);
     }
 
@@ -211,7 +223,7 @@ public class Game {
         return player.checkPung(tile);
     }
 
-    public boolean checkGang(Player player, Tile tile) {
+    public boolean checkKong(Player player, Tile tile) {
         return player.checkKong(tile);
     }
 
@@ -220,17 +232,17 @@ public class Game {
         tileStack.getDiscardTiles().remove(tile);
     }
 
-    public void playerGangTile(Player player, Tile tile) {
+    public void playerKongTile(Player player, Tile tile) {
         player.kongTile(tile);
         tileStack.getDiscardTiles().remove(tile);
     }
 
-    public void playerEatTile(Player player, Tile tile) {
+    public void playerChowTile(Player player, Tile tile) {
         player.chowTile(tile);
         tileStack.getDiscardTiles().remove(tile);
     }
 
-    public void playerAnGangTile(Player player) {
+    public void playerConcealedKongTile(Player player) {
         player.concealedKongTile();
     }
 

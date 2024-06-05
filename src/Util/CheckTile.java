@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class CheckTile {
     public static boolean isNumberType(TileType tileType) {
-        return tileType == TileType.Character || tileType == TileType.Circle || tileType == TileType.Bamboo;
+        return tileType == TileType.Crak || tileType == TileType.Dot || tileType == TileType.Bamboo;
     }
 
     public static boolean isNumberType(Tile tile) {
         TileType tileType = tile.getTileType();
-        return tileType == TileType.Character || tileType == TileType.Circle || tileType == TileType.Bamboo;
+        return tileType == TileType.Crak || tileType == TileType.Dot || tileType == TileType.Bamboo;
     }
 
     public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile) {
@@ -144,13 +144,13 @@ public class CheckTile {
 
     public static boolean isHu(List<Tile> tiles){
      
-        return isroutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
+        return tiles.size() > 13 && (isRoutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
                 || WaysOfHu.isSevenPairs(tiles)
                 || WaysOfHu.isDeluxeSevenPairs(tiles) || WaysOfHu.isAllPongs(tiles)
-                || WaysOfHu.isAllWinds(tiles);
+                || WaysOfHu.isAllWinds(tiles));
     }
 
-    public static boolean isroutineHu(List<Tile> tiles, boolean findPair){
+    public static boolean isRoutineHu(List<Tile> tiles, boolean findPair){
       // 可操作手牌为空
         if (tiles.isEmpty()){
             return true;
@@ -169,7 +169,7 @@ public class CheckTile {
                 newTiles.remove(firstIndex);
                 newTiles.remove(firstIndex);
 
-                if (isroutineHu(newTiles, true)){
+                if (isRoutineHu(newTiles, true)){
                     return true;
                 }
             }
@@ -180,7 +180,7 @@ public class CheckTile {
                     newTiles.remove(i + 1);
                     newTiles.remove(i);
 
-                    if (isroutineHu(newTiles, true)){
+                    if (isRoutineHu(newTiles, true)){
 
                         return true;
                     }
@@ -193,7 +193,7 @@ public class CheckTile {
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
 
-                return isroutineHu(newTiles, true);
+                return isRoutineHu(newTiles, true);
             }
             return false; // Not find pair, not in this win way.
         }
@@ -218,7 +218,7 @@ public class CheckTile {
                         newTiles.remove(secondTile);
                         newTiles.remove(thirdTile);
 
-                        return isroutineHu(newTiles, true);
+                        return isRoutineHu(newTiles, true);
                     }else{
                         if (tiles.size() > 3){
 
@@ -228,7 +228,7 @@ public class CheckTile {
                                 newTiles.remove(firstTile);
                                 newTiles.remove(secondTile);
                                 newTiles.remove(fourthTile);
-                                return isroutineHu(newTiles, true);
+                                return isRoutineHu(newTiles, true);
                             }
                         }
                     }
@@ -242,7 +242,7 @@ public class CheckTile {
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
-            return isroutineHu(newTiles, true);
+            return isRoutineHu(newTiles, true);
         }
         return false;
     }

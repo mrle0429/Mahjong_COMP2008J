@@ -1,16 +1,18 @@
 package Model;
 
 /**
- * Character（万）：代表从一到九的数牌，共计九种。
- * Bamboo（条）：同样代表从一到九的数牌，也是九种。
- * Circle（筒）：也是一到九的数牌，九种。
- * Wind（风）：东、南、西、北四个方位的风牌，共四种。
- * Dragon（箭）：中、发、白三种箭牌。
+ * The TileType enum represents the different types of tiles in a Mahjong game.
+ *
+ * - Crak: Represents the Character tiles, which are numerical tiles from 1 to 9.
+ * - Bamboo: Represents the Bamboo tiles, which are numerical tiles from 1 to 9.
+ * - Dot: Represents the Circle tiles, which are numerical tiles from 1 to 9.
+ * - Wind: Represents the Wind tiles, which include East, South, West, and North.
+ * - Dragon: Represents the Dragon tiles, which include Red, Green, and White.
  */
 public enum TileType {
-    Character,
+    Crak,
     Bamboo,
-    Circle,
+    Dot,
     Wind,
     Dragon,
 }

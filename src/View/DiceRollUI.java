@@ -104,7 +104,7 @@ public class DiceRollUI extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     // Start the game
                     game.setStart();
-                    game.setZhuang(maxIndex);
+                    game.setBanker(maxIndex);
                     game.startGame();
                     DiceRollUI.this.dispose();
                 }

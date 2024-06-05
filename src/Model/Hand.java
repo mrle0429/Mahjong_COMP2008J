@@ -20,9 +20,11 @@ import java.util.List;
  */
 public class Hand implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private List<Tile> tiles;  // stores the tiles that player can operate
     private List<Tile> meldTiles;  // stores the tiles that player can't operate (After Pung, Kong, Chow)
     private boolean isDealingFinished;  // Flag to indicate whether the player has finished dealing
+
     private TileSortType tileSortType;  // Flag to indicate the sort type of tiles(Ascending or Descending)
 
     public Hand() {
@@ -68,7 +70,7 @@ public class Hand implements Serializable {
         List<Tile> hand = new ArrayList<>();
         hand.addAll(tiles);
         hand.addAll(meldTiles);
-        return hand.size() == 14 && CheckTile.isHu(hand);
+        return CheckTile.isHu(hand);
     }
 
 
@@ -79,7 +81,7 @@ public class Hand implements Serializable {
      * @return
      */
     public boolean drawTile(TileStack tileStack) {
-        Tile tile = tileStack.playerDrawTile();
+        Tile tile = tileStack.drawTile();
         return addTile(tile);
     }
 
@@ -167,7 +169,6 @@ public class Hand implements Serializable {
         return quad;
     }
 
-    // 对手牌执行操作，碰或杠或吃
     public List<Tile> operation(MeldType meldType, Tile tile) {
         if (meldType == MeldType.PUNG) {
             return pung(tile);

@@ -1,6 +1,11 @@
 package Model;
 
 /**
+ * The PlayerType enum represents the different types of players in a Mahjong game.
+ *  - East: Represents the player in the East position.
+ *  - South: Represents the player in the South position.
+ *  - West: Represents the player in the West position.
+ *  - North: Represents the player in the North position.
  * @author Le Liu
  * @create 2024-04
  */

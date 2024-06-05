@@ -267,7 +267,7 @@ public class GameUI extends JFrame implements MouseListener {
                         return;
                     case "Kong":
                         // 自己回合杠，仅能暗杠
-                        game.playerAnGangTile(currentPlayer);
+                        game.playerConcealedKongTile(currentPlayer);
                         repaint();
                         return;
                     case "Change tile order":
@@ -309,7 +309,7 @@ public class GameUI extends JFrame implements MouseListener {
 
                         soundPlayer.playSoundEffect("src/Resources/kong.wav");
 
-                        game.playerGangTile(currentPlayer, selectTile);  // 杠牌加入手牌，同时从弃牌堆删除
+                        game.playerKongTile(currentPlayer, selectTile);  // 杠牌加入手牌，同时从弃牌堆删除
 
                         // 因为杠牌是需要一下出4张，这个时候需要让这名玩家取一张牌的同时，还要出一张牌，为了保持游戏特性的同时维持手牌稳定
                         game.playerDrawTile(currentPlayer);
@@ -323,7 +323,7 @@ public class GameUI extends JFrame implements MouseListener {
                     case "Chow":
                         optionPlayers.clear();
 
-                        game.playerEatTile(currentPlayer, selectTile);  // 吃牌加入手牌，同时从弃牌堆删除
+                        game.playerChowTile(currentPlayer, selectTile);  // 吃牌加入手牌，同时从弃牌堆删除
 
                         game.checkIsWin(currentPlayer);
 
@@ -374,8 +374,8 @@ public class GameUI extends JFrame implements MouseListener {
             currentTestPlayer = game.getNextPlayer(currentTestPlayer);
 
             boolean canPeng = game.checkPung(currentTestPlayer, selectTile);
-            boolean canGang = game.checkGang(currentTestPlayer, selectTile);
-            boolean canEat = (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()) && game.checkEat(currentTestPlayer, selectTile); // 只有下家能吃
+            boolean canGang = game.checkKong(currentTestPlayer, selectTile);
+            boolean canEat = (currentTestPlayer.getLocation() == currentPlayer.getLocation().next()) && game.checkChow(currentTestPlayer, selectTile); // 只有下家能吃
             if (canPeng || canGang || canEat) {
                 optionPlayers.add(currentTestPlayer);
             }
@@ -452,7 +452,7 @@ public class GameUI extends JFrame implements MouseListener {
         gf.setColor(Color.RED); // 修改颜色为红色
       
         gf.setColor(Color.WHITE);
-        gf.drawString("The banker is: " + game.findZhuang(), 220, 130);
+        gf.drawString("The banker is: " + game.findBanker(), 220, 130);
       
         gf.drawString("Player now: ", 550, 130);
         gf.setColor(Color.RED);
