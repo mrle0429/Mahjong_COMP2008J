@@ -4,7 +4,7 @@ import Util.CheckTile;
 
 import java.io.Serializable;
 
-public class Tile implements Serializable {
+public class Tile implements Serializable, Comparable<Tile> {
     private static final long serialVersionUID = 1L;
     private final TileType tileType;
     private int value; // For WAN, TONG and TIAO
@@ -63,5 +63,36 @@ public class Tile implements Serializable {
         }else{
             return this.tileType == tile.getTileType() && this.character.equals(tile.getCharacter());
         }
+    }
+
+    @Override
+    public int hashCode() {
+        if (CheckTile.isNumberType(this)) {
+            return 31 * tileType.hashCode() + value;
+        } else {
+            return 31 * tileType.hashCode() + character.hashCode();
+        }
+    }
+
+    @Override
+    public int compareTo(Tile other) {
+        int typeComparison = this.tileType.compareTo(other.tileType);
+        if (typeComparison != 0) {
+            return typeComparison;
+        }
+        if (CheckTile.isNumberType(this)) {
+            return Integer.compare(this.value, other.value);
+        } else {
+            return this.character.compareTo(other.character);
+        }
+    }
+
+
+    public boolean isCharacter() {
+        return tileType == TileType.Wind || tileType == TileType.Dragon;
+    }
+
+    public boolean isWind() {
+        return tileType == TileType.Wind;
     }
 }
