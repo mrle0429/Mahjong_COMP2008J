@@ -144,15 +144,12 @@ public class CheckTile {
 
     public static boolean isHu(List<Tile> tiles){
      
-        return WaysOfHu.isroutineHu(tiles, false)
+        return WaysOfHu.isRoutineHu(tiles, false)
                 || WaysOfHu.isSevenPairs(tiles)
                 || WaysOfHu.isPureHand(tiles)
                 || WaysOfHu.isZiYiSe(tiles)
                 || WaysOfHu.isDaSiXi(tiles)
-                || WaysOfHu.isXiaoSiXi(tiles)
-                || WaysOfHu.isShiSanYao(tiles)
-                || WaysOfHu.isAllPongs(tiles)
-                || WaysOfHu.isAllWinds(tiles);
+                || WaysOfHu.isAllPongs(tiles);
     }
 
 

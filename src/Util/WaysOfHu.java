@@ -11,8 +11,7 @@ import java.util.Map;
 
 public class WaysOfHu {
 
-    public static boolean isroutineHu(List<Tile> tiles, boolean findPair){
-        // 可操作手牌为空
+    public static boolean isRoutineHu(List<Tile> tiles, boolean findPair){
         if (tiles.isEmpty()){
             return true;
         }
@@ -30,7 +29,7 @@ public class WaysOfHu {
                 newTiles.remove(firstIndex);
                 newTiles.remove(firstIndex);
 
-                if (isroutineHu(newTiles, true)){
+                if (isRoutineHu(newTiles, true)){
                     return true;
                 }
             }
@@ -41,7 +40,7 @@ public class WaysOfHu {
                     newTiles.remove(i + 1);
                     newTiles.remove(i);
 
-                    if (isroutineHu(newTiles, true)){
+                    if (isRoutineHu(newTiles, true)){
 
                         return true;
                     }
@@ -54,7 +53,7 @@ public class WaysOfHu {
                 newTiles.remove(lastIndex);
                 newTiles.remove(lastIndex);
 
-                return isroutineHu(newTiles, true);
+                return isRoutineHu(newTiles, true);
             }
             return false; // Not find pair, not in this win way.
         }
@@ -79,7 +78,7 @@ public class WaysOfHu {
                         newTiles.remove(secondTile);
                         newTiles.remove(thirdTile);
 
-                        return isroutineHu(newTiles, true);
+                        return isRoutineHu(newTiles, true);
                     }else{
                         if (tiles.size() > 3){
 
@@ -89,7 +88,7 @@ public class WaysOfHu {
                                 newTiles.remove(firstTile);
                                 newTiles.remove(secondTile);
                                 newTiles.remove(fourthTile);
-                                return isroutineHu(newTiles, true);
+                                return isRoutineHu(newTiles, true);
                             }
                         }
                     }
@@ -103,7 +102,7 @@ public class WaysOfHu {
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
             newTiles.remove(firstTile);
-            return isroutineHu(newTiles, true);
+            return isRoutineHu(newTiles, true);
         }
         return false;
     }
@@ -148,70 +147,21 @@ public class WaysOfHu {
         return true;
     }
 
+
     public static boolean isDaSiXi(List<Tile> tiles) {
-        int[] windCounts = new int[4];
-        for (Tile tile : tiles) {
-            if (tile.isWind()) {
-                windCounts[tile.getValue() - 1]++;
-            }
+        if (tiles.size() != 12){
+            return false;
         }
-        for (int count : windCounts) {
-            if (count < 3) {
+
+        Map<Tile, Integer> counts = countTiles(tiles);
+
+        for (Tile tile : counts.keySet()) {
+            if (tile.getTileType() != TileType.Wind || counts.get(tile) != 3) {
                 return false;
             }
         }
         return true;
     }
-
-    public static boolean isXiaoSiXi(List<Tile> tiles) {
-        int triplets = 0;
-        int pair = 0;
-        int[] windCounts = new int[4]; // 东南西北
-        for (Tile tile : tiles) {
-            if (tile.isWind()) {
-                windCounts[tile.getValue() - 1]++;
-            }
-        }
-        for (int count : windCounts) {
-            if (count == 3) {
-                triplets++;
-            } else if (count == 2) {
-                pair++;
-            }
-        }
-        return triplets == 3 && pair == 1;
-    }
-
-    public static boolean isShiSanYao(List<Tile> tiles) {
-        if (tiles.size() != 14) {
-            return false;
-        }
-        int[] yaoTiles = {1, 9, 11, 19, 21, 29, 31, 32, 33, 34, 35, 36, 37};
-        boolean[] found = new boolean[13];
-        boolean hasPair = false;
-
-        for (Tile tile : tiles) {
-            int value = tile.getValue();
-            for (int i = 0; i < yaoTiles.length; i++) {
-                if (value == yaoTiles[i]) {
-                    if (found[i]) {
-                        hasPair = true;
-                    } else {
-                        found[i] = true;
-                    }
-                }
-            }
-        }
-
-        for (boolean f : found) {
-            if (!f) {
-                return false;
-            }
-        }
-
-        return hasPair;
-    }
-    
 
     // AllPongs
 
@@ -229,15 +179,6 @@ public class WaysOfHu {
         return true;
     }
 
-    // AllWinds
-    public static boolean isAllWinds(List<Tile> tiles) {
-        for (Tile tile : tiles) {
-            if (tile.getTileType() != TileType.Wind) {
-                return false;
-            }
-        }
-        return true;
-    }
 
 
     private static Map<Tile, Integer> countTiles(List<Tile> tiles) {
@@ -248,24 +189,29 @@ public class WaysOfHu {
         return tileCount;
     }
 
+
     public static int calculateScore(List<Tile> tiles) {
-        int fanNum = 1;
-        if (isroutineHu(tiles, false)) {
-            fanNum += 1; // 1  basic fan
-        }
-        if (isPureHand(tiles)) {
-            fanNum += 4; // 4 fan
+        int fanNum = 0;
+
+        if (isRoutineHu(tiles, false)) {
+            fanNum += 1; // 1 basic fan
         }
 
         if (isSevenPairs(tiles)) {
-            fanNum += Math.max(fanNum, 4); // 4 based on basic
+            fanNum += 2; // 2 based on basic
+        }
+        if (isAllPongs(tiles)) {
+            fanNum += 2;
         }
 
-        if (isAllPongs(tiles)) {
-            fanNum += Math.max(fanNum, 2);
+        if (isPureHand(tiles)) {
+            fanNum += 4; // 4 fan
         }
-        if (isAllWinds(tiles)) {
-            fanNum += Math.max(fanNum, 2);
+        if (isZiYiSe(tiles)) {
+            fanNum += 4; // 4 fan
+        }
+        if (isDaSiXi(tiles)) {
+            fanNum += 4; // 4 fan
         }
         return fanNum;
     }
