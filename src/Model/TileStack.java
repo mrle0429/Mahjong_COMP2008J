@@ -27,7 +27,7 @@ public class TileStack implements Serializable {
     }
 
     private void initializeTiles() {
-        TileType[] numberTileTypes = new TileType[]{TileType.Crak, TileType.Dot, TileType.Bamboo};
+        TileType[] numberTileTypes = new TileType[]{TileType.Character, TileType.Circle, TileType.Bamboo};
         String[] windCharacters = new String[]{"North", "East", "West", "South"};
         String[] dragonCharacters = new String[]{"Red", "Green", "White"};
 

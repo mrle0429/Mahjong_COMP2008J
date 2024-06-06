@@ -9,19 +9,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The CheckTile class provides utility methods for checking various conditions in a game of Mahjong.
+ * It includes methods for checking if a tile is of a number type, finding pairs and sequences of tiles,
+ * and checking if certain actions can be performed (like Pung, Kong, Chow, and Concealed Kong).
+ * It also includes a method for checking if a given set of tiles constitutes a winning hand (Hu).
+ */
 public class CheckTile {
     public static boolean isNumberType(TileType tileType) {
-        return tileType == TileType.Crak || tileType == TileType.Dot || tileType == TileType.Bamboo;
+        return tileType == TileType.Character || tileType == TileType.Circle || tileType == TileType.Bamboo;
     }
 
     public static boolean isNumberType(Tile tile) {
         TileType tileType = tile.getTileType();
-        return tileType == TileType.Crak || tileType == TileType.Dot || tileType == TileType.Bamboo;
+        return tileType == TileType.Character || tileType == TileType.Circle || tileType == TileType.Bamboo;
     }
 
+    // Helper method for Pung & Kong
     public static List<Tile> findPair(List<Tile> tiles, MeldType meldType, Tile tile) {
         List<Tile> result = new ArrayList<>();
-        // 只写碰和杠
         if (meldType == MeldType.PUNG) {
             for (int i = 0; i != tiles.size() - 1; i++) {
                 if (tile.equals(tiles.get(i)) && tile.equals(tiles.get(i + 1))) {
@@ -43,7 +49,7 @@ public class CheckTile {
         return result;
     }
 
-    // 找到手牌中连续两张牌，用于吃操作
+    // Helper method for Chow
     public static List<Tile> findSequence(List<Tile> tiles, Tile tile) {
         List<Tile> result = new ArrayList<>();
 
@@ -74,8 +80,8 @@ public class CheckTile {
         return result;
     }
 
-    // 暗杠,玩家手牌中有四张相同的牌.仅考虑同时存在一组暗杠
-    public static List<Tile> findQuadForAngang(List<Tile> tiles) {
+    // Helper method for Concealed Kong
+    public static List<Tile> findQuad(List<Tile> tiles) {
         List<Tile> result = new ArrayList<>();
         Map<Tile, Integer> tileCount = new HashMap<>();
         for (Tile tile : tiles) {
@@ -93,158 +99,34 @@ public class CheckTile {
         return result;
     }
 
-    public static boolean canPeng(List<Tile> tiles, Tile tile) {
+    public static boolean canPung(List<Tile> tiles, Tile tile) {
         List<Tile> result = findPair(tiles, MeldType.PUNG, tile);
         return !result.isEmpty();
     }
 
-    public static boolean canGang(List<Tile> tiles, Tile tile) {
+    public static boolean canKong(List<Tile> tiles, Tile tile) {
         List<Tile> result = findPair(tiles, MeldType.KONG, tile);
         return !result.isEmpty();
     }
 
-    public static boolean canEat(List<Tile> tiles, Tile tile) {
+    public static boolean canChow(List<Tile> tiles, Tile tile) {
         List<Tile> result = findSequence(tiles, tile);
         return !result.isEmpty();
     }
 
-    public static boolean canAnGang(List<Tile> tiles) {
-        List<Tile> result = findQuadForAngang(tiles);
+    public static boolean canConcealedKong(List<Tile> tiles) {
+        List<Tile> result = findQuad(tiles);
         return !result.isEmpty();
     }
 
-    public static List<Tile> canPeng(List<Tile> tiles) {
-        List<Tile> result = new ArrayList<>();
-        for (int i = 0; i != tiles.size() - 2; i++) {
-            if (tiles.get(i).equals(tiles.get(i + 1)) &&
-                    tiles.get(i).equals(tiles.get(i + 2))) {
-                result.add(tiles.get(i));
-                result.add(tiles.get(i + 1));
-                result.add(tiles.get(i + 2));
-            }
-        }
-        return result;
-    }
 
-    public static List<Tile> canGang(List<Tile> tiles) {
-        List<Tile> result = new ArrayList<>();
-        for (int i = 0; i != tiles.size() - 3; i++) {
-            if (tiles.get(i).equals(tiles.get(i + 1)) &&
-                    tiles.get(i).equals(tiles.get(i + 2)) &&
-                    tiles.get(i).equals(tiles.get(i + 3))) {
-                result.add(tiles.get(i));
-                result.add(tiles.get(i + 1));
-                result.add(tiles.get(i + 2));
-                result.add(tiles.get(i + 3));
-            }
-        }
-        return result;
-    }
+    public static boolean isHu(List<Tile> tiles) {
 
-
-    public static boolean isHu(List<Tile> tiles){
-     
-        return tiles.size() > 13 && (isRoutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
+        return WaysOfHu.isRoutineHu(tiles, false) || WaysOfHu.isPureHand(tiles)
                 || WaysOfHu.isSevenPairs(tiles)
                 || WaysOfHu.isDeluxeSevenPairs(tiles) || WaysOfHu.isAllPongs(tiles)
-                || WaysOfHu.isAllWinds(tiles));
+                || WaysOfHu.isAllWinds(tiles);
     }
 
-    public static boolean isRoutineHu(List<Tile> tiles, boolean findPair){
-      // 可操作手牌为空
-        if (tiles.isEmpty()){
-            return true;
-        }
-
-        // Test if it has pair
-        if (!findPair) {
-
-            if (tiles.size() == 2){
-                return tiles.get(0).equals(tiles.get(1));
-            }
-
-            int firstIndex = 0;
-            if (tiles.get(firstIndex).equals(tiles.get(firstIndex + 1)) && !tiles.get(firstIndex).equals(tiles.get(firstIndex + 2))) {
-                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                newTiles.remove(firstIndex);
-                newTiles.remove(firstIndex);
-
-                if (isRoutineHu(newTiles, true)){
-                    return true;
-                }
-            }
-          
-            for (int i = 1; i != tiles.size() - 2; i++) {
-                if (!tiles.get(i).equals(tiles.get(i - 1)) && tiles.get(i).equals(tiles.get(i + 1)) && !tiles.get(i + 1).equals(tiles.get(i + 2))) {
-                    ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                    newTiles.remove(i + 1);
-                    newTiles.remove(i);
-
-                    if (isRoutineHu(newTiles, true)){
-
-                        return true;
-                    }
-                }
-            }
-          
-            int lastIndex = tiles.size() - 2;
-            if (tiles.get(lastIndex).equals(tiles.get(lastIndex + 1))) {
-                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                newTiles.remove(lastIndex);
-                newTiles.remove(lastIndex);
-
-                return isRoutineHu(newTiles, true);
-            }
-            return false; // Not find pair, not in this win way.
-        }
-
-        if (tiles.size() < 3) {
-            return false;
-        }
-
-
-        Tile firstTile = tiles.get(0);
-        Tile secondTile = tiles.get(1);
-        Tile thirdTile = tiles.get(2);
-
-        // Test the other can be formed by Sequence
-        if (CheckTile.isNumberType(firstTile)) {
-            if (firstTile.getTileType() == secondTile.getTileType() &&
-                    firstTile.getValue() + 1 == secondTile.getValue()) {
-                if (firstTile.getTileType() == thirdTile.getTileType()) {
-                    if (firstTile.getValue() + 2 == thirdTile.getValue()) {
-                        ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                        newTiles.remove(firstTile);
-                        newTiles.remove(secondTile);
-                        newTiles.remove(thirdTile);
-
-                        return isRoutineHu(newTiles, true);
-                    }else{
-                        if (tiles.size() > 3){
-
-                            Tile fourthTile = tiles.get(3);
-                            if (firstTile.getTileType() == fourthTile.getTileType() && firstTile.getValue() + 2 == fourthTile.getValue()) {
-                                ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-                                newTiles.remove(firstTile);
-                                newTiles.remove(secondTile);
-                                newTiles.remove(fourthTile);
-                                return isRoutineHu(newTiles, true);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Test the other can be formed by Set
-        if (firstTile.equals(secondTile) && firstTile.equals(thirdTile)) {
-            ArrayList<Tile> newTiles = new ArrayList<>(tiles);
-            newTiles.remove(firstTile);
-            newTiles.remove(firstTile);
-            newTiles.remove(firstTile);
-            return isRoutineHu(newTiles, true);
-        }
-        return false;
-    }
 
 }

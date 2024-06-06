@@ -3,6 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
+//todo: 需要注释
 public class NetWaitingUI extends JFrame {
     private final String playerName;
 

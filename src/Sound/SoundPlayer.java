@@ -1,9 +1,12 @@
 package Sound;
 
 /**
- * @author Le Liu
- * @create 2024-06
+ * The SoundPlayer class is responsible for playing music and sound effects.
+ * It provides two methods: playMusic and playSoundEffect.
+ *
+ * @version 2024-06
  */
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,7 +24,6 @@ public class SoundPlayer {
                 clip.open(audioInput);
                 clip.start();
 
-                // If you want the sound to loop continuously
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
             } else {
                 System.out.println("Can't find file");

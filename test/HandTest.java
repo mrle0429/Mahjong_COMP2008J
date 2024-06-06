@@ -13,7 +13,7 @@ public class HandTest {
     public void setUp() {
         hand = new Hand();
         tileStack = new TileStack();
-        tile = new Tile(TileType.Dot, 5); // You may need to initialize your Tile here
+        tile = new Tile(TileType.Circle, 5); // You may need to initialize your Tile here
     }
 
     @Test

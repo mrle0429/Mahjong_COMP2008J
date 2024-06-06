@@ -1,5 +1,5 @@
 package Model;
-
+//Todo：需要注释
 public enum MessageType {
     NoTiles,
     HasWinner,

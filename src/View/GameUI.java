@@ -23,22 +23,25 @@ public class GameUI extends JFrame implements MouseListener {
     private final Game game;
     private Player currentPlayer;
     private List<Player> optionPlayers;
-    private SoundPlayer soundPlayer = new SoundPlayer();
+    private final SoundPlayer soundPlayer = new SoundPlayer();
 
     List<Button> buttons = new ArrayList<>();
     List<Button> otherButtons = new ArrayList<>();
     List<Button> showButtons;
+
     private Image image = null;
     private Graphics gf = null;
     private Tile selectTile = null;
+
     private boolean failDiscard = false;
     private boolean failPung = false;
     private boolean failChow = false;
     private boolean failKong = false;
     private boolean selfTurn = true;
+    private boolean gameOver;
+
     private MediaTracker tracker;
     private int loadTimes;
-    private boolean gameOver;
 
     private Image backgroundImage;
     private Image leftPlayerTile;
@@ -103,7 +106,7 @@ public class GameUI extends JFrame implements MouseListener {
 
     @Override
     public void paint(Graphics g) {
-        // 添加临时图片 解决屏幕闪烁问题
+        // avoid flicker
         if (image == null) {
             image = this.createImage(1200, 800);
         }
@@ -125,13 +128,13 @@ public class GameUI extends JFrame implements MouseListener {
         paintMeldTiles();
         paintDiscardTile();
 
-        if(currentPlayer.checkConcealedKong()) {
+        if (game.checkConcealedKong(currentPlayer)) {
             Button kongButton = new Button("Kong");
             kongButton.setBounds(545, 555, 70, 40);
             buttons.add(kongButton);
         }
 
-        // 对于不同的界面绘制不同的按钮
+
         if (selfTurn) {
             showButtons = buttons;
         } else {
@@ -183,7 +186,7 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     private void paintDiscardTile() {
-        if (gameOver){
+        if (gameOver) {
             return;
         }
 
@@ -450,10 +453,10 @@ public class GameUI extends JFrame implements MouseListener {
     public void paintBankerInfo() {
         gf.setFont(new Font("宋体", Font.BOLD, 24));
         gf.setColor(Color.RED); // 修改颜色为红色
-      
+
         gf.setColor(Color.WHITE);
         gf.drawString("The banker is: " + game.findBanker(), 220, 130);
-      
+
         gf.drawString("Player now: ", 550, 130);
         gf.setColor(Color.RED);
         gf.drawString(currentPlayer + "'s turn", 750, 130);
@@ -479,7 +482,6 @@ public class GameUI extends JFrame implements MouseListener {
         }
     }
 
-   
 
     public void paintMessages() {
         if (failDiscard) {

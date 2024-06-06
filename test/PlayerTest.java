@@ -17,7 +17,7 @@ public class PlayerTest {
     public void setUp() {
         player = new Player(PlayerType.East);
         tileStack = new TileStack();
-        tile = new Tile(TileType.Dot, 2); // You may need to initialize your Tile here
+        tile = new Tile(TileType.Circle, 2);
     }
 
     @Test
@@ -55,10 +55,9 @@ public class PlayerTest {
 
     @Test
     public void testChowTile() {
-        // You may need to add more tiles to the hand before testing chowTile
-        Tile tile1 = new Tile(TileType.Dot, 1);
-        Tile tile2 = new Tile(TileType.Dot, 2);
-        Tile tile3 = new Tile(TileType.Dot, 3);
+        Tile tile1 = new Tile(TileType.Circle, 1);
+        Tile tile2 = new Tile(TileType.Circle, 2);
+        Tile tile3 = new Tile(TileType.Circle, 3);
         player.getHand().addTile(tile1);
         player.getHand().addTile(tile2);
         player.chowTile(tile3);
@@ -83,7 +82,7 @@ public class PlayerTest {
 
     @Test
     public void testCheckChow() {
-        // You may need to add more tiles to the hand before testing checkChow
+
         player.getHand().addTile(tile);
         player.getHand().addTile(tile);
         assertFalse(player.checkChow(tile)); // Assuming the tiles are not in sequence

@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+// Todo： 需要注释。这个类是否能放到别的包中。建议拆分类。原先单机的启动类可以删除，统一替换为现有的启动类。
 public class App extends JFrame implements MouseListener {
     public static void main(String[] args) {
         new App().initializeUI();

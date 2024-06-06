@@ -227,6 +227,10 @@ public class Game {
         return player.checkKong(tile);
     }
 
+    public boolean checkConcealedKong(Player player) {
+        return player.checkConcealedKong();
+    }
+
     public void playerPungTile(Player player, Tile tile) {
         player.pungTile(tile);
         tileStack.getDiscardTiles().remove(tile);

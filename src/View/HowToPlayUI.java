@@ -1,8 +1,10 @@
 package View;
 
 /**
+ * The HowToPlayUI class provides a user interface for displaying instructions on how to play the game of Mahjong.
+ *
  * @author Le Liu
- * @create 2024-05
+ * @version 2024-05
  */
 
 

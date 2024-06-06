@@ -97,8 +97,7 @@ public class Hand implements Serializable {
         return removeTile(tile);
     }
 
-    // 吃操作
-    // 1. 从可操作牌堆中找到连续的两张牌
+
 
     /**
      * Execute the chow operation
@@ -158,7 +157,7 @@ public class Hand implements Serializable {
      */
     private List<Tile> concealedKong() {
         // Find the quad of tiles
-        List<Tile> quad = CheckTile.findQuadForAngang(tiles);
+        List<Tile> quad = CheckTile.findQuad(tiles);
 
         // Remove the tiles from the tiles and add them to the meldTiles
         for (Tile t : quad) {
@@ -184,21 +183,21 @@ public class Hand implements Serializable {
 
 
     public boolean canPung(Tile tile) {
-        return tiles.size() > 1 && CheckTile.canPeng(tiles, tile);
+        return tiles.size() > 1 && CheckTile.canPung(tiles, tile);
     }
 
 
     public boolean canKong(Tile tile) {
-        return tiles.size() > 2 && CheckTile.canGang(tiles, tile);
+        return tiles.size() > 2 && CheckTile.canKong(tiles, tile);
     }
 
 
     public boolean canChow(Tile tile) {
-        return tiles.size() > 1 && CheckTile.canEat(tiles, tile);
+        return tiles.size() > 1 && CheckTile.canChow(tiles, tile);
     }
 
     public boolean canConcealedKong() {
-        return CheckTile.canAnGang(tiles);
+        return CheckTile.canConcealedKong(tiles);
     }
 
     public List<Tile> getTiles() {

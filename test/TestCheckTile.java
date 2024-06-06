@@ -14,20 +14,20 @@ public class TestCheckTile {
     @Test
     public void testHuiNRoutineWay(){
         List<Tile> tiles = new ArrayList<>();
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
         tiles.add(new Tile(TileType.Bamboo, 3));
         tiles.add(new Tile(TileType.Bamboo, 3));
         tiles.add(new Tile(TileType.Bamboo, 3));
-        tiles.add(new Tile(TileType.Dot, 6));
-        tiles.add(new Tile(TileType.Dot, 6));
-        tiles.add(new Tile(TileType.Crak, 7));
-        tiles.add(new Tile(TileType.Crak, 8));
-        tiles.add(new Tile(TileType.Crak, 9));
+        tiles.add(new Tile(TileType.Circle, 6));
+        tiles.add(new Tile(TileType.Circle, 6));
+        tiles.add(new Tile(TileType.Character, 7));
+        tiles.add(new Tile(TileType.Character, 8));
+        tiles.add(new Tile(TileType.Character, 9));
 
         assertTrue(CheckTile.isHu(tiles));
 
@@ -37,20 +37,20 @@ public class TestCheckTile {
     @Test
     public void testIsPureHand() {
         List<Tile> tiles = new ArrayList<>();
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 5));
-        tiles.add(new Tile(TileType.Crak, 7));
-        tiles.add(new Tile(TileType.Crak, 9));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 4));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 5));
-        tiles.add(new Tile(TileType.Crak, 7));
-        tiles.add(new Tile(TileType.Crak, 9));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 4));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 5));
+        tiles.add(new Tile(TileType.Character, 7));
+        tiles.add(new Tile(TileType.Character, 9));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 4));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 5));
+        tiles.add(new Tile(TileType.Character, 7));
+        tiles.add(new Tile(TileType.Character, 9));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 4));
         assertTrue(CheckTile.isHu(tiles));
 
 
@@ -60,16 +60,16 @@ public class TestCheckTile {
     @Test
     public void testIsSevenPairs() {
         List<Tile> tiles = new ArrayList<>();
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 3));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 3));
         tiles.add(new Tile(TileType.Bamboo, 4));
         tiles.add(new Tile(TileType.Bamboo, 4));
-        tiles.add(new Tile(TileType.Dot, 5));
-        tiles.add(new Tile(TileType.Dot, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
         tiles.add(new Tile(TileType.Dragon, "Red"));
         tiles.add(new Tile(TileType.Dragon, "Red"));
         tiles.add(new Tile(TileType.Wind, "East"));
@@ -81,18 +81,18 @@ public class TestCheckTile {
     @Test
     public void testIsDeluxeSevenPairs() {
         List<Tile> tiles = new ArrayList<>();
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 3));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 3));
         tiles.add(new Tile(TileType.Bamboo, 4));
         tiles.add(new Tile(TileType.Bamboo, 4));
-        tiles.add(new Tile(TileType.Dot, 5));
-        tiles.add(new Tile(TileType.Dot, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
         tiles.add(new Tile(TileType.Dragon, "Red"));
         tiles.add(new Tile(TileType.Dragon, "Red"));
 
@@ -103,22 +103,22 @@ public class TestCheckTile {
     @Test
     public void testIsAllPongs() {
         List<Tile> tiles = new ArrayList<>();
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 1));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 2));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 3));
-        tiles.add(new Tile(TileType.Crak, 3));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 1));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 2));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 3));
+        tiles.add(new Tile(TileType.Character, 3));
         tiles.add(new Tile(TileType.Bamboo, 4));
         tiles.add(new Tile(TileType.Bamboo, 4));
         tiles.add(new Tile(TileType.Bamboo, 4));
-        tiles.add(new Tile(TileType.Dot, 5));
-        tiles.add(new Tile(TileType.Dot, 5));
-        tiles.add(new Tile(TileType.Dot, 5));
-        tiles.add(new Tile(TileType.Dot, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
+        tiles.add(new Tile(TileType.Circle, 5));
 
         assertTrue(WaysOfHu.isAllPongs(tiles), "Should be AllPongsHu because all tiles are in sets of three or four");
     }

@@ -8,6 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * The PreparationUI class provides a user interface for the preparation phase of the game.
+ * It includes buttons for starting the game and going back to the menu. It also includes a mechanism
+ * for rolling the dice to determine the order of play. The class keeps track of the scores from the dice rolls,
+ * the number of times the dice have been rolled, and the index of the player with the highest score.
+ * The class also interacts with the Game class to set the start of the game and the banker based on the dice rolls.
+ *
+ * @author Le Liu
+ * @version 2024-05
+ */
 public class PreparationUI extends JFrame {
     private final Graphics gf = null;
     private final Game game;
@@ -51,7 +62,7 @@ public class PreparationUI extends JFrame {
         this.add(exitButton);
 
 
-        // Add buttons to JFrame
+
 
         // Set JFrame properties
         this.setSize(GameUI.width, GameUI.height);
