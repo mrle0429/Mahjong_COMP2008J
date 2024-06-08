@@ -3,7 +3,12 @@ package Model;
 import java.io.Serializable;
 import java.util.List;
 
-//TODO： 需要注释
+/**
+ * The Message class is the object of each transmission, which stores the information to be transmitted each time.
+ * The set and get methods are used to edit the content of each transmission
+ * to realize the transmission between the server and the client.
+ */
+
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
     private Player player;

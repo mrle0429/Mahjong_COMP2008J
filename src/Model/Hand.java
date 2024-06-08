@@ -66,12 +66,8 @@ public class Hand implements Serializable {
      * @return True if the player has won the game, otherwise false
      */
     public boolean checkIsWin() {
-        List<Tile> hand = new ArrayList<>();
-        hand.addAll(tiles);
-        hand.addAll(meldTiles);
-        return hand.size() > 13 && CheckTile.isHu(hand);  // TODO: 这里添加了一个判断条件，手牌数大于13才能胡牌。如果不加，常规胡牌会报错。可以仔细检查一下。
+        return CheckTile.isHu(tiles);
     }
-
 
     /**
      * Draw a tile from the tile stack.

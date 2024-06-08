@@ -7,7 +7,12 @@ import Model.Player;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-//Todo:需要注释
+
+/**
+ * This is used as a thread for each player to manage and transmit the player's operation information.
+ * This class inherits the thread to prepare for the server to implement multi-user
+ */
+
 public class PlayerThread extends Thread{
     private String name;
     private final GameServer server;

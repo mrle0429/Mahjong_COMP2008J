@@ -13,7 +13,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-// Todo：需要注释
+
+/**
+ * The role of this class is to manage the operations of the user client
+ * and to receive and send information to the server.
+ *
+ * IP needs to be changed
+ */
 public class PlayerClient extends JFrame implements MouseListener {
     public static void main(String[] args) {
         PlayerClient playerClient = new PlayerClient();
@@ -21,7 +27,7 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     private final String name = "Wzh";
-    private final String serverIP = "10.19.43.183";
+    private final String serverIP = "192.168.0.100";
     private final int port = 12345;
     private NetWaitingUI netWaitingUI;
     private Player player;
@@ -92,10 +98,6 @@ public class PlayerClient extends JFrame implements MouseListener {
                 msg = (Message) ois.readObject();
                 if (msg.getType() == MessageType.TakeTurn) {
                     tileStack.getDiscardTiles().add(msg.getTile());
-//                    Player originalPlayer = msg.getOriginalPlayer();
-//                    if (player.toString().equals(originalPlayer.toString())){
-//                        player.getHand().removeTile(msg.getTile());
-//                    }
                     updateTileCount(msg);
                     Player currentPlayer = msg.getPlayer();
                     turnInformation = currentPlayer.toString();
@@ -322,16 +324,12 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     private void paintOthersMeldTiles() {
-        System.out.println(player);
-
         List<Tile> rightPlayer = othersMeld.get(0);
         for (int i = 0; i != rightPlayer.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + rightPlayer.get(i) + "-Right.png"));
             loadSingleImage(tile);
-            gf.drawImage(tile, 1100, 200 + (i * 54), null);
+            gf.drawImage(tile, 1100, 100 + (i * 54), null);
         }
-
-        System.out.println(rightPlayer);
 
         List<Tile> topPlayer = othersMeld.get(1);
         for (int i = 0; i != topPlayer.size(); i++) {
@@ -340,18 +338,12 @@ public class PlayerClient extends JFrame implements MouseListener {
             gf.drawImage(tile, 250 + (i * 54), 100, null);
         }
 
-        System.out.println(topPlayer);
-
         List<Tile> leftPlayer = othersMeld.get(2);
         for (int i = 0; i != leftPlayer.size(); i++) {
             Image tile = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("Resources/" + leftPlayer.get(i) + "-Left.png"));
             loadSingleImage(tile);
-            gf.drawImage(tile, 50, 200 + (i * 54), null);
+            gf.drawImage(tile, 50, 100 + (i * 54), null);
         }
-
-        System.out.println(leftPlayer);
-
-
     }
 
     private void paintDiscardTile() {
@@ -380,9 +372,6 @@ public class PlayerClient extends JFrame implements MouseListener {
 
     private void drawBackground() {
         gf.drawImage(backgroundImage, 0, 0, null);
-//        gf.drawImage(leftPlayerTile, 150, 200, null);
-//        gf.drawImage(rightPlayerTile, 1050, 200, null);
-//        gf.drawImage(topPlayerTile, 220, 180, null);
         for (int i = 0; i != othersTileCount[0]; i++) {
             gf.drawImage(rightPlayerTile, 1030, 200 + (i * 26), null);
         }
@@ -398,9 +387,9 @@ public class PlayerClient extends JFrame implements MouseListener {
 
     public void paintBankerInfo() {
         gf.setFont(new Font("宋体", Font.BOLD, 24));
-        gf.setColor(Color.RED); // 修改颜色为红色
+        gf.setColor(Color.RED); // Change the color to red
 
-        // 修改显示位置，你可以根据需要调整这些值
+        // Modify the display position. You can adjust these values as needed.
         int playerInfoX = 400;
         int playerInfoY = 620;
 
@@ -408,7 +397,7 @@ public class PlayerClient extends JFrame implements MouseListener {
         gf.drawString(turnInformation + "'s turn", playerInfoX + 100, playerInfoY);
 
         if (turnInformation.equals(player.toString())){
-            gf.setColor(Color.YELLOW); // 修改颜色为红色
+            gf.setColor(Color.YELLOW); // Change the color to red
             gf.drawString("You turn!", playerInfoX + 300, playerInfoY);
         }
 
@@ -497,7 +486,7 @@ public class PlayerClient extends JFrame implements MouseListener {
                         repaint();
                         return;
                     case "Kong":
-                        // 自己回合杠，仅能暗杠
+                        // It's your turn to kong, you can only kong secretly
                         if (player.getHand().canConcealedKong()) {
                             player.getHand().operation(MeldType.CONCEALEDKONG, null);
 

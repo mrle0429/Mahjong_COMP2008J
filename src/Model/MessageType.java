@@ -1,5 +1,9 @@
 package Model;
-//Todo：需要注释
+
+/**
+ * This class distinguishes the type of information transmitted each time.
+ */
+
 public enum MessageType {
     NoTiles,
     HasWinner,

@@ -3,7 +3,10 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-//todo: 需要注释
+/**
+ * This class provides a waiting interface for players joining the game
+ */
+
 public class NetWaitingUI extends JFrame {
     private final String playerName;
 

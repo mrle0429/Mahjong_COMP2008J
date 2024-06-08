@@ -29,6 +29,10 @@ public class WaysOfHu {
         // Test if it has pair
         if (!findPair) {
 
+            if (tiles.size() < 2){
+                return false;
+            }
+
             if (tiles.size() == 2){
                 return tiles.get(0).equals(tiles.get(1));
             }

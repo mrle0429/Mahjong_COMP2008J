@@ -8,7 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-// Todo： 需要注释
+/**
+ * This class is the main class of the server. It manages each player's request,
+ * makes judgments, and sends it back to each player.
+ */
+
 public class GameServer {
     public static void main(String[] args) {
         new GameServer().startServer();
