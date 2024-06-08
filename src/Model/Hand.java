@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Hand class represents the tiles that player can operate and the tiles that player can't operate
  * (After Pung, Kong, Chow)
- *
+ * <p>
  * The Hand class is responsible for the following operations:
  * 1. Draw a tile from the tile stack
  * 2. Discard a tile to the tile stack
@@ -35,7 +35,7 @@ public class Hand implements Serializable {
     }
 
 
-    private boolean addTileTo(List<Tile> tileList , Tile tile) {
+    private boolean addTileTo(List<Tile> tileList, Tile tile) {
         boolean hasAdd = tileList.add(tile);
         sortTiles(tileList);
         return hasAdd;
@@ -44,7 +44,6 @@ public class Hand implements Serializable {
     public boolean addTile(Tile tile) {
         return addTileTo(tiles, tile);
     }
-
 
 
     public boolean addMeldTile(Tile tile) {
@@ -66,12 +65,13 @@ public class Hand implements Serializable {
      * @return True if the player has won the game, otherwise false
      */
     public boolean checkIsWin() {
-        return CheckTile.isHu(tiles);
+        return isDealingFinished && CheckTile.isHu(tiles);
     }
 
     /**
      * Draw a tile from the tile stack.
      * This is fundamental operation in the game.
+     *
      * @param tileStack The tile stack to draw a tile from
      * @return
      */
@@ -80,18 +80,17 @@ public class Hand implements Serializable {
         return addTile(tile);
     }
 
-
     /**
      * Discard a tile from the hand
+     *
      * @param tileStack The tile stack to discard the tile to
-     * @param tile The tile to discard
+     * @param tile      The tile to discard
      * @return
      */
     public boolean discardTile(TileStack tileStack, Tile tile) {
         tileStack.playerDiscardTile(tile);
         return removeTile(tile);
     }
-
 
 
     /**
@@ -132,6 +131,7 @@ public class Hand implements Serializable {
 
     /**
      * Execute the kong operation
+     *
      * @param tile The tile other player discarded
      */
     private List<Tile> kong(Tile tile) {

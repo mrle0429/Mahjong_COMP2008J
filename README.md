@@ -12,6 +12,9 @@ This project is the result of our hard work for the Software Engineering course 
 
 - Java
 - IntelliJ IDEA
+- TCP/IP and Sockets
+- GitHub
+- JUnit
 
 ## Installation and Running
 

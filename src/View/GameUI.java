@@ -226,12 +226,12 @@ public class GameUI extends JFrame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        // 展示第一次发牌过程，不允许其他操作
+        // Show the first card dealing process, no other operations are allowed
         if (!currentPlayer.firstDrawFinish() || gameOver) {
             return;
         }
 
-        // 检测鼠标左键
+        // Detecting the left mouse button
         if (e.getButton() == MouseEvent.BUTTON1) {
             int xPos = e.getX();
             int yPos = e.getY();
@@ -239,7 +239,7 @@ public class GameUI extends JFrame implements MouseListener {
             String buttonName = "";
 
 
-            // 检测点击按钮
+            // Detecting button clicks
             for (Button button : showButtons) {
                 if (button.getBounds().contains(xPos, yPos)) {
                     buttonName = button.getLabel();
@@ -256,7 +256,7 @@ public class GameUI extends JFrame implements MouseListener {
                             soundPlayer.playSoundEffect("src/Resources/discard.wav");
                             game.playerDiscardTile(currentPlayer, selectTile);
 
-                            // 检测其他家是否可以碰吃杠，如果可以将他们加入optionPlayers中
+                            // Check if other players can touch or eat the kong, if so, add them to optionPlayers
                             checkAndAddOptionPlayers();
 
                             updateGame();
@@ -264,12 +264,12 @@ public class GameUI extends JFrame implements MouseListener {
                         return;
 
                     case "Pung":
-                        // 自己回合不能碰，简化代码
+                        // Cannot touch in your own turn, simplify the code
                         failPung = true;
                         repaint();
                         return;
                     case "Kong":
-                        // 自己回合杠，仅能暗杠
+                        // In your turn, you can only use the hidden kang
                         game.playerConcealedKongTile(currentPlayer);
                         repaint();
                         return;
@@ -283,7 +283,7 @@ public class GameUI extends JFrame implements MouseListener {
                         return;
                 }
             } else {
-                // 不是自己回合
+                // Not self turn
 
                 switch (buttonName) {
                     case "Pass":
@@ -291,12 +291,12 @@ public class GameUI extends JFrame implements MouseListener {
                         return;
 
                     case "Pung":
-                        // 这张牌被这名玩家碰了 所以其他玩家没有机会再碰 自然清除
+                        // This card is touched by this player, so other players have no chance to touch it again. It is cleared naturally.
                         optionPlayers.clear();
 
                         soundPlayer.playSoundEffect("src/Resources/pung.wav");
 
-                        game.playerPungTile(currentPlayer, selectTile);  // 碰牌加入手牌，同时从弃牌堆删除
+                        game.playerPungTile(currentPlayer, selectTile);  // The touched card is added to the hand and removed from the discard pile
 
                         game.checkIsWin(currentPlayer);
 
@@ -312,9 +312,11 @@ public class GameUI extends JFrame implements MouseListener {
 
                         soundPlayer.playSoundEffect("src/Resources/kong.wav");
 
-                        game.playerKongTile(currentPlayer, selectTile);  // 杠牌加入手牌，同时从弃牌堆删除
+                        game.playerKongTile(currentPlayer, selectTile);  // The kong is added to the hand and removed from the discard pile
 
-                        // 因为杠牌是需要一下出4张，这个时候需要让这名玩家取一张牌的同时，还要出一张牌，为了保持游戏特性的同时维持手牌稳定
+                        // Because a gang requires four cards to be played at once, the player needs to take a card
+                        // and play another card at the same time, in order to maintain the characteristics
+                        // of the game while keeping the hand stable.
                         game.playerDrawTile(currentPlayer);
 
                         selfTurn = true;
@@ -326,7 +328,7 @@ public class GameUI extends JFrame implements MouseListener {
                     case "Chow":
                         optionPlayers.clear();
 
-                        game.playerChowTile(currentPlayer, selectTile);  // 吃牌加入手牌，同时从弃牌堆删除
+                        game.playerChowTile(currentPlayer, selectTile);  // The card is added to the hand and removed from the discard pile
 
                         game.checkIsWin(currentPlayer);
 
@@ -386,14 +388,16 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     public void updateGame() {
-        // 如果当前玩家出的牌可以被其他玩家碰 吃 杠操作的时候 的逻辑
+        // If the card played by the current player can be touched, eaten or ganged by other players, the logic of the operation is
         if (!optionPlayers.isEmpty()) {
-            // 设置出这张牌的玩家，这样方便检测吃的操作
+            // Set the player who played this card, so it is easy to detect the eating operation
             Player originalPlayer = game.getCurrentPlayer();
 
             Player optionsPlayer = optionPlayers.get(0);
 
-            optionsPlayer.getHand().setDealingFinished(); // 如果这个人需要执行碰等操作的时候 但是他之前还没有看见自己的牌 则屏蔽发牌过程
+            optionsPlayer.getHand().setDealingFinished();
+            // If this person needs to perform an operation such as a touch, but he has not seen his cards before,
+            // the card dealing process will be blocked.
 
             currentPlayer = optionsPlayer;
             selfTurn = false;
@@ -432,13 +436,13 @@ public class GameUI extends JFrame implements MouseListener {
             return;
         }
 
-        //正常情况下，下一名玩家的逻辑
+        // Normally, the logic for the next player
         selfTurn = true;
         if (game.checkTileStackEmpty()) {
             repaint();
             return;
         }
-        game.updateGame();   // 转至下一个玩家
+        game.updateGame();
 
         selectTile = null;
         if (game.hasWinner()) {
@@ -451,8 +455,8 @@ public class GameUI extends JFrame implements MouseListener {
     }
 
     public void paintBankerInfo() {
-        gf.setFont(new Font("宋体", Font.BOLD, 24));
-        gf.setColor(Color.RED); // 修改颜色为红色
+        gf.setFont(new Font("Arial", Font.BOLD, 24));
+        gf.setColor(Color.RED);
 
         gf.setColor(Color.WHITE);
         gf.drawString("The banker is: " + game.findBanker(), 220, 130);
@@ -461,20 +465,19 @@ public class GameUI extends JFrame implements MouseListener {
         gf.setColor(Color.RED);
         gf.drawString(currentPlayer + "'s turn", 750, 130);
 
-        // 显示分数
         paintScores(gf);
     }
 
 
     private void paintScores(Graphics gf) {
-        int yPosition = 80; // 分数的顶部边距
-        int xPosition = 100; // 开始显示玩家分数的位置
-        int spacing = 250; // 玩家分数之间的间距
+        int yPosition = 80;
+        int xPosition = 100;
+        int spacing = 250;
 
         gf.setFont(new Font("Arial", Font.BOLD, 24));
         gf.setColor(Color.white);
 
-        // 遍历所有玩家并显示他们的分数
+        // Iterate through all players and display their scores
         for (int i = 0; i < game.getPlayers().size(); i++) {
             Player player = game.getPlayers().get(i);
             String scoreText = player.toString() + ": " + player.getScore() + " points";

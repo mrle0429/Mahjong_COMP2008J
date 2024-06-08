@@ -62,15 +62,15 @@ public class CheckTile {
 
         int tileValue = tile.getValue();
 
-        // 调整可能吃的情况
-        // 只能吃首尾，不能吃中间
+        // Adjust the possible eating situations
+        // Only the beginning and the end can be eaten, not the middle
         int[][] possibleValues = {{tileValue + 1, tileValue + 2}, {tileValue - 2, tileValue - 1}};
 
         for (int[] values : possibleValues) {
             Tile seqTile = new Tile(tileType, values[0]);
             Tile seqTile_ = new Tile(tileType, values[1]);
 
-            if (tiles.contains(seqTile_) && tiles.contains(seqTile)) {  // 根据Tile类中的equal方式判断。牌类型+牌数字
+            if (tiles.contains(seqTile_) && tiles.contains(seqTile)) {  // Judge according to the equal method in the Tile class. Card type + card number
                 result.add(seqTile);
                 result.add(seqTile_);
                 result.add(tile);

@@ -27,7 +27,7 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     private final String name = "Wzh";
-    private final String serverIP = "192.168.0.100";
+    private final String serverIP = "";
     private final int port = 12345;
     private NetWaitingUI netWaitingUI;
     private Player player;
@@ -79,11 +79,11 @@ public class PlayerClient extends JFrame implements MouseListener {
 
             type = (MessageType) ois.readObject();
             if (type == MessageType.EnoughPlayers) {
-                // 人齐了关闭等待界面的UI
+                // When everyone is together, close the waiting UI
                 netWaitingUI.dispose();
             }
 
-            // 接受传给的玩家信息
+            // Receive information from the player
             player = (Player) ois.readObject();
             Message msg = (Message) ois.readObject();
             banker = msg.getPlayer();
@@ -457,7 +457,7 @@ public class PlayerClient extends JFrame implements MouseListener {
             String buttonName = "";
 
 
-            // 检测点击按钮
+            // Detecting button clicks
             for (Button button : showButtons) {
                 if (button.getBounds().contains(xPos, yPos)) {
                     buttonName = button.getLabel();
@@ -615,7 +615,6 @@ public class PlayerClient extends JFrame implements MouseListener {
     }
 
     public void updateMeld(Message msg) {
-        System.out.println("调用更新方法");
         PlayerType tempPlayer = player.getLocation();
         for (int i = 0; i != 3; i++) {
             tempPlayer = tempPlayer.next();

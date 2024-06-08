@@ -43,18 +43,18 @@ public class GameServer {
             }
 
             try {
-                // 等待最后一个玩家加载成功
+                // Wait for the last player to load successfully
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            // 告诉每个客户端，人齐了，准备开始游戏
+            // Tell each client that everyone is here and ready to start the game
             for (PlayerThread playerThread : playerThreads) {
                 playerThread.sendMessage(MessageType.EnoughPlayers);
             }
 
-            //初始化游戏信息
+            //Initialize game information
             players = new ArrayList<>();
             tileStack = new TileStack();
             optionPlayers = new ArrayList<>();
@@ -62,7 +62,7 @@ public class GameServer {
 
             initializeGame();
 
-            // 按顺序把玩家信息发送给客户端
+            // Send player information to the client in order
             for (int i = 0; i != 4; i++) {
                 playerThreads.get(i).sendMessage(players.get(i));
                 playerThreads.get(i).setThreadName(players.get(i).toString());
@@ -77,10 +77,6 @@ public class GameServer {
                 playerThreads.get(i).sendTurnMessage(message);
             }
 
-
-//            while (!hasWinner) {
-//
-//            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -95,7 +91,7 @@ public class GameServer {
     public void initializeGame() {
         addPlayer();
         distributeTile();
-        // 随机一名玩家是庄家
+        // A random player is the dealer
         players.get(((int) (Math.random() * 4))).setBanker(true);
 
         currentPlayer = findZhuang();
@@ -144,26 +140,9 @@ public class GameServer {
 
         updatePlayer(player);
 
-//        for (Player player1 : players) {
-//            if (player1.toString().equals(player.toString())){
-//                System.out.println(player1.getHand().getTiles().size());
-//                System.out.println("更新成功");
-//            }
-//        }
-
-
         checkAndAddOptionPlayers(tile);
 
         updateGame(player, tile);
-
-//        Message msg = new Message();
-//        msg.setType(MessageType.TakeTurn);
-//        msg.setPlayer(currentPlayer);
-//        msg.setOriginalPlayer(player);
-//        msg.setTile(tile);
-//        msg.setNewTile(newTile);
-//
-//        sendMessageToAll(msg);
 
         waitForFinish();
     }
@@ -202,7 +181,6 @@ public class GameServer {
         message.setOptionTiles(optionTiles);
         message.setTile(newTile);
 
-//        findPlayerThreadByPlayer(player).sendTurnMessage(message);
         sendMessageToAll(message);
 
         waitForFinish();
@@ -305,8 +283,6 @@ public class GameServer {
         for (Player p : players) {
             if (p.toString().equals(player.toString())) {
                 p.setHand(player.getHand());
-//                players.remove(p);
-//                players.add(player);
                 return;
             }
         }
@@ -314,11 +290,10 @@ public class GameServer {
 
     public void updateGame(Player player, Tile tile) {
         if (!optionPlayers.isEmpty()) {
-            // 设置出这张牌的玩家，这样方便检测吃的操作
+            // Set the player who played this card, so it is easy to detect the eating operation
             Player originalPlayer = currentPlayer;
             Player optionsPlayer = optionPlayers.get(0);
 
-//            currentPlayer = optionsPlayer;
             optionPlayers.remove(optionsPlayer);
 
             Message message = new Message();

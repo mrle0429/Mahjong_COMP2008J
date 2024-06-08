@@ -37,6 +37,7 @@ public class WaysOfHu {
                 return tiles.get(0).equals(tiles.get(1));
             }
 
+            //
             int firstIndex = 0;
             if (tiles.get(firstIndex).equals(tiles.get(firstIndex + 1)) && !tiles.get(firstIndex).equals(tiles.get(firstIndex + 2))) {
                 ArrayList<Tile> newTiles = new ArrayList<>(tiles);

@@ -20,7 +20,6 @@ import java.util.List;
  * @version 2024-05
  */
 public class PreparationUI extends JFrame {
-    private final Graphics gf = null;
     private final Game game;
     private final List<JButton> buttons = new ArrayList<>();
     private int clickNumber;
@@ -34,7 +33,6 @@ public class PreparationUI extends JFrame {
         clickNumber = 0;
         scores = new int[4];
         startGame = false;
-
     }
 
     public void initializeUI() {
